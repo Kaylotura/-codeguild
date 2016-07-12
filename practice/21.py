@@ -1,72 +1,42 @@
-"""Gives basic Blackjack advice based on user input."""
+"""
+Gives basic Blackjack advice based on user input.
+July.11.2016: Cleaned up code, added elif/else statements casting strings to ints, and added splitting advice for fun.
+"""
 
 # 1. Setup
 
-card1 = str(input('Please enter the first card '))
-card2 = str(input('Please enter the second card '))
+card_1 = input('Please enter the first card ')
+card_2 = input('Please enter the second card ')
 
 # 2. transform
 
-if card1 == ('A'):
-    card1v = 11
-if card1 == ('J'):
-    card1v = 10
-if card1 == ('Q'):
-    card1v = 10
-if card1 == ('K'):
-    card1v = 10
-if card1 == ('10'):
-    card1v = 10
-if card1 == ('9'):
-    card1v = 9
-if card1 == ('8'):
-    card1v = 8
-if card1 == ('7'):
-    card1v = 7
-if card1 == ('6'):
-    card1v = 6
-if card1 == ('5'):
-    card1v = 5
-if card1 == ('4'):
-    card1v = 4
-if card1 == ('3'):
-    card1v = 3
-if card1 == ('2'):
-    card1v = 2
-if card2 == ('A'):
-    card2v = 11
-if card2 == ('J'):
-    card2v = 10
-if card2 == ('Q'):
-    card2v = 10
-if card2 == ('K'):
-    card2v = 10
-if card2 == ('10'):
-    card2v = 10
-if card2 == ('9'):
-    card2v = 9
-if card2 == ('8'):
-    card2v = 8
-if card2 == ('7'):
-    card2v = 7
-if card2 == ('6'):
-    card2v = 6
-if card2 == ('5'):
-    card2v = 5
-if card2 == ('4'):
-    card2v = 4
-if card2 == ('3'):
-    card2v = 3
-if card2 == ('2'):
-    card2v = 2
+if card_1 == 'A':
+    card_1_value = 11
+elif card_1 == 'J' or card_1 == 'Q' or card_1 == 'K':
+    card_1_value = 10
+else:
+    card_1_value = int(card_1)
 
-score = (card1v + card2v)
+if card_2 == 'A':
+    card_2_value = 11
+elif card_2 == 'J' or card_2 == 'Q' or card_2 == 'K':
+    card_2_value = 10
+else:
+    card_2_value = int(card_2)
+
+score = (card_1_value + card_2_value)
+
+
+if card_1 == card_2:
+    splitting_advice = 'You may also split since your cards are the same.'
+else:
+    splitting_advice = ' '
 
 if score == 21:
-    print ("21, Blackjack!")
+    print('Your total is 21, Blackjack! ' + splitting_advice)
 elif score == 22:
-    print ("Two Aces, 2 or 12, I reccomend you hit.")
+    print('Two Aces, Your total is 2 or 12, I reccomend you hit. ' + splitting_advice)
 elif score >= 17:
-    print (str(score) + ", I reccomend you stay.")
+    print('Your total is ' + str(score) + ', I reccomend you stay. ' + splitting_advice)
 elif score <= 16:
-    print (str(score) + ", I reccomend you hit.")
+    print('Your total is ' + str(score) + ', I reccomend you hit. ' + splitting_advice)
