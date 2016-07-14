@@ -16,8 +16,6 @@ def input_phrase_to_translate():
 
 def input_new_case():
     """ Gets new case to be translated to from user input
-    >>> input_new_case(2)
-    'CONSTANT_CASE'
     """
     print('CamelCase = 1, CONSTANT_CASE = 2, kebab-case = 3, or snake_case = 4')
     case_by_number = input('What case would you like this translated to? ')
@@ -53,14 +51,14 @@ def input_new_case():
 
 def slice_words_apart(unsliced_phrase):
     """Takes phrase to be translated and splits it up with spaces
-    >>> slice_words_apart(i-liek-mudkips)
+    >>> slice_words_apart('i-liek-mudkips')
     'i liek mudkips'
-    >>> slice_words_apart(ITouchaDaFishie)
-    ' I Toucha Da Fishie'
-    >>> slice_words_apart(here_come_dat_boi)
+    >>> slice_words_apart('ITouchaDaFishie')
+    'I Toucha Da Fishie'
+    >>> slice_words_apart('here_come_dat_boi')
     'here come dat boi'
-    >>> slice_words_apart(DO_NOT_HUG_ME_I_AM_SCARED)
-    ' DO NOT HUG ME I AM SCARED'
+    >>> slice_words_apart('DO_NOT_HUG_ME_I_AM_SCARED')
+    'DO NOT HUG ME I AM SCARED'
     """
     if '-' in unsliced_phrase:
         sliced_list = unsliced_phrase.split('-')
@@ -68,27 +66,27 @@ def slice_words_apart(unsliced_phrase):
         sliced_list = unsliced_phrase.split('_')
     else:
         sliced_list = re.findall('[A-Z][^A-Z]*', unsliced_phrase)
-    spaced_phrase = ' '.join(sliced_list)
+    spaced_phrase = " ".join(sliced_list)
     return spaced_phrase
 
 
 def standardize_phrase_lower(phrase):
     """Sets the phrase into lowercase letters for easy manipulation
-    >>> standardize_phrase_lower('You are the weakest link. Goodbye.')
-    'You are the weakest link. Goodbye.'
+    >>> standardize_phrase_lower('You are the weakest link Goodbye')
+    'you are the weakest link goodbye'
     """
-    return phrase.lower
-
+    lower_phrase = phrase.lower()
+    return lower_phrase
 
 def alter_capitalization_to_new_case(phrase, case):
     """Checks for the desired case, then capitalizes appropriately.
-    >>> alter_capitalization_to_new_case(['apple', 'core'], 'CONSTANT_CASE')
+    >>> alter_capitalization_to_new_case('apple core', 'CONSTANT_CASE')
     'APPLE CORE'
-    >>> alter_capitalization_to_new_case(['want', 'some', 'more'], 'CamelCase')
-    'Apple Core'
+    >>> alter_capitalization_to_new_case('want some more', 'CamelCase')
+    'Want Some More'
     """
     if case == 'CamelCase':
-        capitalized_phrase = phrase.capitalize()
+        capitalized_phrase = phrase.title()
     elif case == 'CONSTANT_CASE':
         capitalized_phrase = phrase.upper()
     else:
@@ -96,18 +94,28 @@ def alter_capitalization_to_new_case(phrase, case):
     return capitalized_phrase
 
 
-def paste_phrase(phrase):
+def paste_phrase(phrase, new_case):
     """Removes spaces from phrase
-    >>> paste_phrase('what is your favorite meme?')
-    'whatisyourfavoritememe?'
-    """
-    return str(phrase).replace(' ','')
 
+    >>> paste_phrase('what is your favorite meme','snake_case')
+    'what_is_your_favorite_meme'
+    >>> paste_phrase('WHO DARES WINS','CONSTANT_CASE')
+    'WHO_DARES_WINS'
+    >>> paste_phrase('do not taser me bro','kebab-case')
+    'do-not-taser-me-bro'
+    >>> paste_phrase('What The Rock Is Cooking','CamelCase')
+    'WhatTheRockIsCooking'
+    """
+    if new_case == 'CamelCase':
+        pasted_phrase = str(phrase).replace(' ','')
+    elif new_case =='CONSTANT_CASE' or new_case =='snake_case':
+        pasted_phrase = str(phrase).replace(' ', '_')
+    elif new_case =='kebab-case':
+        pasted_phrase = str(phrase).replace(' ', '-')
+    return pasted_phrase
 
 def output(old_phrase, new_phrase, new_case):
     """Outputs the translation.
-    output(pancakes_taste_good, snake_cake, PancakesTasteGood, CamelCase)
-    PancakesTasteGood
     """
     print(old_phrase + " translated to " + new_case + " is " + new_phrase + "!")
 
