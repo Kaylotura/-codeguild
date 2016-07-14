@@ -1,10 +1,9 @@
+""" Takes input in CamelCase, CONSTANT_CASE, kebab-case, or snake_case and converts to any of the others."""
 import string
 import re
-""" Takes input in CamelCase, CONSTANT_CASE, kebab-case, or snake_case and converts to any of the others."""
 
 LOWERCASE_LIST = list(string.ascii_lowercase)
 UPPERCASE_LIST = list(string.ascii_uppercase)
-
 
 def input_phrase_to_translate():
     """ Gets phrase to be translated from user input"""
