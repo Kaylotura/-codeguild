@@ -2,7 +2,7 @@ import string
 import re
 """ Takes input in CamelCase, CONSTANT_CASE, kebab-case, or snake_case and converts to any of the others."""
 
-LOWERCASE_STRING = string.ascii_lowercase
+LOWERCASE_LIST = list(string.ascii_lowercase)
 UPPERCASE_LIST = list(string.ascii_uppercase)
 
 
@@ -32,21 +32,26 @@ def input_new_case():
     return entered_case
 
 
-# def check_old_case(cased_old_phrase):
-#     """Checks the original case of the phrase to comment on it
-#
-#     >>> check_old_case(['i_eat_kebabs']):
-#     'snake_case'
-#     """
-#     if '-' in str(cased_old_phrase):
-#         old_case = 'kebab-case'
-#     elif '_' in str(cased_old_phrase) and any(LOWERCASE_STRING) in str(cased_old_phrase):
-#         old_case = 'snake_case'
-#     elif '_' in str(cased_old_phrase) and any(LOWERCASE_STRING) not in str(cased_old_phrase):
-#         old_case = 'CONSTANT_CASE'
-#     if [for letter in (LOWERCASE_STRING)] in str(cased_old_phrase):
-#         old_case = 'CamelCase'
-#     return old_case
+def check_old_case(cased_old_phrase):
+    """Checks the original case of the phrase to comment on it
+    >>> check_old_case('i_eat_snakes')
+    'snake_case'
+    >>> check_old_case('i-eat-kebabs')
+    'kebab-case'
+    >>> check_old_case('I_CONSTANTLY_EAT')
+    'CONSTANT_CASE'
+    >>> check_old_case('IEatCamels')
+    'CamelCase'
+    """
+    if '-' in cased_old_phrase:
+        old_case = 'kebab-case'
+    elif '_' in cased_old_phrase and any(letter for letter in cased_old_phrase if letter.islower()):
+        old_case = 'snake_case'
+    elif '_' in cased_old_phrase:
+        old_case = 'CONSTANT_CASE'
+    elif '-' not in cased_old_phrase and '_' not in cased_old_phrase:
+        old_case = 'CamelCase'
+    return old_case
 
 
 def slice_words_apart(unsliced_phrase):
@@ -114,22 +119,21 @@ def paste_phrase(phrase, new_case):
         pasted_phrase = str(phrase).replace(' ', '-')
     return pasted_phrase
 
-def output(old_phrase, new_phrase, new_case):
+def output(old_phrase, new_phrase, old_case, new_case):
     """Outputs the translation.
     """
-    print(old_phrase + " translated to " + new_case + " is " + new_phrase + "!")
+    print(old_phrase + " translated from " + old_case + " to " + new_case + " is " + new_phrase + "!")
 
-def main ():
+def main():
     """Main Function"""
     phrase_to_translate = input_phrase_to_translate()
     new_case = input_new_case()
-#    old_case = check_old_case(phrase_to_translate)
+    old_case = check_old_case(phrase_to_translate)
     phrase_with_spaces = slice_words_apart(phrase_to_translate)
     standardized_phrase_lower = standardize_phrase_lower(phrase_with_spaces)
     appropriately_capitalized_phrase = alter_capitalization_to_new_case(standardized_phrase_lower, new_case)
-    final_phrase = paste_phrase(appropriately_capitalized_phrase)
-    output(phrase_to_translate, final_phrase, new_case)
-
+    final_phrase = paste_phrase(appropriately_capitalized_phrase, new_case)
+    output(phrase_to_translate, final_phrase, old_case, new_case)
 
 if __name__ == '__main__':
     main()
