@@ -1,4 +1,6 @@
-""" Takes input in CamelCase, CONSTANT_CASE, kebab-case, or snake_case and converts to any of the others."""
+"""Takes input in CamelCase, CONSTANT_CASE, kebab-case, or snake_case and converts to any of the others."""
+
+
 import string
 import re
 
@@ -33,6 +35,7 @@ def input_new_case():
 
 def check_old_case(cased_old_phrase):
     """Checks the original case of the phrase to comment on it
+
     >>> check_old_case('i_eat_snakes')
     'snake_case'
     >>> check_old_case('i-eat-kebabs')
@@ -44,7 +47,7 @@ def check_old_case(cased_old_phrase):
     """
     if '-' in cased_old_phrase:
         old_case = 'kebab-case'
-    elif '_' in cased_old_phrase and any(letter for letter in cased_old_phrase if letter.islower()):
+    elif '_' in cased_old_phrase and cased_old_phrase.islower():
         old_case = 'snake_case'
     elif '_' in cased_old_phrase:
         old_case = 'CONSTANT_CASE'
@@ -70,17 +73,19 @@ def slice_words_apart(unsliced_phrase):
         sliced_list = unsliced_phrase.split('_')
     else:
         sliced_list = re.findall('[A-Z][^A-Z]*', unsliced_phrase)
-    spaced_phrase = " ".join(sliced_list)
+    spaced_phrase = ' '.join(sliced_list)
     return spaced_phrase
 
 
 def standardize_phrase_lower(phrase):
     """Sets the phrase into lowercase letters for easy manipulation
+
     >>> standardize_phrase_lower('You are the weakest link Goodbye')
     'you are the weakest link goodbye'
     """
     lower_phrase = phrase.lower()
     return lower_phrase
+
 
 def alter_capitalization_to_new_case(phrase, case):
     """Checks for the desired case, then capitalizes appropriately.
@@ -100,7 +105,6 @@ def alter_capitalization_to_new_case(phrase, case):
 
 def paste_phrase(phrase, new_case):
     """Removes spaces from phrase
-
     >>> paste_phrase('what is your favorite meme','snake_case')
     'what_is_your_favorite_meme'
     >>> paste_phrase('WHO DARES WINS','CONSTANT_CASE')
@@ -111,17 +115,21 @@ def paste_phrase(phrase, new_case):
     'WhatTheRockIsCooking'
     """
     if new_case == 'CamelCase':
-        pasted_phrase = str(phrase).replace(' ','')
-    elif new_case =='CONSTANT_CASE' or new_case =='snake_case':
+        pasted_phrase = str(phrase).replace(' ', '')
+    elif new_case == 'CONSTANT_CASE' or new_case == 'snake_case':
         pasted_phrase = str(phrase).replace(' ', '_')
-    elif new_case =='kebab-case':
+    elif new_case == 'kebab-case':
         pasted_phrase = str(phrase).replace(' ', '-')
     return pasted_phrase
 
+
 def output(old_phrase, new_phrase, old_case, new_case):
     """Outputs the translation.
+    >>> output('i-am-a-camel', 'IAmACamel', 'kebab-case', 'CamelCase')
+    i-am-a-camel translated from kebab-case to CamelCase is IAmACamel
     """
-    print(old_phrase + " translated from " + old_case + " to " + new_case + " is " + new_phrase + "!")
+    print('{}, translated from {} to {} is {}!'.format(old_phrase, old_case, new_case, new_phrase))
+
 
 def main():
     """Main Function"""
