@@ -53,6 +53,9 @@ def translate_to_pig_latin(words):
     >>> translate_to_pig_latin(['i','like','to','eat','bananas,', 'mackleMore', 'mcDonalds.'])
     ['iyay','ikelay','otay','eatyay','ananasbay,', 'ackleMoreay', 'onaldsmcDay']
     """
+
+    for word in words, latin_func(word) = ???
+
     saved_punctuation = saved_punctuation()
 
     # cut_and_save_punctuation
