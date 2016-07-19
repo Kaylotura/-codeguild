@@ -1,15 +1,23 @@
 """ Opens a Rain Text File and Mines for information. I'm using "cells" for rows, and "boxes" for columns"""
 
 
-def open_file():
-    """Opens text file for analysis."""
-    with open('rain.txt', 'r') as table_file:
+TEST_ROWS = [['23', 'MAR', '2016', '12'], ['22', 'MAR', '2016', '1'], ['21', 'MAR', '2016', '8']]
+TEST_COLUMNS = [['23', '22', '21'], ['MAR', 'MAR', 'MAR'], ['2016', '2016', '2016'], ['12', '1', '8']]
+
+
+def open_file(file):
+    """Opens text file for analysis.
+
+    >>> open_file('rain_text/testrain.txt')
+    [['She took all my money']['And my best friend']['You know the story']['Here it comes again']]
+    """
+    with open(file, 'r') as table_file:
         lines_of_text = table_file.readlines()
     return lines_of_text
 
 
 def cut_non_data(text):
-    """Cuts lines of text after table line
+    """Cuts lines of text after table line.
 
     >>> ['Apple Pie', 'Hamburgers'
     >>> '------------------------------------------------------------------------------------------------------------------\n',
@@ -32,16 +40,15 @@ def split_single_line_to_single_row(text):
     full_date = simple_row[0]
     split_dates = full_date.split('-')
     final_row = split_dates + simple_row[1:]
-    print(final_row)
     return final_row
 
 
 def split_lines_to_rows(text):
-    """Splits all lines of text into several rows in the form of lists of strings
+    """Splits all lines of text into several rows in the form of lists of strings.
+
     >>> split_lines_to_rows([['Charmander Bulbasuar Squirtle'],['Ponya Oddish Magicarp'],['Fire Plant Water']])
     [['Charmander', 'Bulbasuar', 'Squirtle'],['Ponya', 'Oddish', 'Magicarp'],['Fire', 'Plant', 'Water']]
     """
-    # dates_as_lists = get_dates_as_lists(text)
     rows = [split_single_line_to_single_row(line) for line in text]
     return rows
 
@@ -80,6 +87,11 @@ def get_index_of_max_daily_rain_box(columns):
 
 
 def get_day_with_most_rain(rows, columns):
+    """Returns the date of day with the most rain
+
+    >>> get_day_with_most_rain([TEST_ROWS, TEST_COLUMNS])
+    """
+
     index_of_day_cell = get_index_of_max_daily_rain_box(columns)
     day_full_line = rows[index_of_day_cell]
     date = day_full_line[1] + ' ' + day_full_line[0] + ' ' + day_full_line[2]
@@ -94,7 +106,7 @@ def output_for_max_rain_date(most_rain, date_with_most_rain):
 
 
 def main():
-    text_lines = open_file()
+    text_lines = open_file('rain_text/rain.txt')
     table_as_text_lines = cut_non_data(text_lines)
 
     rows_of_data = split_lines_to_rows(table_as_text_lines)
