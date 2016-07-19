@@ -1,14 +1,21 @@
 """ Opens a Rain Text File and Mines for information. I'm using "cells" for rows, and "boxes" for columns"""
 
+
 def open_file():
-    """Opens text file for analysis"""
+    """Opens text file for analysis."""
     with open('rain.txt', 'r') as table_file:
         lines_of_text = table_file.readlines()
     return lines_of_text
 
 
 def cut_non_data(text):
-    """ Takes in lines of text, and only returns relevant data lines. Line break kept screwing up doctest"""
+    """Cuts lines of text after table line
+
+    >>> ['Apple Pie', 'Hamburgers'
+    >>> '------------------------------------------------------------------------------------------------------------------\n',
+    >>> 'lovely']
+    ['lovely']
+    """
     TABLE_LINE_CUT_OFF = '------------------------------------------------------------------------------------------------------------------\n'
     table_start_index = text.index(TABLE_LINE_CUT_OFF) + 1
     table_as_text_lines = text[table_start_index:]
@@ -17,12 +24,15 @@ def cut_non_data(text):
 
 def split_single_line_to_single_row(text):
     """Splits a single line of text into a row in the form of a list of strings.
-     For ease of looking up dates, years, and months, this function also splits the dates
+
+    >>> ['one    two    three' ]
+    ['one','two','three']
     """
-    simple_row = text.split('    ')
+    simple_row = text.split('   ')
     full_date = simple_row[0]
     split_dates = full_date.split('-')
     final_row = split_dates + simple_row[1:]
+    print(final_row)
     return final_row
 
 
@@ -48,7 +58,9 @@ def convert_rows_to_columns(rows):
 
 def get_most_daily_rain_inches(columns):
     """Gets the value of the most rain for any given date
-    >>> get_most_daily_rain_inches([['1', '2', '3', '8'], ['4', '5', '6', '1'], ['7', '8', '9', '12'], ['4', '7', '6', '1']])
+
+    >>> get_most_daily_rain_inches([['1', '2', '3', '8'], ['4', '5', '6', '1'], ['7', '8', '9', '12'], \
+    ['4', '7', '6', '1']])
     '0.07'
     """
     most_rain = max(columns[3])
@@ -58,7 +70,9 @@ def get_most_daily_rain_inches(columns):
 
 def get_index_of_max_daily_rain_box(columns):
     """Takes in rows of data, and returns index of day with most rain columns max rain
-    >>> get_day_with_most_rain([['1', '2', '3', '8'], ['4', '5', '6', '1'], ['7', '8', '9', '12'], ['4', '7', '6', '1']])
+
+    >>> get_day_with_most_rain([['1', '2', '3', '8'], ['4', '5', '6', '1'], ['7', '8', '9', '12'],
+    >>> ['4', '7', '6', '1']])
     '2'
     """
     day_index_of_max_daily_rain = columns[3].index(max(columns[3]))
@@ -71,6 +85,7 @@ def get_day_with_most_rain(rows, columns):
     date = day_full_line[1] + ' ' + day_full_line[0] + ' ' + day_full_line[2]
     return date
 
+
 def output_for_max_rain_date(most_rain, date_with_most_rain):
     print('The day with the most rain was ' + date_with_most_rain + ', which had ' + most_rain + ' inches of rain.')
 
@@ -81,6 +96,7 @@ def output_for_max_rain_date(most_rain, date_with_most_rain):
 def main():
     text_lines = open_file()
     table_as_text_lines = cut_non_data(text_lines)
+
     rows_of_data = split_lines_to_rows(table_as_text_lines)
     columns_of_data = convert_rows_to_columns(rows_of_data)
     most_inches_of_rain_in_single_date = get_most_daily_rain_inches(columns_of_data)
