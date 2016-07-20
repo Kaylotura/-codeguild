@@ -9,7 +9,7 @@ def open_file(file):
     """Opens text file for analysis.
 
     >>> open_file('rain_text/testrain.txt')
-    ['She took all my money\n', 'And my best friend\n', 'You know the story\n', 'Here it comes again']
+    ['She took all my money    And my best friend    You know the story    Here it comes again']
     """
     with open(file, 'r') as table_file:
         lines_of_text = table_file.readlines()
@@ -29,8 +29,10 @@ def cut_non_data(text):
 def split_single_line_to_single_row(text):
     """Splits a single line of text into a row in the form of a list of strings.
 
-    >>> ['one    two    three' ]
-    ['one','two','three']
+    >>> split_single_line_to_single_row('one   two   three' )
+    ['one', 'two', 'three']
+    >>> split_single_line_to_single_row('one-two-three')
+    ['one', 'two', 'three']
     """
     simple_row = text.split('   ')
     full_date = simple_row[0]
@@ -42,8 +44,8 @@ def split_single_line_to_single_row(text):
 def split_lines_to_rows(text):
     """Splits all lines of text into several rows in the form of lists of strings.
 
-    >>> split_lines_to_rows([['Charmander Bulbasuar Squirtle'],['Ponya Oddish Magicarp'],['Fire Plant Water']])
-    [['Charmander', 'Bulbasuar', 'Squirtle'],['Ponya', 'Oddish', 'Magicarp'],['Fire', 'Plant', 'Water']]
+    >>> split_lines_to_rows(['Charmander Bulbasuar Squirtle','Ponya Oddish Magicarp','Fire Plant Water'])
+    [['Charmander Bulbasuar Squirtle'], ['Ponya Oddish Magicarp'], ['Fire Plant Water']]
     """
     rows = [split_single_line_to_single_row(line) for line in text]
     return rows
@@ -75,19 +77,19 @@ def get_most_daily_rain_inches(columns):
 def get_index_of_max_daily_rain_box(columns):
     """Takes in rows of data, and returns index of day with most rain columns max rain
 
-    >>> get_day_with_most_rain(TEST_COLUMNS)
-    '12'
+    >>> get_index_of_max_daily_rain_box(TEST_COLUMNS)
+    0
     """
-    day_index_of_max_daily_rain = columns[3].index(max(columns[3]))
+    daily_rain_values = [int(value) for value in columns[3]]
+    day_index_of_max_daily_rain = daily_rain_values.index(max(daily_rain_values))
     return day_index_of_max_daily_rain
 
 
 def get_day_with_most_rain(rows, columns):
     """Returns the date of day with the most rain
 
-    >>> get_day_with_most_rain([TEST_ROWS, TEST_COLUMNS])
-
-
+    >>> get_day_with_most_rain(TEST_ROWS, TEST_COLUMNS)
+    'MAR 23 2016'
     """
     index_of_day_cell = get_index_of_max_daily_rain_box(columns)
     day_full_line = rows[index_of_day_cell]
@@ -98,25 +100,34 @@ def get_day_with_most_rain(rows, columns):
 def output_for_max_rain_date(most_rain, date_with_most_rain):
     """Prints the day with the most rain, and how much rain fell in inches.
 
-    >>> output_for_max_rain_date('53','30-MAR-2016')
-    The day with the most rain was 30-MAR-2016 which had 5 inches of rain.
+    >>> output_for_max_rain_date('5','30-MAR-2016')
+    The day with the most rain was 30-MAR-2016, which had 5 inches of rain.
     """
     print('The day with the most rain was ' + date_with_most_rain + ', which had ' + most_rain + ' inches of rain.')
 
 
-# def get_most_anual_rain_inches():
+def group_rows_by_year(row):
+    """Calculates Grouping Key
+
+    >>> group_rows_by_year(['23', 'Mar', '2016'])
+    '2016'
+    """
+    return row[row[2]]
+
+
+# def get_most_anual_rain_inches(rows):
+
 
 
 def main():
     """Main function."""
     text_lines = open_file('rain_text/rain.txt')
     table_as_text_lines = cut_non_data(text_lines)
-
     rows_of_data = split_lines_to_rows(table_as_text_lines)
     columns_of_data = convert_rows_to_columns(rows_of_data)
     most_inches_of_rain_in_single_date = get_most_daily_rain_inches(columns_of_data)
     date_with_most_rain = get_day_with_most_rain(rows_of_data, columns_of_data)
-    # most_inches_of_rain_in_a_year = get_most_anual_rain_inches(...)
+    most_inches_of_rain_in_a_year = get_most_anual_rain_inches(rows_of_data)
     # year_with_most_rain = get_year_with_most_rain(...)
     output_for_max_rain_date(most_inches_of_rain_in_single_date, date_with_most_rain)
     # output_for_max_rain_date(...)
