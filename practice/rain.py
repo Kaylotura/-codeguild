@@ -70,7 +70,7 @@ def contains_numeral(value):
     >>> contains_numeral('13')
     True
     >>> contains_numeral('pie')
-    false
+    False
     """
     try:
         int(value)
@@ -120,9 +120,9 @@ def output_for_max_rain_date(most_rain, date_with_most_rain):
     """Prints the day with the most rain, and how much rain fell in inches.
 
     >>> output_for_max_rain_date('5','30-MAR-2016')
-    The day with the most rain was 30-MAR-2016, which had 5 inches of rain.
+    The day with the most rain was 30-MAR-2016, which had 5 inches of rain!
     """
-    print('The day with the most rain was {} which had {} inches of rain!'.format(date_with_most_rain, most_rain))
+    print('The day with the most rain was {}, which had {} inches of rain!'.format(date_with_most_rain, most_rain))
 
 
 def get_year(row):
@@ -193,9 +193,9 @@ def output_for_year(year):
     """ Prints the year with the most rain.
 
     >>> output_for_year('2015')
-    The year with the most rain was 2016!
+    The year with the most rain was 2015!
     """
-    print('The year with the most rain was {}! '.format(year))
+    print('The year with the most rain was {}!'.format(year))
 
 
 def main():
