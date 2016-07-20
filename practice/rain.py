@@ -140,6 +140,7 @@ def get_year_to_rows(rows):
     >>> get_year_to_rows([['23', 'Mar', '2016'], ['21', 'Feb', '2016']])
     {'2016': [['23', 'Mar', '2016'], ['21', 'Feb', '2016']]}
     """
+
     year_to_rows = {
         group_key: list(grouped_rows)
         for group_key, grouped_rows
@@ -149,16 +150,18 @@ def get_year_to_rows(rows):
 
 
 def get_years_to_annual_rain(rows):
+    # Need to work on this
     """Transforms a dictionary of years to data to years to total rain.
 
-    >>> get_years_to_annual_rain(TEST_ROWS)
+    >>> get_years_to_annual_rain([['30', 'MAR', '2016', '7'], ['29', 'MAR', '2017', '9']])
     [['2016'] [[3]]], [['2017'] [[7]]]
     """
     year_to_rows = get_year_to_rows(rows)
     years_to_annual_rain = {}
     for year in year_to_rows:
+        print(year_to_rows[year])
         annual_data = year_to_rows[year]
-        annual_rain_values = [int(value) for value in annual_data[3] if contains_numeral(value)]
+        annual_rain_values = [(value[3]) for value in annual_data]
         total_annual_rain = sum(annual_rain_values)
         year_to_annual_rain = {year: total_annual_rain}
         years_to_annual_rain.update(year_to_annual_rain)
@@ -166,6 +169,7 @@ def get_years_to_annual_rain(rows):
 
 
 def get_year_with_most_rain(rows):
+    # need to work on this
     """Runs rows of data through functions to output year with most rainfall.
 
     >>> get_year_with_most_rain(TEST_ROWS)
