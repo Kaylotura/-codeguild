@@ -9,7 +9,7 @@ def open_file(file):
     """Opens text file for analysis.
 
     >>> open_file('rain_text/testrain.txt')
-    [['She took all my money']['And my best friend']['You know the story']['Here it comes again']]
+    ['She took all my money\n', 'And my best friend\n', 'You know the story\n', 'Here it comes again']
     """
     with open(file, 'r') as table_file:
         lines_of_text = table_file.readlines()
@@ -19,14 +19,10 @@ def open_file(file):
 def cut_non_data(text):
     """Cuts lines of text after table line.
 
-    >>> ['Apple Pie', 'Hamburgers'
-    >>> '------------------------------------------------------------------------------------------------------------------\n',
-    >>> 'lovely']
-    ['lovely']
+    >>> cut_non_data([[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14]])
+    [[12], [13], [14]]
     """
-    TABLE_LINE_CUT_OFF = '------------------------------------------------------------------------------------------------------------------\n'
-    table_start_index = text.index(TABLE_LINE_CUT_OFF) + 1
-    table_as_text_lines = text[table_start_index:]
+    table_as_text_lines = text[11:]
     return table_as_text_lines
 
 
@@ -55,8 +51,9 @@ def split_lines_to_rows(text):
 
 def convert_rows_to_columns(rows):
     """Takes rows as lists of strings, and transforms them into columns as lists of strings
-    >>> [['Charmander', 'Bulbasuar', 'Squirtle'],['Ponya', 'Oddish', 'Magicarp'],['Fire', 'Plant', 'Water']]
-    [['Charmander', 'Ponya'', 'Fire'],['Bulbasuar', 'Oddish', 'Plant'],['Squirtle', 'Magicarp', 'Water']]
+
+    >>> convert_rows_to_columns([['Char', 'Bulb', 'Squirt'],['Ponya', 'Oddish', 'Magicarp'],['Fire', 'Plant', 'Water']])
+    [['Char', 'Ponya', 'Fire'], ['Bulb', 'Oddish', 'Plant'], ['Squirt', 'Magicarp', 'Water']]
     """
     columns_by_tuple = list(zip(*rows))
     columns = [list(tup) for tup in columns_by_tuple]
@@ -78,9 +75,8 @@ def get_most_daily_rain_inches(columns):
 def get_index_of_max_daily_rain_box(columns):
     """Takes in rows of data, and returns index of day with most rain columns max rain
 
-    >>> get_day_with_most_rain([['1', '2', '3', '8'], ['4', '5', '6', '1'], ['7', '8', '9', '12'],
-    >>> ['4', '7', '6', '1']])
-    '2'
+    >>> get_day_with_most_rain(TEST_COLUMNS)
+    '12'
     """
     day_index_of_max_daily_rain = columns[3].index(max(columns[3]))
     return day_index_of_max_daily_rain
@@ -90,8 +86,9 @@ def get_day_with_most_rain(rows, columns):
     """Returns the date of day with the most rain
 
     >>> get_day_with_most_rain([TEST_ROWS, TEST_COLUMNS])
-    """
 
+
+    """
     index_of_day_cell = get_index_of_max_daily_rain_box(columns)
     day_full_line = rows[index_of_day_cell]
     date = day_full_line[1] + ' ' + day_full_line[0] + ' ' + day_full_line[2]
@@ -99,6 +96,11 @@ def get_day_with_most_rain(rows, columns):
 
 
 def output_for_max_rain_date(most_rain, date_with_most_rain):
+    """Prints the day with the most rain, and how much rain fell in inches.
+
+    >>> output_for_max_rain_date('53','30-MAR-2016')
+    The day with the most rain was 30-MAR-2016 which had 5 inches of rain.
+    """
     print('The day with the most rain was ' + date_with_most_rain + ', which had ' + most_rain + ' inches of rain.')
 
 
@@ -106,6 +108,7 @@ def output_for_max_rain_date(most_rain, date_with_most_rain):
 
 
 def main():
+    """Main function."""
     text_lines = open_file('rain_text/rain.txt')
     table_as_text_lines = cut_non_data(text_lines)
 
