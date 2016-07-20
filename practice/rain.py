@@ -148,23 +148,11 @@ def get_year_to_rows(rows):
     return year_to_rows
 
 
-def sum_yearly_rainfall(year, year_to_daily_rain):
-    """Returns sum of yearly rainfall as an integer value
-
-    >>> sum_yearly_rainfall('2016', {['2016': [['1'], ['2']]]})
-    3
-    """
-    rain_fall_values = year_to_daily_rain[year]
-    daily_rain_values = [int(value) for value in rain_fall_values[3] if contains_numeral(value)]
-    total = sum(daily_rain_values)
-    return total
-
-
 def get_years_to_annual_rain(rows):
     """Transforms a dictionary of years to data to years to total rain.
 
-    >>> get_years_to_annual_rain({[['2016']: [['1'], ['2']]], [['2017']: [['3'], ['4']]]})
-    {[['2016']: [[3]]], [['2017']: [[7]]]
+    >>> get_years_to_annual_rain(TEST_ROWS)
+    [['2016'] [[3]]], [['2017'] [[7]]]
     """
     year_to_rows = get_year_to_rows(rows)
     years_to_annual_rain = {}
