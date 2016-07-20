@@ -122,7 +122,7 @@ def output_for_max_rain_date(most_rain, date_with_most_rain):
     >>> output_for_max_rain_date('5','30-MAR-2016')
     The day with the most rain was 30-MAR-2016, which had 5 inches of rain.
     """
-    print('The day with the most rain was ' + date_with_most_rain + ', which had ' + most_rain + ' inches of rain.')
+    print('The day with the most rain was {} which had {} inches of rain!'.format(date_with_most_rain, most_rain))
 
 
 def get_year(row):
@@ -145,14 +145,13 @@ def get_year_to_rows(rows):
         for group_key, grouped_rows
         in groupby(rows, get_year)
         }
-    print(year_to_rows)
     return year_to_rows
 
 
 def sum_yearly_rainfall(year, year_to_daily_rain):
     """Returns sum of yearly rainfall as an integer value
 
-    >>> sum_yearly_rainfall('2016', {'2016': [['1'], ['2']]})
+    >>> sum_yearly_rainfall('2016', {['2016': [['1'], ['2']]]})
     3
     """
     rain_fall_values = year_to_daily_rain[year]
@@ -161,20 +160,42 @@ def sum_yearly_rainfall(year, year_to_daily_rain):
     return total
 
 
-def get_most_anual_rain_inches(rows):
+def get_years_to_annual_rain(rows):
+    """Transforms a dictionary of years to data to years to total rain.
+
+    >>> get_years_to_annual_rain({[['2016']: [['1'], ['2']]], [['2017']: [['3'], ['4']]]})
+    {[['2016']: [[3]]], [['2017']: [[7]]]
+    """
     year_to_rows = get_year_to_rows(rows)
+    years_to_annual_rain = {}
     for year in year_to_rows:
         annual_data = year_to_rows[year]
         annual_rain_values = [int(value) for value in annual_data[3] if contains_numeral(value)]
-        total_anual_rain =
+        total_annual_rain = sum(annual_rain_values)
+        year_to_annual_rain = {year: total_annual_rain}
+        years_to_annual_rain.update(year_to_annual_rain)
+    return years_to_annual_rain
 
 
-       year_dailyrain = [int(year: year_data[3]) if contains_numeral()
-        return  if (year: year_data[3])
+def get_year_with_most_rain(rows):
+    """Runs rows of data through functions to output year with most rainfall.
+
+    >>> get_year_with_most_rain(TEST_ROWS)
+    '2016'
+    """
+    years_to_annual_rain = get_years_to_annual_rain(rows)
+    year_with_most_rain = max(years_to_annual_rain.keys(), key=(lambda k: years_to_annual_rain[k]))
+    # found on Stack Overflow: http://tinyurl.com/jdjs5p6
+    return year_with_most_rain
 
 
-    # year_to_daily_rain = map_year_to_daily_rain(year_to_rows)
-    # total_rain_to_years = get_total_rain_to_years(year_to_rows)
+def output_for_year(year):
+    """ Prints the year with the most rain.
+
+    >>> output_for_year('2015')
+    The year with the most rain was 2016!
+    """
+    print('The year with the most rain was {}! '.format(year))
 
 
 def main():
@@ -185,10 +206,9 @@ def main():
     columns_of_data = convert_rows_to_columns(rows_of_data)
     most_inches_of_rain_in_single_date = get_most_daily_rain_inches(columns_of_data)
     date_with_most_rain = get_day_with_most_rain(rows_of_data, columns_of_data)
-    most_inches_of_rain_in_a_year = get_most_anual_rain_inches(rows_of_data)
-    # year_with_most_rain = get_year_with_most_rain(...)
+    year_with_most_rain = get_year_with_most_rain(rows_of_data)
     output_for_max_rain_date(most_inches_of_rain_in_single_date, date_with_most_rain)
-    # output_for_max_rain_date(...)
+    output_for_year(year_with_most_rain)
 
 if __name__ == '__main__':
     main()
