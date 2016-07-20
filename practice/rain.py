@@ -1,5 +1,6 @@
 """ Opens a Rain Text File and Mines for information. I'm using "cells" for rows, and "boxes" for columns"""
 
+
 from itertools import groupby
 
 
@@ -64,6 +65,13 @@ def convert_rows_to_columns(rows):
     return columns
 
 
+def contains_numeral(value):
+    try:
+        int(value)
+        return True
+    except ValueError:
+        return False
+
 def get_most_daily_rain_inches(columns):
     """Gets the value of the most rain for any given date
 
@@ -71,7 +79,8 @@ def get_most_daily_rain_inches(columns):
     ['4', '7', '6', '1']])
     '0.07'
     """
-    most_rain = max(columns[3])
+    rainy_days = [int(value) for value in columns[3] if contains_numeral(value)]
+    most_rain = max(rainy_days)
     most_rain_inches = str(int(most_rain) / 100)
     return most_rain_inches
 
@@ -82,7 +91,8 @@ def get_index_of_max_daily_rain_box(columns):
     >>> get_index_of_max_daily_rain_box(TEST_COLUMNS)
     0
     """
-    daily_rain_values = [int(value) for value in columns[3]]
+    rainy_days = [int(value) for value in columns[3] if contains_numeral(value)]
+    daily_rain_values = [value for value in rainy_days]
     day_index_of_max_daily_rain = daily_rain_values.index(max(daily_rain_values))
     return day_index_of_max_daily_rain
 
@@ -131,18 +141,20 @@ def get_year_to_rows(rows):
     return year_to_rows
 
 
-def get_year_to_daily_rain(year_to_rows):
-    """Map year to daily rainfall.
+# def map_year_to_daily_rain(year_to_rows):
+#     """Map year to daily rainfall.
+#
+#     >>> map_year_to_daily_rain({'2016': [['23', 'Mar', '2016', '1'], ['21', 'Feb', '2016', '-']]})
+#     {'2016': [['1'], ['-']]}
+#     """
+#     year_to_rain_values = {
+#         year: [row[3] for row in rows]
+#         for year, rows
+#         in year_to_rows
+#         if any(NUMBERS) in year_to_rows}
+#     print(year_to_rain_values)
+#     return year_to_rain_values
 
-    >>> get_year_to_daily_rain({'2016': [['23', 'Mar', '2016', '1'], ['21', 'Feb', '2016', '-']]})
-    {'2016': [['1'], ['-']]}
-    """
-    year_to_daily_rain = {
-        year: [row[3] for row in rows]
-        for year, rows
-        in year_to_rows
-        if any(NUMBERS) in rows}
-    return year_to_daily_rain
 
 def sum_yearly_rainfall(year, year_to_daily_rain):
     """Returns sum of yearly rainfall as an integer value
@@ -151,17 +163,17 @@ def sum_yearly_rainfall(year, year_to_daily_rain):
     3
     """
     values_of_daily_rain = year_to_daily_rain[year]
-    numerals_of_daily_rain = [int[number] for number in values_of_daily_rain]
+    numerals_of_daily_rain = [[number] for number in values_of_daily_rain]
     total = sum(numerals_of_daily_rain)
     return total
 
 
 def get_most_anual_rain_inches(rows):
     year_to_rows = get_year_to_rows(rows)
-    year_to_daily_rain = get_year_to_daily_rain(year_to_rows)
 
 
-    total_rain_to_years = get_total_rain_to_years(year_to_rows)
+    # year_to_daily_rain = map_year_to_daily_rain(year_to_rows)
+    # total_rain_to_years = get_total_rain_to_years(year_to_rows)
 
 
 
