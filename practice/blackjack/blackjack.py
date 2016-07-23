@@ -20,6 +20,8 @@ def add_card_to_hand(hand, card):
 def score_hand(hand):
     """Calculates the score for a given hand
 
+    >>> score_hand(EXAMPLE_HAND)
+    '20'
     """
 
 
