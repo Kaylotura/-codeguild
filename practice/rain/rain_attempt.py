@@ -1,5 +1,6 @@
 """ Opens a Rain Text File and Mines for information. I'm using "cells" for rows, and "boxes" for columns"""
 
+from collections import namedtuple
 
 TEST_ROWS = [['23', 'MAR', '2016', '12'], ['22', 'MAR', '2016', '1'], ['21', 'MAR', '2016', '8']]
 TEST_COLUMNS = [['23', '22', '21'], ['MAR', 'MAR', 'MAR'], ['2016', '2016', '2016'], ['12', '1', '8']]
@@ -26,17 +27,20 @@ def cut_non_data(text):
     return table_as_text_lines
 
 
+def cast_rainfall_to_int(row):
+    """ Takes in a row of data and converts the rainfall value to an intiger"""
+
+
 def split_single_line_to_single_row(text):
     """Splits a row of text by triple spaces into a list of strings. It then splits the first item in the list of
     strings from kebab-case to another list of strings.
 
     >>> split_single_line_to_single_row('four-five-six   one   two   three' )
-    ['four', 'five', 'six', 'one', 'two', 'three']
+    ['four-five-six', 'one']
     """
     simple_row = text.split('   ')
-    full_date = simple_row[0]
-    split_dates = full_date.split('-')
-    final_row = split_dates + simple_row[1:]
+
+    final_row = simple_row[:2]
     return final_row
 
 
@@ -44,33 +48,55 @@ def split_lines_to_rows(text):
     """Splits all lines of text into several rows in the form of lists of strings.
 
     >>> split_lines_to_rows(['Charmander   Bulbasuar   Squirtle','Ponya   Oddish   Magicarp','Fire   Plant   Water'])
-    [['Charmander', 'Bulbasuar', 'Squirtle'], ['Ponya', 'Oddish', 'Magicarp'], ['Fire', 'Plant', 'Water']]
+    [['Charmander', 'Bulbasuar'], ['Ponya', 'Oddish'], ['Fire', 'Plant]]
     """
     rows = [split_single_line_to_single_row(line) for line in text]
     return rows
 
 
-def convert_rows_to_columns(rows):
-    """Takes rows as lists of strings, and transforms them into columns as lists of strings
+# def convert_rows_to_columns(rows):
+#     """Takes rows as lists of strings, and transforms them into columns as lists of strings
+#
+#     >>> convert_rows_to_columns([['Char', 'Bulb', 'Squirt'],['Ponya', 'Oddish', 'Magicarp'],['Fire', 'Plant', 'Water']])
+#     [['Char', 'Ponya', 'Fire'], ['Bulb', 'Oddish', 'Plant'], ['Squirt', 'Magicarp', 'Water']]
+#     """
+#     columns_by_tuple = list(zip(*rows))
+#     columns = [list(tup) for tup in columns_by_tuple]
+#     return columns
 
-    >>> convert_rows_to_columns([['Char', 'Bulb', 'Squirt'],['Ponya', 'Oddish', 'Magicarp'],['Fire', 'Plant', 'Water']])
-    [['Char', 'Ponya', 'Fire'], ['Bulb', 'Oddish', 'Plant'], ['Squirt', 'Magicarp', 'Water']]
+
+def convert_row_of_data_to_named_tuple(row_of_data):
+    """Takes in a single row of data and converts it into a named tuple
+
+    >>> convert_row_of_data_to_named_tuple(['MAR-5-2016', '17'])
+
     """
-    columns_by_tuple = list(zip(*rows))
-    columns = [list(tup) for tup in columns_by_tuple]
-    return columns
+    namedtuple('DateAndRainfall', ['date', 'rainfall'])
+    return DateAndRainfall(row_of_data[0], row_of_data[1])
 
 
-def get_most_daily_rain_inches(columns_of_daily_rain):
+def convert_rows_of_data_to_named_tuples(rows_of_data):
+    """Takes in a list of lists, and converts the internal lists to named tuples
+
+    >>> convert_rows_of_data_to_named_tuples(['MAR-5-2016', '17'],['MAR-6-2016', '19'])
+
+    """
+    return [convert_row_of_data_to_named_tuple(row) for row in rows_of_data]
+
+
+def get_most_daily_rain_inches(rows_of_data):
     """Gets the value of the most rain for any given date
 
-    >>> get_most_daily_rain_inches([['1', '2', '3', '8'], ['4', '5', '6', '1'], ['7', '8', '9', '12'], \
-    ['4', '7', '6', '1']])
-    '0.07'
+    # >>> get_most_daily_rain_inches([['1', '2', '3', '8'], ['4', '5', '6', '1'], ['7', '8', '9', '12'], \
+    # ['4', '7', '6', '1']])
+    # '0.07'
     """
-    rainy_days = [int(value) for value in columns_of_daily_rain[3] if value.isdigit()]
-    most_rain = max(rainy_days)
-    most_rain_inches = str(int(most_rain) / 100)
+    dates_and_rainfalls = connvert_rows_of_data_to_named_tuples(rows_of_data)
+    max(dates_and_rainfalls)
+
+    # return max rainfall from dates_and_rainfalls
+
+
     return most_rain_inches
 
 
@@ -168,10 +194,8 @@ def get_years_to_daily_rain(rows_of_data):
     '2016'
     """
 
-
     years =
     years_to_daily_rain = group_by(rows_of_data, key)
-
 
 
 def get_year_with_most_rain(rows_of_data):
@@ -203,14 +227,16 @@ def main():
     text_lines = open_file('rain.txt')
     table_as_text_lines = cut_non_data(text_lines)
     rows_of_data = split_lines_to_rows(table_as_text_lines)
-    columns_of_data = convert_rows_to_columns(rows_of_data)
-    most_inches_of_rain_in_single_date = get_most_daily_rain_inches(columns_of_data)
+    # columns_of_data = convert_rows_to_columns(rows_of_data)
+
+    most_inches_of_rain_in_single_date = get_most_daily_rain_inches(rows_of_data)
     date_with_most_rain = get_day_with_most_rain(rows_of_data, columns_of_data)
 
     year_with_most_rain = get_year_with_most_rain(rows_of_data)
 
     output_for_max_rain_date(most_inches_of_rain_in_single_date, date_with_most_rain)
     output_for_year(year_with_most_rain)
+
 
 if __name__ == '__main__':
     main()
