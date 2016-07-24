@@ -43,22 +43,41 @@ def split_lines_to_rows_of_relevant_data(lines):
     return rows
 
 
-def cut_non_numerals_and_cast_rainfall_as_int(rows_of_data):
+def cut_non_valid_data(rows_of_data):
     """Takes in a list of rows of data, and returns that list omitting entries that lack a numeral in second token
 
-    >>> cut_non_numerals_and_cast_rainfall_as_int(['Date1', '1'], ['Date2', '2'], ['Date3', '-'])
-    [['Date1', 1], ['Date2', 2]]
+    >>> cut_non_valid_data([['Date1', '1'], ['Date2', '2'], ['Date3', '-']])
+    [['Date1', '1'], ['Date2', '2']]
     """
+    return [row for row in rows_of_data if row[1].isdigit()]
+
+def convert_row_to_dictionary(row):
+    """Converts an array into a dictionary
+
+    >>> convert_row_to_dictionary(['Date1', '1'])
+    {'date': 'Date1', 'rainfall': '1'}
+    """
+    date_to_rainfall = {}
+    date_to_rainfall['date'] = row[0]
+    date_to_rainfall['rainfall'] = row[1]
+    return date_to_rainfall
+
+def convert_rows_to_dictionaries(rows_of_data):
+    """Converts the list of arrays into a list of dictionaries
+
+       >>> convert_rows_to_dictionaries([['Date1', '1'], ['Date2', '2']])
+       [{'date': 'Date1', 'rainfall': '1'}, {'date': 'Date2', 'rainfall': '2'}]
+       """
+    return [convert_row_to_dictionary(row) for row in rows_of_data]
 
 def main():
     """Main function."""
     text_lines = open_file('rain.txt')
     table_as_text_lines = cut_non_data(text_lines)
     rows_of_data = split_lines_to_rows_of_relevant_data(table_as_text_lines)
-    rows_of_complete_data = cut_non_numerals_and_cast_rainfall_as_int(rows_of_data)
+    rows_of_complete_data = cut_non_valid_data(rows_of_data)
+    dictionaries_of_data = convert_rows_to_dictionaries(rows_of_complete_data)
 
 
 if __name__ == '__main__':
     main()
-
-
