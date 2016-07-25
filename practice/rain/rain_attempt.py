@@ -71,8 +71,23 @@ def convert_rows_to_dictionaries(rows_of_data):
     return [convert_row_to_dictionary(row) for row in rows_of_data]
 
 
-def get_day_with_most_rain(dates_to_dates_and_rainfall_to_value)
-    for
+def get_key(dictionary):
+    """
+
+    >>> get_key({'date': '12-JAN-2016', 'rainfall': '105'})
+    '105'
+    """
+    return dictionary['rainfall']
+
+
+def get_day_with_most_rain(dates_to_dates_and_rainfall_to_value):
+    """
+
+    >>> get_day_with_most_rain([{'date': '12-JAN-2016', 'rainfall': '105'}, {'date': '13-JAN-2016', 'rainfall': '106'}])
+    {'date': '13-JAN-2016', 'rainfall': '106'}
+    """
+    dictionary = max(dates_to_dates_and_rainfall_to_value, key=get_key)
+    return dictionary
 
 
 def main():
