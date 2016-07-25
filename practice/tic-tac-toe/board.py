@@ -71,15 +71,15 @@ class Board:
         >>> a._top_row = ['', '', '']
         >>> a._middle_row = ['', '', '']
         >>> a._bottom_row = ['', '', '']
-        >>> a.calc_winner()
-        None
+        >>> a.calc_winner() == None
+        True
 
         >>> a = Board()
         >>> a._top_row = ['X', 'X', 'O']
         >>> a._middle_row = ['O', 'O', 'X']
         >>> a._bottom_row = ['X', 'O', 'X']
-        >>> a.calc_winner()
-        None
+        >>> a.calc_winner() != None
+        False
 
         >>> a = Board()
         >>> a._top_row = ['', '', '']
@@ -102,22 +102,19 @@ class Board:
         >>> a.calc_winner()
         'X'
         """
-        if (
-                self._middle_row[0] == self._middle_row[1] == self._middle_row[2] or
-                self._top_row[1] == self._middle_row[1] == self._bottom_row[1] or
-                self._top_row[0] == self._middle_row[1] == self._bottom_row[2] or
-                self._top_row[2] == self._middle_row[1] == self._bottom_row[0]
-        ):
-            return self._middle_row[1]
-        elif (
-                self._top_row[0] == self._top_row[1] == self._top_row[2] or
-                self._top_row[0] == self._middle_row[0] == self._bottom_row[0]
-        ):
-            return self._top_row[0]
-        elif (
-                self._bottom_row[0] == self._bottom_row[1] == self._bottom_row[2] or
-                self._top_row[2] == self._middle_row[2] == self._bottom_row[2]
-        ):
-            return self._bottom_row[2]
+        WIN_LINES = [(self._middle_row[0], self._middle_row[1], self._middle_row[2]),
+                     (self._top_row[1], self._middle_row[1], self._bottom_row[1]),
+                     (self._top_row[0], self._middle_row[1], self._bottom_row[2]),
+                     (self._top_row[2], self._middle_row[1], self._bottom_row[0]),
+                     (self._top_row[0], self._top_row[1], self._top_row[2]),
+                     (self._top_row[0], self._middle_row[0], self._bottom_row[0]),
+                     (self._bottom_row[0], self._bottom_row[1], self._bottom_row[2]),
+                     (self._top_row[2], self._middle_row[2], self._bottom_row[2])
+                     ]
+
+        if ('X', 'X', 'X') in WIN_LINES:
+            return 'X'
+        elif ('O', 'O', 'O') in WIN_LINES:
+            return 'O'
         else:
             return None
