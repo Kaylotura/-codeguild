@@ -70,13 +70,22 @@ def convert_rows_to_dictionaries(rows_of_data):
        """
     return [convert_row_to_dictionary(row) for row in rows_of_data]
 
+
+def get_day_with_most_rain(dates_to_dates_and_rainfall_to_value)
+    for
+
+
 def main():
     """Main function."""
     text_lines = open_file('rain.txt')
     table_as_text_lines = cut_non_data(text_lines)
     rows_of_data = split_lines_to_rows_of_relevant_data(table_as_text_lines)
     rows_of_complete_data = cut_non_valid_data(rows_of_data)
-    dictionaries_of_data = convert_rows_to_dictionaries(rows_of_complete_data)
+    dates_to_dates_and_rainfall_to_value = convert_rows_to_dictionaries(rows_of_complete_data)
+    day_with_most_rain = get_day_with_most_rain(dates_to_dates_and_rainfall_to_value)
+
+
+    print(dictionaries_of_data)
 
 
 if __name__ == '__main__':
