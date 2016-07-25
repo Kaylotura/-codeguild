@@ -1,6 +1,9 @@
 """ Opens a Rain Text File and returns information regarding day with most rain and year with most rain."""
 
 
+from collections import namedtuple
+
+
 def open_file(file):
     """Opens text file for analysis.
 
@@ -36,7 +39,8 @@ def split_single_line_to_relevant_data(line):
 def split_lines_to_rows_of_relevant_data(lines):
     """Splits all lines of text into several rows in the form of lists of strings.
 
-    >>> split_lines_to_rows_of_relevant_data(['Charmander   Bulbasuar   Squirtle','Ponya   Oddish   Magicarp','Fire   Plant   Water'])
+    >>> split_lines_to_rows_of_relevant_data(['Charmander   Bulbasuar   Squirtle',
+    ... 'Ponya   Oddish   Magicarp','Fire   Plant   Water'])
     [['Charmander', 'Bulbasuar'], ['Ponya', 'Oddish'], ['Fire', 'Plant']]
     """
     rows = [split_single_line_to_relevant_data(line) for line in lines]
@@ -51,6 +55,7 @@ def cut_non_valid_data(rows_of_data):
     """
     return [row for row in rows_of_data if row[1].isdigit()]
 
+
 def convert_row_to_dictionary(row):
     """Converts an array into a dictionary
 
@@ -61,6 +66,7 @@ def convert_row_to_dictionary(row):
     date_to_rainfall['date'] = row[0]
     date_to_rainfall['rainfall'] = row[1]
     return date_to_rainfall
+
 
 def convert_rows_to_dictionaries(rows_of_data):
     """Converts the list of arrays into a list of dictionaries
@@ -86,8 +92,19 @@ def get_day_with_most_rain(dates_to_dates_and_rainfall_to_value):
     >>> get_day_with_most_rain([{'date': '12-JAN-2016', 'rainfall': '105'}, {'date': '13-JAN-2016', 'rainfall': '106'}])
     {'date': '13-JAN-2016', 'rainfall': '106'}
     """
-    dictionary = max(dates_to_dates_and_rainfall_to_value, key=get_key)
-    return dictionary
+    return max(dates_to_dates_and_rainfall_to_value, key=get_key)
+
+
+def output_day_with_most_rain(dictionary):
+    """Prints a string informing of the date of the most rain, with the total rainfall in inches
+
+    >>> output_day_with_most_rain({'date': '13-JAN-2017', 'rainfall': '2105'})
+    13-JAN-2017 had the most rain with 21.05 inches of rain.
+    """
+
+    rain_inches = str(int(dictionary['rainfall']) / 100)
+    date = dictionary['date']
+    print('{} had the most rain with {} inches of rain.'.format(date, rain_inches))
 
 
 def main():
@@ -98,10 +115,7 @@ def main():
     rows_of_complete_data = cut_non_valid_data(rows_of_data)
     dates_to_dates_and_rainfall_to_value = convert_rows_to_dictionaries(rows_of_complete_data)
     day_with_most_rain = get_day_with_most_rain(dates_to_dates_and_rainfall_to_value)
-
-
-    print(dictionaries_of_data)
-
+    output_day_with_most_rain(day_with_most_rain)
 
 if __name__ == '__main__':
     main()
