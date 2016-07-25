@@ -7,19 +7,19 @@ class Board:
         """Initialize Class
         >>> a = Board()
         >>> a
-        Board(['', '', ''], ['', '', ''], ['', '', ''])
+        Board([' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' '])
         """
-        self._top_row = ['', '', '']
-        self._middle_row = ['', '', '']
-        self._bottom_row = ['', '', '']
+        self._top_row = [' ', ' ', ' ']
+        self._middle_row = [' ', ' ', ' ']
+        self._bottom_row = [' ', ' ', ' ']
 
     def __repr__(self):
         """Return representation.
 
         >>> a = Board()
-        >>> a._top_row = ['', 'X', 'O']
+        >>> a._top_row = [' ', 'X', 'O']
         >>> a
-        Board(['', 'X', 'O'], ['', '', ''], ['', '', ''])
+        Board([' ', 'X', 'O'], [' ', ' ', ' '], [' ', ' ', ' '])
         """
         return 'Board({!r}, {!r}, {!r})'.format(self._top_row, self._middle_row, self._bottom_row)
 
@@ -27,13 +27,13 @@ class Board:
         """Defines equality.
 
         >>> a = Board()
-        >>> a._top_row = ['', 'X', 'O']
+        >>> a._top_row = [' ', 'X', 'O']
         >>> b = Board()
-        >>> b._top_row = ['', 'X', 'O']
+        >>> b._top_row = [' ', 'X', 'O']
         >>> a == b
         True
         >>> a = Board()
-        >>> a._top_row = ['', 'X', 'O']
+        >>> a._top_row = [' ', 'X', 'O']
         >>> b = Board()
         >>> b._top_row = ['X', 'O', 'O']
         >>> a == b
@@ -51,15 +51,15 @@ class Board:
         (top-left is 0, 0), x is horizontal position, y is vertical position
 
         >>> a = Board()
-        >>> a._top_row = ['', 'X', 'O']
+        >>> a._top_row = [' ', 'X', 'O']
         >>> a.place_token(0, 0, 'O')
         >>> a
-        Board(['O', 'X', 'O'], ['', '', ''], ['', '', ''])
+        Board(['O', 'X', 'O'], [' ', ' ', ' '], [' ', ' ', ' '])
         >>> a = Board()
-        >>> a._top_row = ['', 'X', 'O']
+        >>> a._top_row = [' ', 'X', 'O']
         >>> a.place_token(0, 1, 'O')
         >>> a
-        Board(['', 'X', 'O'], ['O', '', ''], ['', '', ''])
+        Board([' ', 'X', 'O'], ['O', ' ', ' '], [' ', ' ', ' '])
         """
         y_to_row = {0: self._top_row, 1: self._middle_row, 2:self._bottom_row}
         (y_to_row[y])[x] = token
@@ -68,9 +68,9 @@ class Board:
         """Determines what token string has won or returns None if no one has
 
         >>> a = Board()
-        >>> a._top_row = ['', '', '']
-        >>> a._middle_row = ['', '', '']
-        >>> a._bottom_row = ['', '', '']
+        >>> a._top_row = [' ', ' ', ' ']
+        >>> a._middle_row = [' ', ' ', ' ']
+        >>> a._bottom_row = [' ', ' ', ' ']
         >>> a.calc_winner() == None
         True
 
@@ -82,23 +82,23 @@ class Board:
         False
 
         >>> a = Board()
-        >>> a._top_row = ['', '', '']
-        >>> a._middle_row = ['', '', '']
+        >>> a._top_row = [' ', ' ', ' ']
+        >>> a._middle_row = [' ', ' ', ' ']
         >>> a._bottom_row = ['X', 'X', 'X']
         >>> a.calc_winner()
         'X'
 
         >>> a = Board()
-        >>> a._top_row = ['', '', 'O']
-        >>> a._middle_row = ['', '', 'O']
-        >>> a._bottom_row = ['', '', 'O']
+        >>> a._top_row = [' ', ' ', 'O']
+        >>> a._middle_row = [' ', ' ', 'O']
+        >>> a._bottom_row = [' ', ' ', 'O']
         >>> a.calc_winner()
         'O'
 
         >>> a = Board()
-        >>> a._top_row = ['X', '', 'O']
-        >>> a._middle_row = ['', 'X', '']
-        >>> a._bottom_row = ['', '', 'X']
+        >>> a._top_row = ['X', ' ', 'O']
+        >>> a._middle_row = [' ', 'X', ' ']
+        >>> a._bottom_row = [' ', ' ', 'X']
         >>> a.calc_winner()
         'X'
         """
@@ -118,3 +118,19 @@ class Board:
             return 'O'
         else:
             return None
+
+    def __str__(self):
+        """Returns a pretty-printed picture of the board.
+
+        >>> a = Board()
+        >>> a._top_row = ['X', 'X', 'O']
+        >>> a._middle_row = ['O', 'O', 'X']
+        >>> a._bottom_row = ['X', ' ', 'X']
+        >>> a.__str__()
+        X|X|O
+        O|O|X
+        X| |X
+        """
+        print(self._top_row[0] + '|' + self._top_row[1] + '|' + self._top_row[2])
+        print(self._middle_row[0] + '|' + self._middle_row[1] + '|' + self._middle_row[2])
+        print(self._bottom_row[0] + '|' + self._bottom_row[1] + '|' + self._bottom_row[2])
