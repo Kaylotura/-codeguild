@@ -58,7 +58,6 @@ class ListTTTBoard:
         ListTTTBoard([[' ', 'X', 'O'], ['O', ' ', ' '], [' ', ' ', ' ']])
         """
         (self._rows[y])[x] = token
-        # This modifies the board in place, may be better to generate a new board?
 
     def calc_winner(self):
         """Determines what token string has won or returns None if no one has
@@ -135,6 +134,6 @@ class ListTTTBoard:
         O|O|X
         X| |X
         """
-        print((self._rows[0])[0] + '|' + (self._rows[0])[1] + '|' + (self._rows[0])[2])
-        print((self._rows[1])[0] + '|' + (self._rows[1])[1] + '|' + (self._rows[1])[2])
-        print((self._rows[2])[0] + '|' + (self._rows[2])[1] + '|' + (self._rows[2])[2])
+        return self._rows[0][0] + '|' + self._rows[0][1] + '|' + self._rows[0][2] + '\n' +\
+               self._rows[1][0] + '|' + self._rows[1][1] + '|' + self._rows[1][2] + '\n' +\
+               self._rows[2][0] + '|' + self._rows[2][1] + '|' + self._rows[2][2]

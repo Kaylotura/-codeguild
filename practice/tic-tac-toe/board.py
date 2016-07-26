@@ -131,6 +131,6 @@ class Board:
         O|O|X
         X| |X
         """
-        print(self._top_row[0] + '|' + self._top_row[1] + '|' + self._top_row[2])
-        print(self._middle_row[0] + '|' + self._middle_row[1] + '|' + self._middle_row[2])
-        print(self._bottom_row[0] + '|' + self._bottom_row[1] + '|' + self._bottom_row[2])
+        return self._top_row[0] + '|' + self._top_row[1] + '|' + self._top_row[2]
+        return self._middle_row[0] + '|' + self._middle_row[1] + '|' + self._middle_row[2]
+        return self._bottom_row[0] + '|' + self._bottom_row[1] + '|' + self._bottom_row[2]
