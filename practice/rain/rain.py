@@ -1,8 +1,11 @@
-""" Opens a Rain Text File and Mines for information. I'm using "cells" for rows, and "boxes" for columns"""
+""" Opens a Rain Text File and returns information regarding day with most rain and year with most rain."""
 
 
-TEST_ROWS = [['23', 'MAR', '2016', '12'], ['22', 'MAR', '2016', '1'], ['21', 'MAR', '2016', '8']]
-TEST_COLUMNS = [['23', '22', '21'], ['MAR', 'MAR', 'MAR'], ['2016', '2016', '2016'], ['12', '1', '8']]
+from collections import namedtuple
+namedtuple('DayEntry', ['date', 'rainfall'])
+namedtuple('YearEntry', ['year', 'rainfall'])
+DayEntry = namedtuple('DayEntry', ['date', 'rainfall'])
+YearEntry = namedtuple('YearEntry', ['year', 'rainfall'])
 
 
 def open_file(file):
@@ -26,191 +29,180 @@ def cut_non_data(text):
     return table_as_text_lines
 
 
-def split_single_line_to_single_row(text):
-    """Splits a row of text by triple spaces into a list of strings. It then splits the first item in the list of
-    strings from kebab-case to another list of strings.
+def split_single_line_to_relevant_data(line):
+    """Splits a row of text by triple spaces into a list of strings, and saves the first two items.
 
-    >>> split_single_line_to_single_row('four-five-six   one   two   three' )
-    ['four', 'five', 'six', 'one', 'two', 'three']
+    >>> split_single_line_to_relevant_data('four-five-six   one   two   three' )
+    ['four-five-six', 'one']
     """
-    simple_row = text.split('   ')
-    full_date = simple_row[0]
-    split_dates = full_date.split('-')
-    final_row = split_dates + simple_row[1:]
+    simple_row = line.split('   ')
+    final_row = simple_row[:2]
     return final_row
 
 
-def split_lines_to_rows(text):
+def split_lines_to_rows_of_relevant_data(lines):
     """Splits all lines of text into several rows in the form of lists of strings.
 
-    >>> split_lines_to_rows(['Charmander   Bulbasuar   Squirtle','Ponya   Oddish   Magicarp','Fire   Plant   Water'])
-    [['Charmander', 'Bulbasuar', 'Squirtle'], ['Ponya', 'Oddish', 'Magicarp'], ['Fire', 'Plant', 'Water']]
+    >>> split_lines_to_rows_of_relevant_data(['Charmander   Bulbasuar   Squirtle',
+    ... 'Ponya   Oddish   Magicarp','Fire   Plant   Water'])
+    [['Charmander', 'Bulbasuar'], ['Ponya', 'Oddish'], ['Fire', 'Plant']]
     """
-    rows = [split_single_line_to_single_row(line) for line in text]
+    rows = [split_single_line_to_relevant_data(line) for line in lines]
     return rows
 
 
-def convert_rows_to_columns(rows):
-    """Takes rows as lists of strings, and transforms them into columns as lists of strings
+def cut_non_valid_data(rows_of_data):
+    """Takes in a list of rows of data, and returns that list omitting entries that lack a numeral in second token
 
-    >>> convert_rows_to_columns([['Char', 'Bulb', 'Squirt'],['Ponya', 'Oddish', 'Magicarp'],['Fire', 'Plant', 'Water']])
-    [['Char', 'Ponya', 'Fire'], ['Bulb', 'Oddish', 'Plant'], ['Squirt', 'Magicarp', 'Water']]
+    >>> cut_non_valid_data([['Date1', '1'], ['Date2', '2'], ['Date3', '-']])
+    [['Date1', '1'], ['Date2', '2']]
     """
-    columns_by_tuple = list(zip(*rows))
-    columns = [list(tup) for tup in columns_by_tuple]
-    return columns
+    return [row for row in rows_of_data if row[1].isdigit()]
 
 
-def get_most_daily_rain_inches(columns_of_daily_rain):
-    """Gets the value of the most rain for any given date
-
-    >>> get_most_daily_rain_inches([['1', '2', '3', '8'], ['4', '5', '6', '1'], ['7', '8', '9', '12'], \
-    ['4', '7', '6', '1']])
-    '0.07'
+def convert_row_to_day_entry(row):
+    """Converts a row into a DayEntry named tuple
+    >>> convert_row_to_day_entry(['13-JAN-2016', '107'])
+    DayEntry(date='13-JAN-2016', rainfall='107')
     """
-    rainy_days = [int(value) for value in columns_of_daily_rain[3] if value.isdigit()]
-    most_rain = max(rainy_days)
-    most_rain_inches = str(int(most_rain) / 100)
-    return most_rain_inches
+    return DayEntry(row[0], row[1])
 
 
-def get_index_of_max_daily_rain_box(columns):
-    """Takes in rows of data, and returns index of day with most rain columns max rain
+def convert_rows_to_day_entries(rows_of_data):
+    """Converts a row of lists into a list of Day Entry tuples
 
-    >>> get_index_of_max_daily_rain_box(TEST_COLUMNS)
-    0
+    >>> convert_rows_to_day_entries([['13-JAN-2016', '107'],['15-SEP-2002', '75']])
+    [DayEntry(date='13-JAN-2016', rainfall='107'), DayEntry(date='15-SEP-2002', rainfall='75')]
+
     """
-    rainy_days = [int(value) for value in columns[3] if value.isdigit()]
-    daily_rain_values = [value for value in rainy_days]
-    day_index_of_max_daily_rain = daily_rain_values.index(max(daily_rain_values))
-    return day_index_of_max_daily_rain
+    return [convert_row_to_day_entry(row) for row in rows_of_data]
 
 
-def get_day_with_most_rain(rows, columns):
-    """Returns the date of day with the most rain
+def get_daily_rainfall_key(day_entry):
+    """Gets rainfall amount key for comparing.
 
-    >>> get_day_with_most_rain(TEST_ROWS, TEST_COLUMNS)
-    'MAR 23 2016'
+    >>> get_daily_rainfall_key(DayEntry(date='13-JAN-2016', rainfall='107'))
+    107
     """
-    index_of_day_cell = get_index_of_max_daily_rain_box(columns)
-    day_full_line = rows[index_of_day_cell]
-    date = day_full_line[1] + ' ' + day_full_line[0] + ' ' + day_full_line[2]
-    return date
+    return int(day_entry.rainfall)
 
 
-def output_for_max_rain_date(most_rain, date_with_most_rain):
-    """Prints the day with the most rain, and how much rain fell in inches.
-
-    >>> output_for_max_rain_date('5','30-MAR-2016')
-    The day with the most rain was 30-MAR-2016, which had 5 inches of rain!
+def get_day_with_most_rain(day_entries):
     """
-    print('The day with the most rain was {}, which had {} inches of rain!'.format(date_with_most_rain, most_rain))
+
+    >>> get_day_with_most_rain([DayEntry(date='13-JAN-2016', rainfall='107'),
+    ... DayEntry(date='15-SEP-2002', rainfall='75')])
+    DayEntry(date='13-JAN-2016', rainfall='107')
+    """
+    return max(day_entries, key=get_daily_rainfall_key)
 
 
-def get_year(row):
-    """Calculates Grouping Key.
+def output_day_with_most_rain(day_entry):
+    """Prints a string informing of the date of the most rain, with the total rainfall in inches
 
-    >>> get_year(['23', 'Mar', '2016'])
+    >>> output_day_with_most_rain(DayEntry(date='13-JAN-2016', rainfall='107'))
+    13-JAN-2016 had the most rain with 1.07 inches of rain.
+    """
+    rain_inches = str(int(day_entry.rainfall) / 100)
+    date = day_entry.date
+    print('{} had the most rain with {} inches of rain.'.format(date, rain_inches))
+
+
+def get_year_key(day_entry):
+    """Gets key of Year from day entry
+
+    >>> get_year_key(DayEntry(date='13-JAN-2016', rainfall='107'))
     '2016'
     """
-    return row[2]
+    return day_entry.date[-4:]
 
 
-# def get_year_to_rows(rows):
-#     """Creates a dictionary of rows of data keyed to each year.
-#
-#     >>> get_year_to_rows([['23', 'Mar', '2016'], ['21', 'Feb', '2016']])
-#     {'2016': [['23', 'Mar', '2016'], ['21', 'Feb', '2016']]}
-#     """
-#
-#     year_to_rows = {
-#         group_key: list(grouped_rows)
-#         for group_key, grouped_rows
-#         in groupby(rows, get_year)
-#         }
-#     return year_to_rows
-
-
-def get_years_to_annual_rain(rows):
-    """Transforms a dictionary of years to data to years to total rain.
-
-    >>> get_years_to_annual_rain([['30', 'MAR', '2016', '7'], ['29', 'MAR', '2017', '9']])
-    [['2016'] [[3]]], [['2017'] [[7]]]
+def group_by_year(day_entries):
+    """Place each item in an iterable into a bucket based on calling the key function on the item.
+    >>> group_by_year(([DayEntry(date='13-JAN-2016', rainfall='107'),
+    ... DayEntry(date='15-SEP-2002', rainfall='75')])) ==  {'2016': [DayEntry(date='13-JAN-2016', rainfall='107')],
+    ... '2002': [DayEntry(date='15-SEP-2002', rainfall='75')]}
+    True
     """
-    year_to_rows = get_year_to_rows(rows)
-    years_to_annual_rain = {}
-    for year in year_to_rows:
-        print(year_to_rows[year])
-        annual_data = year_to_rows[year]
-        annual_rain_values = [(value[3]) for value in annual_data]
-        total_annual_rain = sum(annual_rain_values)
-        year_to_annual_rain = {year: total_annual_rain}
-        years_to_annual_rain.update(year_to_annual_rain)
-    return years_to_annual_rain
-
-
-def group_by(iterable, key):
-    """Place each item in an iterable into a bucket based on calling the key
-    function on the item."""
     group_to_items = {}
-    for item in iterable:
-        group = key(item)
+    for item in day_entries:
+        group = get_year_key(item)
         if group not in group_to_items:
             group_to_items[group] = []
         group_to_items[group].append(item)
     return group_to_items
 
 
-def get_years_to_daily_rain(rows_of_data):
-    """Groups rows of data into dictionaries of daily rain keyed off of year.
-
-    >>> get_year_with_most_rain(TEST_ROWS)
-    '2016'
+def convert_from_year_to_day_entry_to_year_entry(year_to_day_entry):
     """
 
-
-    years =
-    years_to_daily_rain = group_by(rows_of_data, key)
-
-
-
-def get_year_with_most_rain(rows_of_data):
-    """Runs rows of data through functions to output year with most rainfall.
-
-    >>> get_year_with_most_rain(TEST_ROWS)
-    '2016'
+    >>> convert_from_year_to_day_entry_to_year_entry(
+    ... ('2016', [DayEntry(date='13-JAN-2016', rainfall='107'), DayEntry(date='15-JAN-2016', rainfall='13')]))
+    YearEntry(year='2016', rainfall=120)
     """
-    years_to_daily_rain = get_years_to_daily_rain(rows_of_data)
-
-    years_to_annual_rain = get_years_to_annual_rain(rows_of_data)
-
-    # year_with_most_rain = max(years_to_annual_rain.keys(), key=(lambda k: years_to_annual_rain[k]))
-    # # found on Stack Overflow: http://tinyurl.com/jdjs5p6
-    return year_with_most_rain
+    year = year_to_day_entry[0]
+    day_entries = year_to_day_entry[1]
+    rainfalls = [int(item.rainfall) for item in day_entries]
+    rainfall = sum(rainfalls)
+    return YearEntry(year, rainfall)
 
 
-def output_for_year(year):
-    """Prints the year with the most rain.
+def convert_from_year_to_day_entries_to_year_entries(year_to_day_entries):
+    """Converts year to day entries dictionaries to a YearlyEntry named tuple for year and total rainfall.
 
-    >>> output_for_year('2015')
-    The year with the most rain was 2015!
+    >>> a = convert_from_year_to_day_entries_to_year_entries(
+    ... {'2016': [DayEntry(date='13-JAN-2016', rainfall='107'), DayEntry(date='15-SEP-2016', rainfall='3')],
+    ... '2002': [DayEntry(date='15-SEP-2002', rainfall='75'), DayEntry(date='16-JUN-2002', rainfall='25')]}
+    ... )
+    >>> sorted(a)
+    [YearEntry(year='2002', rainfall=100), YearEntry(year='2016', rainfall=110)]
     """
-    print('The year with the most rain was {}!'.format(year))
+    return [convert_from_year_to_day_entry_to_year_entry(year) for year in list(year_to_day_entries.items())]
+
+
+def get_yearly_rainfall_key(year_entry):
+    """Gets rainfall amount key for comparing.
+
+    >>> get_yearly_rainfall_key(YearEntry(year='2016', rainfall=100))
+    100
+    """
+    return year_entry.rainfall
+
+
+def get_year_with_most_rain(year_entries):
+    """
+
+    >>> get_year_with_most_rain([YearEntry(year='2016', rainfall=100),
+    ... YearEntry(year='2012', rainfall=80)])
+    YearEntry(year='2016', rainfall=100)
+    """
+    return max(year_entries, key=get_daily_rainfall_key)
+
+
+def output_year_with_most_rain(year_entry):
+    """Prints a string informing of the year of the most rain, with the total rainfall in inches
+
+    >>> output_year_with_most_rain(YearEntry(year='2016', rainfall=150))
+    2016 had the most rain with 1.5 inches of rain.
+    """
+    rain_inches = str(year_entry.rainfall / 100)
+    year = year_entry.year
+    print('{} had the most rain with {} inches of rain.'.format(year, rain_inches))
 
 
 def main():
     """Main function."""
     text_lines = open_file('rain.txt')
     table_as_text_lines = cut_non_data(text_lines)
-    rows_of_data = split_lines_to_rows(table_as_text_lines)
-    columns_of_data = convert_rows_to_columns(rows_of_data)
-    most_inches_of_rain_in_single_date = get_most_daily_rain_inches(columns_of_data)
-    date_with_most_rain = get_day_with_most_rain(rows_of_data, columns_of_data)
-
-    year_with_most_rain = get_year_with_most_rain(rows_of_data)
-
-    output_for_max_rain_date(most_inches_of_rain_in_single_date, date_with_most_rain)
-    output_for_year(year_with_most_rain)
+    rows_of_data = split_lines_to_rows_of_relevant_data(table_as_text_lines)
+    rows_of_complete_data = cut_non_valid_data(rows_of_data)
+    day_entries = convert_rows_to_day_entries(rows_of_complete_data)
+    day_with_most_rain = get_day_with_most_rain(day_entries)
+    output_day_with_most_rain(day_with_most_rain)
+    year_to_day_entries = group_by_year(day_entries)
+    yearly_entries = convert_from_year_to_day_entries_to_year_entries(year_to_day_entries)
+    year_with_most_rain = get_year_with_most_rain(yearly_entries)
+    output_year_with_most_rain(year_with_most_rain)
 
 if __name__ == '__main__':
     main()
