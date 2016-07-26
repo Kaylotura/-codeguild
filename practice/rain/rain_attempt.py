@@ -2,7 +2,10 @@
 
 
 from collections import namedtuple
-
+namedtuple('DayEntry', ['date', 'rainfall'])
+namedtuple('YearEntry', ['year', 'rainfall'])
+DayEntry = namedtuple('DayEntry', ['date', 'rainfall'])
+YearEntry = namedtuple('YearEntry', ['year', 'rainfall'])
 
 def open_file(file):
     """Opens text file for analysis.
@@ -56,55 +59,80 @@ def cut_non_valid_data(rows_of_data):
     return [row for row in rows_of_data if row[1].isdigit()]
 
 
-def convert_row_to_dictionary(row):
-    """Converts an array into a dictionary
-
-    >>> convert_row_to_dictionary(['Date1', '1'])
-    {'date': 'Date1', 'rainfall': '1'}
+def convert_row_to_day_entry(row):
+    """Converts a row into a DayEntry named tuple
+    >>> convert_row_to_day_entry(['13-JAN-2016', '107'])
+    DayEntry(date='13-JAN-2016', rainfall='107')
     """
-    date_to_rainfall = {}
-    date_to_rainfall['date'] = row[0]
-    date_to_rainfall['rainfall'] = row[1]
-    return date_to_rainfall
+    return DayEntry(row[0], row[1])
 
 
-def convert_rows_to_dictionaries(rows_of_data):
-    """Converts the list of arrays into a list of dictionaries
+def convert_rows_to_day_entries(rows_of_data):
+    """Converts a row of lists into a list of Day Entry tuples
 
-       >>> convert_rows_to_dictionaries([['Date1', '1'], ['Date2', '2']])
-       [{'date': 'Date1', 'rainfall': '1'}, {'date': 'Date2', 'rainfall': '2'}]
-       """
-    return [convert_row_to_dictionary(row) for row in rows_of_data]
+    >>> convert_rows_to_day_entries([['13-JAN-2016', '107'],['15-SEP-2002', '75']])
+    [DayEntry(date='13-JAN-2016', rainfall='107'), DayEntry(date='15-SEP-2002', rainfall='75')]
 
-
-def get_key(dictionary):
     """
+    return [convert_row_to_day_entry(row) for row in rows_of_data]
 
-    >>> get_key({'date': '12-JAN-2016', 'rainfall': '105'})
-    '105'
+
+def get_rainfall_key(day_entry):
+    """Gets rainfall amount key for comparing.
+
+    >>> get_rainfall_key(DayEntry(date='13-JAN-2016', rainfall='107'))
+    107
     """
-    return dictionary['rainfall']
+    return int(day_entry.rainfall)
 
 
-def get_day_with_most_rain(dates_to_dates_and_rainfall_to_value):
+def get_day_with_most_rain(day_entries):
     """
 
-    >>> get_day_with_most_rain([{'date': '12-JAN-2016', 'rainfall': '105'}, {'date': '13-JAN-2016', 'rainfall': '106'}])
-    {'date': '13-JAN-2016', 'rainfall': '106'}
+    >>> get_day_with_most_rain([DayEntry(date='13-JAN-2016', rainfall='107'),
+    ... DayEntry(date='15-SEP-2002', rainfall='75')])
+    DayEntry(date='13-JAN-2016', rainfall='107')
     """
-    return max(dates_to_dates_and_rainfall_to_value, key=get_key)
+    return max(day_entries, key=get_rainfall_key)
 
 
-def output_day_with_most_rain(dictionary):
+def output_day_with_most_rain(day_entry):
     """Prints a string informing of the date of the most rain, with the total rainfall in inches
 
-    >>> output_day_with_most_rain({'date': '13-JAN-2017', 'rainfall': '2105'})
-    13-JAN-2017 had the most rain with 21.05 inches of rain.
+    >>> output_day_with_most_rain(DayEntry(date='13-JAN-2016', rainfall='107'))
+    13-JAN-2016 had the most rain with 1.07 inches of rain.
     """
-
-    rain_inches = str(int(dictionary['rainfall']) / 100)
-    date = dictionary['date']
+    rain_inches = str(int(day_entry.rainfall) / 100)
+    date = day_entry.date
     print('{} had the most rain with {} inches of rain.'.format(date, rain_inches))
+
+
+def get_year_key(day_entry):
+    """Gets key of Year from day entry
+
+    >>> get_year_key(DayEntry(date='13-JAN-2016', rainfall='107'))
+    '2016'
+    """
+    return day_entry.date[-4:]
+
+
+def group_by_year(day_entries):
+    """Place each item in an iterable into a bucket based on calling the key function on the item.
+    >>> group_by_year(([DayEntry(date='13-JAN-2016', rainfall='107'),
+    ... DayEntry(date='15-SEP-2002', rainfall='75')])) ==  {'2016': [DayEntry(date='13-JAN-2016', rainfall='107')],
+    ... '2002': [DayEntry(date='15-SEP-2002', rainfall='75')]}
+    True
+    """
+    group_to_items = {}
+    for item in day_entries:
+        group = get_year_key(item)
+        if group not in group_to_items:
+            group_to_items[group] = []
+        group_to_items[group].append(item)
+    return group_to_items
+
+
+
 
 
 def main():
@@ -113,9 +141,16 @@ def main():
     table_as_text_lines = cut_non_data(text_lines)
     rows_of_data = split_lines_to_rows_of_relevant_data(table_as_text_lines)
     rows_of_complete_data = cut_non_valid_data(rows_of_data)
-    dates_to_dates_and_rainfall_to_value = convert_rows_to_dictionaries(rows_of_complete_data)
-    day_with_most_rain = get_day_with_most_rain(dates_to_dates_and_rainfall_to_value)
+    day_entries = convert_rows_to_day_entries(rows_of_complete_data)
+    day_with_most_rain = get_day_with_most_rain(day_entries)
     output_day_with_most_rain(day_with_most_rain)
+    year_to_day_entires = group_by_year(day_entries)
+
+    year_with_most_rain = get_day_with_most_rain(day_entries)
+
+
+    group_days_of_rain_by_year()
+
 
 if __name__ == '__main__':
     main()
