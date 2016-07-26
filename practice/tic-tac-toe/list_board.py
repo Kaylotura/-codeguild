@@ -130,8 +130,8 @@ class ListTTTBoard:
         ... ['X', ' ', 'X']
         ... ]
         >>> a.__str__()
-        'X|X|O\nO|O|X\nX| |X'
+        'X|X|O\nO|O|X\nX| |X\n'
         """
         return self._rows[0][0] + '|' + self._rows[0][1] + '|' + self._rows[0][2] + '\n' +\
             self._rows[1][0] + '|' + self._rows[1][1] + '|' + self._rows[1][2] + '\n' +\
-            self._rows[2][0] + '|' + self._rows[2][1] + '|' + self._rows[2][2]
+            self._rows[2][0] + '|' + self._rows[2][1] + '|' + self._rows[2][2] + '\n'

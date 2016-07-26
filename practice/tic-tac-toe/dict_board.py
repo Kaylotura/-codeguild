@@ -149,7 +149,7 @@ class DictTTTBoard:
         ... (0,2): 'X', (2,2): 'X'
         ... }
         >>> a.__str__()
-        'X|X|O\nO|O|X\nX| |X'
+        'X|X|O\nO|O|X\nX| |X\n'
         """
         cell00 = ' '
         cell01 = ' '
@@ -182,4 +182,4 @@ class DictTTTBoard:
                 cell22 = pair[1]
         return cell00 + '|' + cell10 + '|' + cell20 + '\n' +\
             cell01 + '|' + cell11 + '|' + cell21 + '\n' +\
-            cell02 + '|' + cell12 + '|' + cell22
+            cell02 + '|' + cell12 + '|' + cell22 + '\n'

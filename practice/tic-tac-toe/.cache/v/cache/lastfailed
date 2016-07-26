@@ -1,5 +1,1 @@
-{
-  "boards_test.py::TestCoordsTTTBoard::()::test_str": true,
-  "boards_test.py::TestDictTTTBoard::()::test_str": true,
-  "boards_test.py::TestListListTTTBoard::()::test_str": true
-}
+{}
