@@ -5,6 +5,8 @@ from collections import namedtuple
 namedtuple('DayEntry', ['date', 'rainfall'])
 namedtuple('YearEntry', ['year', 'rainfall'])
 DayEntry = namedtuple('DayEntry', ['date', 'rainfall'])
+
+
 YearEntry = namedtuple('YearEntry', ['year', 'rainfall'])
 
 def open_file(file):
@@ -132,6 +134,31 @@ def group_by_year(day_entries):
     return group_to_items
 
 
+def convert_from_year_to_day_entry_to_year_entry(year_to_day_entry):
+    """
+
+    >>> convert_from_year_to_day_entry_to_year_entry(
+    ... {'2016': [DayEntry(date='13-JAN-2016', rainfall='107'), DayEntry(date='15-JAN-2016', rainfall='13')]
+    ... })
+    YearEntry(year='2016', rainfall=120)
+    """
+    year = list(year_to_day_entry.keys())[0]
+    day_entries = list(year_to_day_entry.values())[0]
+    rainfalls = [int(item.rainfall) for item in day_entries]
+    rainfall = sum(rainfalls)
+    return YearEntry(year, rainfall)
+
+
+def convert_from_year_to_day_entries_to_year_entries(year_to_day_entries):
+    """Converts year to day entries dictionaries to a YearlyEntry named tuple for year and total rainfall.
+
+    >>> convert_from_year_to_day_entries_to_year_entries(
+    ... {'2016': [DayEntry(date='13-JAN-2016', rainfall='107')],
+    ... '2002': [DayEntry(date='15-SEP-2002', rainfall='75')]}
+    ... )
+    [YearEntry(year='2016', rainfall = 107]
+    """
+    return [convert_from_year_to_day_entry_to_year_entry(item) for item in year_to_day_entries]
 
 
 
@@ -144,9 +171,9 @@ def main():
     day_entries = convert_rows_to_day_entries(rows_of_complete_data)
     day_with_most_rain = get_day_with_most_rain(day_entries)
     output_day_with_most_rain(day_with_most_rain)
-    year_to_day_entires = group_by_year(day_entries)
+    year_to_day_entries = group_by_year(day_entries)
+    yearly_entries = map_from_year_to_day_entries_to_yearly_entries(year_to_day_entries)
 
-    year_with_most_rain = get_day_with_most_rain(day_entries)
 
 
     group_days_of_rain_by_year()
