@@ -97,22 +97,23 @@ class CoordsTTTBoard:
         'X'
         """
         win_coords = [
-        [item[2] for item in self._token_coords if item[0] == 0],
-        [item[2] for item in self._token_coords if item[0] == 1],
-        [item[2] for item in self._token_coords if item[0] == 2],
-        [item[2] for item in self._token_coords if item[1] == 0],
-        [item[2] for item in self._token_coords if item[1] == 1],
-        [item[2] for item in self._token_coords if item[1] == 0],
-        [item[2] for item in self._token_coords if item[1] == 1],
-        [item[2] for item in self._token_coords if item[1] == 2],
-        [item[2] for item in self._token_coords if
-            (item[0] == 0 and item[1] == 2) or
-            (item[0] == 1 and item[1] == 1) or
-            (item[0] == 2 and item[1] == 0)],
-        [item[2] for item in self._token_coords if
-            (item[0] == 0 and item[1] == 0) or
-            (item[0] == 1 and item[1] == 1) or
-            (item[0] == 2 and item[1] == 2)]]
+            [item[2] for item in self._token_coords if item[0] == 0],
+            [item[2] for item in self._token_coords if item[0] == 1],
+            [item[2] for item in self._token_coords if item[0] == 2],
+            [item[2] for item in self._token_coords if item[1] == 0],
+            [item[2] for item in self._token_coords if item[1] == 1],
+            [item[2] for item in self._token_coords if item[1] == 0],
+            [item[2] for item in self._token_coords if item[1] == 1],
+            [item[2] for item in self._token_coords if item[1] == 2],
+            [item[2] for item in self._token_coords if
+                (item[0] == 0 and item[1] == 2) or
+                (item[0] == 1 and item[1] == 1) or
+                (item[0] == 2 and item[1] == 0)],
+            [item[2] for item in self._token_coords if
+                (item[0] == 0 and item[1] == 0) or
+                (item[0] == 1 and item[1] == 1) or
+                (item[0] == 2 and item[1] == 2)]
+        ]
         if ['X', 'X', 'X'] in win_coords:
             return 'X'
         elif ['O', 'O', 'O'] in win_coords:
@@ -161,5 +162,5 @@ class CoordsTTTBoard:
             if coord[0] == 2 and coord[1] == 2:
                 cell22 = coord[2]
         return cell00 + '|' + cell10 + '|' + cell20 + '\n' +\
-               cell01 + '|' + cell11 + '|' + cell21 + '\n' +\
-               cell02 + '|' + cell12 + '|' + cell22
+            cell01 + '|' + cell11 + '|' + cell21 + '\n' +\
+            cell02 + '|' + cell12 + '|' + cell22

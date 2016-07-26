@@ -113,9 +113,9 @@ class ListTTTBoard:
             [(self._rows[2])[0], (self._rows[2])[1], (self._rows[2])[2]],
             [(self._rows[0])[2], (self._rows[1])[2], (self._rows[0])[2]]
         ]
-        if ['X','X','X'] in WIN_LINES:
+        if ['X', 'X', 'X'] in win_lines:
             return 'X'
-        elif ['O','O','O'] in WIN_LINES:
+        elif ['O', 'O', 'O'] in win_lines:
             return 'O'
         else:
             return None
@@ -133,5 +133,5 @@ class ListTTTBoard:
         'X|X|O\nO|O|X\nX| |X'
         """
         return self._rows[0][0] + '|' + self._rows[0][1] + '|' + self._rows[0][2] + '\n' +\
-               self._rows[1][0] + '|' + self._rows[1][1] + '|' + self._rows[1][2] + '\n' +\
-               self._rows[2][0] + '|' + self._rows[2][1] + '|' + self._rows[2][2]
+            self._rows[1][0] + '|' + self._rows[1][1] + '|' + self._rows[1][2] + '\n' +\
+            self._rows[2][0] + '|' + self._rows[2][1] + '|' + self._rows[2][2]
