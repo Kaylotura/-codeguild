@@ -103,7 +103,7 @@ class ListTTTBoard:
         >>> a.calc_winner()
         'X'
         """
-        WIN_LINES = [
+        win_lines = [
             [(self._rows[1])[0], (self._rows[1])[1], (self._rows[1])[2]],
             [(self._rows[0])[1], (self._rows[1])[1], (self._rows[2])[1]],
             [(self._rows[0])[0], (self._rows[1])[1], (self._rows[2])[2]],
@@ -113,15 +113,15 @@ class ListTTTBoard:
             [(self._rows[2])[0], (self._rows[2])[1], (self._rows[2])[2]],
             [(self._rows[0])[2], (self._rows[1])[2], (self._rows[0])[2]]
         ]
-        if (['X','X','X']) in WIN_LINES:
+        if ['X','X','X'] in WIN_LINES:
             return 'X'
-        elif (['O','O','O']) in WIN_LINES:
+        elif ['O','O','O'] in WIN_LINES:
             return 'O'
         else:
             return None
 
     def __str__(self):
-        """Returns a pretty-printed picture of the board.
+        r"""Returns a pretty-printed picture of the board.
 
         >>> a = ListTTTBoard()
         >>> a._rows = [
@@ -130,9 +130,7 @@ class ListTTTBoard:
         ... ['X', ' ', 'X']
         ... ]
         >>> a.__str__()
-        X|X|O
-        O|O|X
-        X| |X
+        'X|X|O\nO|O|X\nX| |X'
         """
         return self._rows[0][0] + '|' + self._rows[0][1] + '|' + self._rows[0][2] + '\n' +\
                self._rows[1][0] + '|' + self._rows[1][1] + '|' + self._rows[1][2] + '\n' +\

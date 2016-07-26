@@ -73,7 +73,7 @@ class CoordsTTTBoard:
 
         >>> a = CoordsTTTBoard()
         >>> a._token_coords = [
-        ... (0, 2, 'X'), (1, 0, 'X'), (2, 2, 'X')
+        ... (0, 2, 'X'), (1, 2, 'X'), (2, 2, 'X')
         ... ]
         >>> a.calc_winner()
         'X'
@@ -96,25 +96,32 @@ class CoordsTTTBoard:
         >>> a.calc_winner()
         'X'
         """
-        WIN_LINES = [(self._middle_row[0], self._middle_row[1], self._middle_row[2]),
-                     (self._top_row[1], self._middle_row[1], self._bottom_row[1]),
-                     (self._top_row[0], self._middle_row[1], self._bottom_row[2]),
-                     (self._top_row[2], self._middle_row[1], self._bottom_row[0]),
-                     (self._top_row[0], self._top_row[1], self._top_row[2]),
-                     (self._top_row[0], self._middle_row[0], self._bottom_row[0]),
-                     (self._bottom_row[0], self._bottom_row[1], self._bottom_row[2]),
-                     (self._top_row[2], self._middle_row[2], self._bottom_row[2])
-                     ]
-
-        if ('X', 'X', 'X') in WIN_LINES:
+        win_coords = [
+        [item[2] for item in self._token_coords if item[0] == 0],
+        [item[2] for item in self._token_coords if item[0] == 1],
+        [item[2] for item in self._token_coords if item[0] == 2],
+        [item[2] for item in self._token_coords if item[1] == 0],
+        [item[2] for item in self._token_coords if item[1] == 1],
+        [item[2] for item in self._token_coords if item[1] == 0],
+        [item[2] for item in self._token_coords if item[1] == 1],
+        [item[2] for item in self._token_coords if item[1] == 2],
+        [item[2] for item in self._token_coords if
+            (item[0] == 0 and item[1] == 2) or
+            (item[0] == 1 and item[1] == 1) or
+            (item[0] == 2 and item[1] == 0)],
+        [item[2] for item in self._token_coords if
+            (item[0] == 0 and item[1] == 0) or
+            (item[0] == 1 and item[1] == 1) or
+            (item[0] == 2 and item[1] == 2)]]
+        if ['X', 'X', 'X'] in win_coords:
             return 'X'
-        elif ('O', 'O', 'O') in WIN_LINES:
+        elif ['O', 'O', 'O'] in win_coords:
             return 'O'
         else:
             return None
 
     def __str__(self):
-        """Returns a pretty-printed picture of the Board .
+        r"""Returns a pretty-printed picture of the Board .
 
         >>> a = CoordsTTTBoard()
         >>> a._token_coords= [
@@ -123,10 +130,9 @@ class CoordsTTTBoard:
         ... (0, 2, 'X'), (2, 2, 'X')
         ... ]
         >>> a.__str__()
-        'X|X|O
-        O|O|X
-        X| |X'
+        'X|X|O\nO|O|X\nX| |X'
         """
+        cell00 = ' '
         cell01 = ' '
         cell02 = ' '
         cell10 = ' '
@@ -135,10 +141,6 @@ class CoordsTTTBoard:
         cell20 = ' '
         cell21 = ' '
         cell22 = ' '
-
-        self._token_coords
-        self._token_coords
-
         for coord in self._token_coords:
             if coord[0] == 0 and coord[1] == 0:
                 cell00 = coord[2]
@@ -158,7 +160,6 @@ class CoordsTTTBoard:
                 cell21 = coord[2]
             if coord[0] == 2 and coord[1] == 2:
                 cell22 = coord[2]
-
         return cell00 + '|' + cell10 + '|' + cell20 + '\n' +\
                cell01 + '|' + cell11 + '|' + cell21 + '\n' +\
                cell02 + '|' + cell12 + '|' + cell22

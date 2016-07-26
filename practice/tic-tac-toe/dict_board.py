@@ -50,13 +50,15 @@ class DictTTTBoard:
         >>> a = DictTTTBoard()
         >>> a._coord_to_token = {(0, 0): 'X'}
         >>> a.place_token(0, 1, 'O')
-        >>> a
-        DictTTTBoard({(0, 0): 'X', (0, 1): 'O'})
+        >>> b = a._coord_to_token
+        >>> sorted(b.items())
+        [((0, 0), 'X'), ((0, 1), 'O')]
         >>> a = DictTTTBoard()
         >>> a._coord_to_token = {(0, 0): 'X', (0,1): 'O'}
         >>> a.place_token(0, 2, 'X')
-        >>> a
-        DictTTTBoard({(0, 0): 'X', (0, 1): 'O', (0, 2): 'X'})
+        >>> b = a._coord_to_token
+        >>> sorted(b.items())
+        [((0, 0), 'X'), ((0, 1), 'O'), ((0, 2), 'X')]
         """
         self._coord_to_token[(x, y)] = token
 
@@ -104,43 +106,52 @@ class DictTTTBoard:
         >>> a.calc_winner()
         'X'
         """
+        win_keys = [
+            [self._coord_to_token.get((1, 0), ' '), self._coord_to_token.get((1, 1), ' '),
+             self._coord_to_token.get((1, 2), ' ')],
 
-        WIN_LINES = [(self._middle_row[0], self._middle_row[1], self._middle_row[2]),
-                     (self._top_row[1], self._middle_row[1], self._bottom_row[1]),
-                     (self._top_row[0], self._middle_row[1], self._bottom_row[2]),
-                     (self._top_row[2], self._middle_row[1], self._bottom_row[0]),
-                     (self._top_row[0], self._top_row[1], self._top_row[2]),
-                     (self._top_row[0], self._middle_row[0], self._bottom_row[0]),
-                     (self._bottom_row[0], self._bottom_row[1], self._bottom_row[2]),
-                     (self._top_row[2], self._middle_row[2], self._bottom_row[2])
-                     ]
+            [self._coord_to_token.get((0, 1), ' '), self._coord_to_token.get((1, 1), ' '),
+             self._coord_to_token.get((2, 1), ' ')],
 
-        if ('X', 'X', 'X') in WIN_LINES:
+            [self._coord_to_token.get((0, 2), ' '), self._coord_to_token.get((1, 1), ' '),
+             self._coord_to_token.get((2, 0), ' ')],
+
+            [self._coord_to_token.get((0, 0), ' '), self._coord_to_token.get((1, 1), ' '),
+             self._coord_to_token.get((2, 2), ' ')],
+
+            [self._coord_to_token.get((0, 0), ' '), self._coord_to_token.get((1, 2), ' '),
+             self._coord_to_token.get((0, 2), ' ')],
+
+            [self._coord_to_token.get((0, 0), ' '), self._coord_to_token.get((0, 1), ' '),
+             self._coord_to_token.get((0, 2), ' ')],
+
+            [self._coord_to_token.get((2, 2), ' '), self._coord_to_token.get((2, 1), ' '),
+             self._coord_to_token.get((2, 0), ' ')],
+
+            [self._coord_to_token.get((2, 2), ' '), self._coord_to_token.get((1, 2), ' '),
+             self._coord_to_token.get((0, 2), ' ')]
+        ]
+
+        if ['X', 'X', 'X'] in win_keys:
             return 'X'
-        elif ('O', 'O', 'O') in WIN_LINES:
+        elif ['O', 'O', 'O'] in win_keys:
             return 'O'
         else:
             return None
 
     def __str__(self):
-        """Returns a pretty-printed picture of the board.
+        r"""Returns a pretty-printed picture of the board.
 
         >>> a = DictTTTBoard()
-        >>> a._coord_to_token = { = ['X', 'X', 'O']
-        >>> a._middle_row = ['O', 'O', 'X']
-        >>> a._bottom_row = ['X', ' ', 'X']
+        >>> a._coord_to_token = {
+        ... (0,0): 'X', (1,0): 'X', (2,0): 'O',
+        ... (0,1): 'O', (1,1): 'O', (2,1): 'X',
+        ... (0,2): 'X', (2,2): 'X'
+        ... }
         >>> a.__str__()
-        X|X|O
-        O|O|X
-        X| |X
+        'X|X|O\nO|O|X\nX| |X'
         """
-        return self._top_row[0] + '|' + self._top_row[1] + '|' + self._top_row[2]
-        self._middle_row[0] + '|' + self._middle_row[1] + '|' + self._middle_row[2])
-        self._bottom_row[0] + '|' + self._bottom_row[1] + '|' + self._bottom_row[2])
-
-
-
-        """
+        cell00 = ' '
         cell01 = ' '
         cell02 = ' '
         cell10 = ' '
@@ -149,30 +160,26 @@ class DictTTTBoard:
         cell20 = ' '
         cell21 = ' '
         cell22 = ' '
-
-        self._token_coords
-        self._token_coords
-
-        for coord in self._token_coords:
-            if coord[0] == 0 and coord[1] == 0:
-                cell00 = coord[2]
-            if coord[0] == 0 and coord[1] == 1:
-                cell01 = coord[2]
-            if coord[0] == 0 and coord[1] == 2:
-                cell02 = coord[2]
-            if coord[0] == 1 and coord[1] == 0:
-                cell10 = coord[2]
-            if coord[0] == 1 and coord[1] == 1:
-                cell11 = coord[2]
-            if coord[0] == 1 and coord[1] == 2:
-                cell12 = coord[2]
-            if coord[0] == 2 and coord[1] == 0:
-                cell20 = coord[2]
-            if coord[0] == 2 and coord[1] == 1:
-                cell21 = coord[2]
-            if coord[0] == 2 and coord[1] == 2:
-                cell22 = coord[2]
-
+        self._coord_to_token.items()
+        for pair in list(self._coord_to_token.items()):
+            if pair[0] == (0, 0):
+                cell00 = pair[1]
+            if pair[0] == (0, 1):
+                cell01 = pair[1]
+            if pair[0] == (0, 2):
+                cell02 = pair[1]
+            if pair[0] == (1, 0):
+                cell10 = pair[1]
+            if pair[0] == (1, 1):
+                cell11 = pair[1]
+            if pair[0] == (1, 2):
+                cell12 = pair[1]
+            if pair[0] == (2, 0):
+                cell20 = pair[1]
+            if pair[0] == (2, 1):
+                cell21 = pair[1]
+            if pair[0] == (2, 2):
+                cell22 = pair[1]
         return cell00 + '|' + cell10 + '|' + cell20 + '\n' +\
-               cell01 + '|' + cell11 + '|' + cell21 + '\n' +\
-               cell02 + '|' + cell12 + '|' + cell22
+            cell01 + '|' + cell11 + '|' + cell21 + '\n' +\
+            cell02 + '|' + cell12 + '|' + cell22
