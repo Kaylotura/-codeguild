@@ -153,10 +153,3 @@ def string_to_hand(hand_string):
     cards = [convert_string_to_card(string) for string in cards_as_strings]
     new_hand = Hand(cards)
     return new_hand
-
-
-def main():
-    """Main function."""
-
-if __name__ == '__main__':
-    main()

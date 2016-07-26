@@ -2,7 +2,7 @@
 
 
 from card import Card
-from random import sample
+from random import shuffle
 
 
 class Deck:
@@ -82,10 +82,8 @@ EXAMPLE_DECK = Deck([Card('A', 'C'), Card('2', 'C'), Card('3', 'C')])
 def get_shuffled_deck(deck):
     """Shuffles a deck of cards
 
-    >>> get_shuffled_deck(EXAMPLE_DECK) == EXAMPLE_DECK
-    False
     """
-    shuffled_cards = [sample(deck.cards, 1)]
+    shuffled_cards = shuffle(deck.cards)
     shuffled_deck = Deck(shuffled_cards)
     return shuffled_deck
 
@@ -126,10 +124,3 @@ def check_deck_for_empty(deck):
     True
     """
     return len(deck.cards) == 0
-
-
-def main():
-    """Main function."""
-
-if __name__ == '__main__':
-    main()
