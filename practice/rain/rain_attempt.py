@@ -79,10 +79,10 @@ def convert_rows_to_day_entries(rows_of_data):
     return [convert_row_to_day_entry(row) for row in rows_of_data]
 
 
-def get_rainfall_key(day_entry):
+def get_daily_rainfall_key(day_entry):
     """Gets rainfall amount key for comparing.
 
-    >>> get_rainfall_key(DayEntry(date='13-JAN-2016', rainfall='107'))
+    >>> get_daily_rainfall_key(DayEntry(date='13-JAN-2016', rainfall='107'))
     107
     """
     return int(day_entry.rainfall)
@@ -95,7 +95,7 @@ def get_day_with_most_rain(day_entries):
     ... DayEntry(date='15-SEP-2002', rainfall='75')])
     DayEntry(date='13-JAN-2016', rainfall='107')
     """
-    return max(day_entries, key=get_rainfall_key)
+    return max(day_entries, key=get_daily_rainfall_key)
 
 
 def output_day_with_most_rain(day_entry):
@@ -153,13 +153,41 @@ def convert_from_year_to_day_entries_to_year_entries(year_to_day_entries):
     """Converts year to day entries dictionaries to a YearlyEntry named tuple for year and total rainfall.
 
     >>> convert_from_year_to_day_entries_to_year_entries(
-    ... {'2016': [DayEntry(date='13-JAN-2016', rainfall='107')],
-    ... '2002': [DayEntry(date='15-SEP-2002', rainfall='75')]}
+    ... {'2016': [DayEntry(date='13-JAN-2016', rainfall='107'), DayEntry(date='15-SEP-2016', rainfall='3')],
+    ... '2002': [DayEntry(date='15-SEP-2002', rainfall='75'), DayEntry(date='16-JUN-2002', rainfall='25')]}
     ... )
-    [YearEntry(year='2016', rainfall = 107]
+    [YearEntry(year='2016', rainfall = 110,  YearEntry(year='2002', rainfall = 100]
     """
-    return [convert_from_year_to_day_entry_to_year_entry(item) for item in year_to_day_entries]
+    return [convert_from_year_to_day_entry_to_year_entry(year) for year in [year_to_day_entries]]
 
+
+def get_yearly_rainfall_key(year_entry):
+    """Gets rainfall amount key for comparing.
+
+    >>> get_yearly_rainfall_key(YearEntry(year='2016', rainfall=100))
+    100
+    """
+    return year_entry.rainfall
+
+
+def get_year_with_most_rain(year_entries):
+    """
+
+    >>> get_year_with_most_rain([YearEntry(year='2016', rainfall=100),
+    ... YearEntry(year='2012', rainfall=80)])
+    YearEntry(year='2016', rainfall=100)
+    """
+    return max(year_entries, key=get_daily_rainfall_key)
+
+def output_year_with_most_rain(year_entry):
+    """Prints a string informing of the year of the most rain, with the total rainfall in inches
+
+    >>> output_year_with_most_rain(YearEntry(year='2016', rainfall=150))
+    2016 had the most rain with 1.50 inches of rain.
+    """
+    rain_inches = str(year_entry.rainfall / 100)
+    year = year_entry.year
+    print('{} had the most rain with {} inches of rain.'.format(year, rain_inches))
 
 
 def main():
@@ -172,12 +200,9 @@ def main():
     day_with_most_rain = get_day_with_most_rain(day_entries)
     output_day_with_most_rain(day_with_most_rain)
     year_to_day_entries = group_by_year(day_entries)
-    yearly_entries = map_from_year_to_day_entries_to_yearly_entries(year_to_day_entries)
-
-
-
-    group_days_of_rain_by_year()
-
+    yearly_entries = convert_from_year_to_day_entries_to_year_entries(year_to_day_entries)
+    year_with_most_rain = get_year_with_most_rain(yearly_entries)
+    output_year_with_most_rain(year_with_most_rain)
 
 if __name__ == '__main__':
     main()
