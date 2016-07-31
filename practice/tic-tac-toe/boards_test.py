@@ -1,6 +1,5 @@
 """Tests for all three board implementations."""
 
-
 from coords_board import CoordsTTTBoard
 
 from dict_board import DictTTTBoard

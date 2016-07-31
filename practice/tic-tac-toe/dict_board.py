@@ -3,6 +3,7 @@
 
 class DictTTTBoard:
     """Creates a Board class as a dictionary of coordinates to tokens."""
+
     def __init__(self):
         """Initialize Class
         >>> a = DictTTTBoard()
@@ -38,9 +39,7 @@ class DictTTTBoard:
         >>> a == b
         False
         """
-        return (
-            self._coord_to_token == other._coord_to_token
-        )
+        return (self._coord_to_token == other._coord_to_token)
 
     def place_token(self, x, y, token):
         """Place a token character string at a given coordinate.
@@ -107,29 +106,26 @@ class DictTTTBoard:
         'X'
         """
         win_keys = [
-            [self._coord_to_token.get((1, 0), ' '), self._coord_to_token.get((1, 1), ' '),
-             self._coord_to_token.get((1, 2), ' ')],
-
-            [self._coord_to_token.get((0, 1), ' '), self._coord_to_token.get((1, 1), ' '),
-             self._coord_to_token.get((2, 1), ' ')],
-
-            [self._coord_to_token.get((0, 2), ' '), self._coord_to_token.get((1, 1), ' '),
-             self._coord_to_token.get((2, 0), ' ')],
-
-            [self._coord_to_token.get((0, 0), ' '), self._coord_to_token.get((1, 1), ' '),
-             self._coord_to_token.get((2, 2), ' ')],
-
-            [self._coord_to_token.get((0, 0), ' '), self._coord_to_token.get((1, 2), ' '),
-             self._coord_to_token.get((0, 2), ' ')],
-
-            [self._coord_to_token.get((0, 0), ' '), self._coord_to_token.get((0, 1), ' '),
-             self._coord_to_token.get((0, 2), ' ')],
-
-            [self._coord_to_token.get((2, 2), ' '), self._coord_to_token.get((2, 1), ' '),
-             self._coord_to_token.get((2, 0), ' ')],
-
-            [self._coord_to_token.get((2, 2), ' '), self._coord_to_token.get((1, 2), ' '),
-             self._coord_to_token.get((0, 2), ' ')]
+            [self._coord_to_token.get((1, 0), ' '), self._coord_to_token.get(
+                (1, 1), ' '), self._coord_to_token.get((1, 2), ' ')],
+            [self._coord_to_token.get((0, 1), ' '), self._coord_to_token.get(
+                (1, 1), ' '), self._coord_to_token.get(
+                    (2, 1), ' ')], [self._coord_to_token.get(
+                        (0, 2), ' '), self._coord_to_token.get((1, 1), ' '),
+                                    self._coord_to_token.get((2, 0), ' ')],
+            [self._coord_to_token.get((0, 0), ' '), self._coord_to_token.get(
+                (1, 1), ' '), self._coord_to_token.get(
+                    (2, 2), ' ')], [self._coord_to_token.get(
+                        (0, 0), ' '), self._coord_to_token.get((1, 2), ' '),
+                                    self._coord_to_token.get((0, 2), ' ')],
+            [self._coord_to_token.get((0, 0), ' '), self._coord_to_token.get(
+                (0, 1), ' '),
+             self._coord_to_token.get((0, 2), ' ')], [self._coord_to_token.get(
+                 (2, 2), ' '), self._coord_to_token.get(
+                     (2, 1), ' '), self._coord_to_token.get(
+                         (2, 0), ' ')], [self._coord_to_token.get((2, 2), ' '),
+                                         self._coord_to_token.get((1, 2), ' '),
+                                         self._coord_to_token.get((0, 2), ' ')]
         ]
 
         if ['X', 'X', 'X'] in win_keys:
@@ -151,6 +147,9 @@ class DictTTTBoard:
         >>> a.__str__()
         'X|X|O\nO|O|X\nX| |X\n'
         """
+
+    []
+
         cell00 = ' '
         cell01 = ' '
         cell02 = ' '
@@ -180,6 +179,24 @@ class DictTTTBoard:
                 cell21 = pair[1]
             if pair[0] == (2, 2):
                 cell22 = pair[1]
+
+
+        [item for item in ]
+
+        row1 = [cell00, cell10, cell20]
+        row1 = [cell01, cell11, cell21]
+        row3 = [cell02, cell12, cell22]
+        piped_row1 = '|'.joing(row1)
+
+
+
         return cell00 + '|' + cell10 + '|' + cell20 + '\n' +\
             cell01 + '|' + cell11 + '|' + cell21 + '\n' +\
             cell02 + '|' + cell12 + '|' + cell22 + '\n'
+
+
+
+    def create_pretty_row(cell0, cell1, cell2):
+        row = [cell0, cell1, cell2]
+        return '|'.join(row)
+

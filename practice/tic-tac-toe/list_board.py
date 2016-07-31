@@ -3,6 +3,7 @@
 
 class ListTTTBoard:
     """Creates a Board class to operate within."""
+
     def __init__(self):
         """Initialize Class
         >>> a = ListTTTBoard()
@@ -37,9 +38,7 @@ class ListTTTBoard:
         >>> a == b
         False
         """
-        return (
-            self._rows == other._rows
-        )
+        return (self._rows == other._rows)
 
     def place_token(self, x, y, token):
         """Place a token character string at a given coordinate.
@@ -104,14 +103,14 @@ class ListTTTBoard:
         'X'
         """
         win_lines = [
-            [(self._rows[1])[0], (self._rows[1])[1], (self._rows[1])[2]],
-            [(self._rows[0])[1], (self._rows[1])[1], (self._rows[2])[1]],
-            [(self._rows[0])[0], (self._rows[1])[1], (self._rows[2])[2]],
-            [(self._rows[0])[2], (self._rows[1])[1], (self._rows[2])[0]],
-            [(self._rows[0])[0], (self._rows[0])[1], (self._rows[0])[2]],
-            [(self._rows[0])[0], (self._rows[1])[0], (self._rows[2])[0]],
-            [(self._rows[2])[0], (self._rows[2])[1], (self._rows[2])[2]],
-            [(self._rows[0])[2], (self._rows[1])[2], (self._rows[0])[2]]
+            [self._rows[1][0], self._rows[1][1], self._rows[1][2]],
+            [self._rows[0][1], self._rows[1][1], self._rows[2][1]],
+            [self._rows[0][0], self._rows[1][1], self._rows[2][2]],
+            [self._rows[0][2], self._rows[1][1], self._rows[2][0]],
+            [self._rows[0][0], self._rows[0][1], self._rows[0][2]],
+            [self._rows[0][0], self._rows[1][0], self._rows[2][0]],
+            [self._rows[2][0], self._rows[2][1], self._rows[2][2]],
+            [self._rows[0][2], self._rows[1][2], self._rows[0][2]]
         ]
         if ['X', 'X', 'X'] in win_lines:
             return 'X'
@@ -132,6 +131,6 @@ class ListTTTBoard:
         >>> a.__str__()
         'X|X|O\nO|O|X\nX| |X\n'
         """
-        return self._rows[0][0] + '|' + self._rows[0][1] + '|' + self._rows[0][2] + '\n' +\
-            self._rows[1][0] + '|' + self._rows[1][1] + '|' + self._rows[1][2] + '\n' +\
-            self._rows[2][0] + '|' + self._rows[2][1] + '|' + self._rows[2][2] + '\n'
+        pretty_lines = ['|'.join(row) for row in self._rows]
+        pretty_table = '\n'.join(pretty_lines)
+        return pretty_table + '\n'
