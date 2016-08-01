@@ -11,9 +11,15 @@ class DictTTTBoard:
         [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
         """
         self._coord_to_token = {
-            (0,0): ' ', (1,0): ' ', (2,0): ' ',
-            (0,1): ' ', (1,1): ' ', (2,1): ' ',
-            (0,2): ' ', (1,2): ' ', (2,2): ' '
+            (0, 0): ' ',
+            (1, 0): ' ',
+            (2, 0): ' ',
+            (0, 1): ' ',
+            (1, 1): ' ',
+            (2, 1): ' ',
+            (0, 2): ' ',
+            (1, 2): ' ',
+            (2, 2): ' '
         }
 
     def __repr__(self):
@@ -43,7 +49,7 @@ class DictTTTBoard:
         >>> a == b
         False
         """
-        return (self._coord_to_token == other._coord_to_token)
+        return self._coord_to_token == other._coord_to_token
 
     def place_token(self, x, y, token):
         """Place a token character string at a given coordinate.
@@ -78,9 +84,12 @@ class DictTTTBoard:
         [['X', ' ', 'O'], ['X', 'O', 'X'], ['O', ' ', 'X']]
         """
         coords_to_tokens = sorted(list(self._coord_to_token.items()))
-        row_1 = [coord_to_token[1] for coord_to_token in coords_to_tokens if coord_to_token[0][1] == 0]
-        row_2 = [coord_to_token[1] for coord_to_token in coords_to_tokens if coord_to_token[0][1] == 1]
-        row_3 = [coord_to_token[1] for coord_to_token in coords_to_tokens if coord_to_token[0][1] == 2]
+        row_1 = [coord_to_token[1] for coord_to_token in coords_to_tokens
+                 if coord_to_token[0][1] == 0]
+        row_2 = [coord_to_token[1] for coord_to_token in coords_to_tokens
+                 if coord_to_token[0][1] == 1]
+        row_3 = [coord_to_token[1] for coord_to_token in coords_to_tokens
+                 if coord_to_token[0][1] == 2]
         return [row_1, row_2, row_3]
 
     def make_columns(self):
@@ -96,9 +105,12 @@ class DictTTTBoard:
         [['X', 'X', 'O'], [' ', 'O', ' '], ['O', 'X', 'X']]
         """
         coords_to_tokens = sorted(list(self._coord_to_token.items()))
-        column_1 = [coord_to_token[1] for coord_to_token in coords_to_tokens if coord_to_token[0][0] == 0]
-        column_2 = [coord_to_token[1] for coord_to_token in coords_to_tokens if coord_to_token[0][0] == 1]
-        column_3 = [coord_to_token[1] for coord_to_token in coords_to_tokens if coord_to_token[0][0] == 2]
+        column_1 = [coord_to_token[1] for coord_to_token in coords_to_tokens
+                    if coord_to_token[0][0] == 0]
+        column_2 = [coord_to_token[1] for coord_to_token in coords_to_tokens
+                    if coord_to_token[0][0] == 1]
+        column_3 = [coord_to_token[1] for coord_to_token in coords_to_tokens
+                    if coord_to_token[0][0] == 2]
         return [column_1, column_2, column_3]
 
     def make_diagonals(self):
@@ -114,10 +126,10 @@ class DictTTTBoard:
         [['X', 'O', 'X'], ['O', 'O', 'O']]
         """
         coords_to_tokens = sorted(list(self._coord_to_token.items()))
-        diagonal_1 = [coord_to_token[1] for coord_to_token in coords_to_tokens if
-                      coord_to_token[0][0] == coord_to_token[0][1]]
-        diagonal_2 = [coord_to_token[1] for coord_to_token in coords_to_tokens if
-                      sum([coord_to_token[0][0], coord_to_token[0][1]]) == 2]
+        diagonal_1 = [coord_to_token[1] for coord_to_token in coords_to_tokens
+                      if coord_to_token[0][0] == coord_to_token[0][1]]
+        diagonal_2 = [coord_to_token[1] for coord_to_token in coords_to_tokens
+                      if sum([coord_to_token[0][0], coord_to_token[0][1]]) == 2]
         return [diagonal_1, diagonal_2]
 
     def calc_winner(self):

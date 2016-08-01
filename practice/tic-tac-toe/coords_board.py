@@ -38,7 +38,7 @@ class CoordsTTTBoard:
         >>> a == b
         False
         """
-        return (self._token_coords == other._token_coords)
+        return self._token_coords == other._token_coords
 
     def place_token(self, x, y, token):
         """Place a token character string at a given coordinate.
@@ -95,30 +95,21 @@ class CoordsTTTBoard:
         >>> a.calc_winner()
         'X'
         """
-        win_coords = [
-            [item[2] for item in self._token_coords if item[0] == 0],
-            [item[2] for item in self._token_coords if item[0] == 1],
-            [item[2] for item in self._token_coords if item[0] == 2],
-            [item[2] for item in self._token_coords if item[1] == 0],
-            [item[2] for item in self._token_coords if item[1] == 1],
-            [item[2] for item in self._token_coords if item[1] == 0],
-            [item[2] for item in self._token_coords if item[1] == 1],
-            [item[2] for item in self._token_coords if item[1] == 2], [
-                item[2] for item in self._token_coords
-                if (item[0] == 0 and item[1] == 2
-                   ) or (item[0] == 1 and item[1] == 1
-                        ) or (item[0] == 2 and item[1] == 0)
-            ], [item[2] for item in self._token_coords
-                if (item[0] == 0 and item[1] == 0
-                   ) or (item[0] == 1 and item[1] == 1
-                        ) or (item[0] == 2 and item[1] == 2)]
-        ]
-        if ['X', 'X', 'X'] in win_coords:
+        row_win_keys = self.make_rows()
+        col_win_keys = self.make_columns()
+        diag_win_keys = self.make_diagonals()
+        all_win_keys = row_win_keys + col_win_keys + diag_win_keys
+
+        if ['X', 'X', 'X'] in all_win_keys:
             return 'X'
-        elif ['O', 'O', 'O'] in win_coords:
+        elif ['O', 'O', 'O'] in all_win_keys:
             return 'O'
         else:
             return None
+
+    def make_coords_to_tokens(self):
+        return {(token_coord[0], token_coord[1]): token_coord[2]
+                for token_coord in self._token_coords}
 
     def make_rows(self):
         """Returns a list of listed tokens, in order of the rows going top down.
@@ -132,8 +123,9 @@ class CoordsTTTBoard:
         >>> a.make_rows()
         [['X', 'X', 'O'], ['O', 'O', 'X'], ['X', ' ', 'X']]
         """
-        coords_to_tokens = {(token_coord[0], token_coord[1]): token_coord[2] for token_coord in self._token_coords}
-        return [[coords_to_tokens.get((x, y), ' ') for x in range(3)] for y in range(3)]
+        coords_to_tokens = self.make_coords_to_tokens()
+        return [[coords_to_tokens.get((x, y), ' ') for x in range(3)]
+                for y in range(3)]
 
     def make_columns(self):
         """Returns a list of listed tokens, in order of the columns going left to right.
@@ -147,9 +139,28 @@ class CoordsTTTBoard:
         >>> a.make_columns()
         [['X', 'O', 'X'], ['X', 'O', ' '], ['O', 'X', 'X']]
         """
-        coords_to_tokens = {(token_coord[0], token_coord[1]): token_coord[2] for token_coord in self._token_coords}
-        return [[coords_to_tokens.get((x, y), ' ') for y in range(3)] for x in range(3)]
+        coords_to_tokens = self.make_coords_to_tokens()
+        return [[coords_to_tokens.get((x, y), ' ') for y in range(3)]
+                for x in range(3)]
 
+    def make_diagonals(self):
+        """Returns a list of listed tokens, in order of the rows going top down.
+
+        >>> a = CoordsTTTBoard()
+        >>> a._token_coords = [
+        ... (0, 0, 'X'), (1, 0, 'X'), (2, 0, 'O'),
+        ... (0, 1, 'O'), (1, 1, 'O'), (2, 1, 'X'),
+        ... (0, 2, 'X'), (2, 2, 'X')
+        ... ]
+        >>> a.make_diagonals()
+        [['X', 'O', 'X'], ['X', 'O', 'O']]
+        """
+        coords_to_tokens = self.make_coords_to_tokens()
+        diagonal_1 = [coords_to_tokens.get((0, 0), ' '), coords_to_tokens.get(
+            (1, 1), ' '), coords_to_tokens.get((2, 2), ' ')]
+        diagonal_2 = [coords_to_tokens.get((0, 2), ' '), coords_to_tokens.get(
+            (1, 1), ' '), coords_to_tokens.get((2, 0), ' ')]
+        return [diagonal_1, diagonal_2]
 
     def __str__(self):
         r"""Returns a pretty-printed picture of the Board .
@@ -163,38 +174,6 @@ class CoordsTTTBoard:
         >>> a.__str__()
         'X|X|O\nO|O|X\nX| |X\n'
         """
-        cell00 = ' '
-        cell01 = ' '
-        cell02 = ' '
-        cell10 = ' '
-        cell11 = ' '
-        cell12 = ' '
-        cell20 = ' '
-        cell21 = ' '
-        cell22 = ' '
-
-
-        for coord in self._token_coords:
-            if coord[0] == 0 and coord[1] == 0:
-                cell00 = coord[2]
-            if coord[0] == 0 and coord[1] == 1:
-                cell01 = coord[2]
-            if coord[0] == 0 and coord[1] == 2:
-                cell02 = coord[2]
-            if coord[0] == 1 and coord[1] == 0:
-                cell10 = coord[2]
-            if coord[0] == 1 and coord[1] == 1:
-                cell11 = coord[2]
-            if coord[0] == 1 and coord[1] == 2:
-                cell12 = coord[2]
-            if coord[0] == 2 and coord[1] == 0:
-                cell20 = coord[2]
-            if coord[0] == 2 and coord[1] == 1:
-                cell21 = coord[2]
-            if coord[0] == 2 and coord[1] == 2:
-                cell22 = coord[2]
-
-
-        return cell00 + '|' + cell10 + '|' + cell20 + '\n' +\
-            cell01 + '|' + cell11 + '|' + cell21 + '\n' +\
-            cell02 + '|' + cell12 + '|' + cell22 + '\n'
+        rows = self.make_rows()
+        pretty_rows = ['|'.join(row) for row in rows]
+        return '\n'.join(pretty_rows) + '\n'

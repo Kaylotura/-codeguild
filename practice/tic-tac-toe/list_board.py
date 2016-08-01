@@ -38,7 +38,7 @@ class ListTTTBoard:
         >>> a == b
         False
         """
-        return (self._rows == other._rows)
+        return self._rows == other._rows
 
     def place_token(self, x, y, token):
         """Place a token character string at a given coordinate.
