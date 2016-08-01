@@ -120,11 +120,42 @@ class CoordsTTTBoard:
         else:
             return None
 
+    def make_rows(self):
+        """Returns a list of listed tokens, in order of the rows going top down.
+
+        >>> a = CoordsTTTBoard()
+        >>> a._token_coords = [
+        ... (0, 0, 'X'), (1, 0, 'X'), (2, 0, 'O'),
+        ... (0, 1, 'O'), (1, 1, 'O'), (2, 1, 'X'),
+        ... (0, 2, 'X'), (2, 2, 'X')
+        ... ]
+        >>> a.make_rows()
+        [['X', 'X', 'O'], ['O', 'O', 'X'], ['X', ' ', 'X']]
+        """
+        coords_to_tokens = {(token_coord[0], token_coord[1]): token_coord[2] for token_coord in self._token_coords}
+        return [[coords_to_tokens.get((x, y), ' ') for x in range(3)] for y in range(3)]
+
+    def make_columns(self):
+        """Returns a list of listed tokens, in order of the columns going left to right.
+
+        >>> a = CoordsTTTBoard()
+        >>> a._token_coords = [
+        ... (0, 0, 'X'), (1, 0, 'X'), (2, 0, 'O'),
+        ... (0, 1, 'O'), (1, 1, 'O'), (2, 1, 'X'),
+        ... (0, 2, 'X'), (2, 2, 'X')
+        ... ]
+        >>> a.make_columns()
+        [['X', 'O', 'X'], ['X', 'O', ' '], ['O', 'X', 'X']]
+        """
+        coords_to_tokens = {(token_coord[0], token_coord[1]): token_coord[2] for token_coord in self._token_coords}
+        return [[coords_to_tokens.get((x, y), ' ') for y in range(3)] for x in range(3)]
+
+
     def __str__(self):
         r"""Returns a pretty-printed picture of the Board .
 
         >>> a = CoordsTTTBoard()
-        >>> a._token_coords= [
+        >>> a._token_coords = [
         ... (0, 0, 'X'), (1, 0, 'X'), (2, 0, 'O'),
         ... (0, 1, 'O'), (1, 1, 'O'), (2, 1, 'X'),
         ... (0, 2, 'X'), (2, 2, 'X')
@@ -141,6 +172,8 @@ class CoordsTTTBoard:
         cell20 = ' '
         cell21 = ' '
         cell22 = ' '
+
+
         for coord in self._token_coords:
             if coord[0] == 0 and coord[1] == 0:
                 cell00 = coord[2]
@@ -160,6 +193,8 @@ class CoordsTTTBoard:
                 cell21 = coord[2]
             if coord[0] == 2 and coord[1] == 2:
                 cell22 = coord[2]
+
+
         return cell00 + '|' + cell10 + '|' + cell20 + '\n' +\
             cell01 + '|' + cell11 + '|' + cell21 + '\n' +\
             cell02 + '|' + cell12 + '|' + cell22 + '\n'
