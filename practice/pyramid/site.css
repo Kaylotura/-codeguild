@@ -1,0 +1,26 @@
+div {
+  border: 1px solid black;
+}
+
+.row {
+  margin: 20px;
+  display: flex;
+  height: 100px;
+  box-sizing: border-box;
+  justify-content: space-between;
+}
+
+div.inner {
+  flex: 1;
+  margin: 10px;
+}
+
+div.inner.greater{
+  flex: 4;
+}
+
+div.inner.small{
+  max-width: 90px;
+  justify: center;
+
+}
