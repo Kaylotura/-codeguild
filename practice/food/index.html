@@ -9,54 +9,62 @@
       <label>What did you eat for Dinner?
         <input type="text" name="dinner">
       </label>
+      <div>
       <fieldset>
         <legend>Did your dinner have any of the following?
           Check all that apply!</legend>
-          <label><input type="checkbox" name="food" value="meat"> Meat</label>
-          <label><input type="checkbox" name="food" value="potatoes"> Potatoes</label>
-          <label><input type="checkbox" name="food" value="broccoli"> Brocoli</label>
-          <label><input type="checkbox" name="food" value="cheese"> Cheese</label>
+        <label><input type="checkbox" name="food" value="meat">Meat</label>
+        <label><input type="checkbox" name="food" value="potatoes">Potatoes
+          </label>
+        <label><input type="checkbox" name="food" value="broccoli">Brocoli
+          </label>
+        <label><input type="checkbox" name="food" value="cheese">Cheese
+          </label>
       </fieldset>
+      </div><div>
       <fieldset>
-        <label>Was it a vegetarian meal, or a non-vegetarian meal?
-          <input type="radio" name="diet" value="vegetarian"> Vegetarian
-          <input type="radio" name="diet" value="non-vegetarian"> Non-vegetarian
-        </label>
+        <legend>Are you a vegetarian?</legend>
+          <label><input type="radio" name="diet" value="vegetarian">Vegetarian
+            </label>
+          <label><input type="radio" name="diet" value="non-vegetarian">
+            Non-vegetarian</label>
       </fieldset>
-      <fieldset>
-        <label>What is your favorite ice-cream flavor?
-          <select name="Flavor">
-            <option value="Chocolate" selected>Chcolate</option>
-            <option value="Vanilla">Vanilla</option>
-            <option value="Strawberry">Strawberry</option>
-            <option value="Mint Chocolate Chip">Mint Chocolate Chip</option>
-            <option value="Cookie Dough">Cookie Dough</option>
-            <option value="Rocky Road">Rocky Road</option>
-            <option value="Neopolitan">Neopolitan</option>
-          </select>
-        </label>
-      </fieldset>
-      <fieldset>
-        <label>Please write a short essay about your favorite meal. We need citations.
-          <textarea name="essay">Write your essay here.</textarea>
-        </label>
-      </fieldset>
-      <fieldset>
+      </div><div>
+      <label>What is your favorite ice-cream flavor?
+        <select name="Flavor">
+          <option value="Chocolate" selected>Chcolate</option>
+          <option value="Vanilla">Vanilla</option>
+          <option value="Strawberry">Strawberry</option>
+          <option value="Mint Chocolate Chip">Mint Chocolate Chip</option>
+          <option value="Cookie Dough">Cookie Dough</option>
+          <option value="Rocky Road">Rocky Road</option>
+          <option value="Neopolitan">Neopolitan</option>
+        </select>
+      </label>
+      </div><div>
+      <label>Please write a short essay about your favorite meal. We need citations.
+        <textarea name="essay">Write your essay here.</textarea>
+      </label>
+      </div><div>
+      <label>
         Press this button if you are explicitly experiencing hunger at this
         exact moment.
         <button name="hungry">
           I'm Hungry
         </button>
-      </fieldset>
-      <fieldset>
+      </label>
+      </div><div>
+      <label>
         Please upload an image of your best pair of chopsticks.
         <input type="file" name="chopsticks">
-      </fieldset>
-      <fieldset>
+      </label>
+      </div><div>
+      <label>
         Thank you for filling out our very important survey.
         Please press the button below when you are finished!
         <input type="submit" name="submit" value="Send">
-      </fieldset>
+      </label>
+      </div>
     </form>
   </body>
 </html>
