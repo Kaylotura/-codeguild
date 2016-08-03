@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="engl">
+  <head>
+    <meta charset="utf-8">
+    <title>Food Preferences</title>
+  </head>
+  <body>
+    <form>
+      <fieldset>
+        What did you eat for Dinner?
+        <input type="text" name="dinner">
+      </fieldset>
+      <fieldset>
+        Did your dinner have any of the following?
+        Check all that apply!
+        <input type="checkbox" name="food" value="meat"> Meat
+        <input type="checkbox" name="food" value="potatoes"> Potatoes
+        <input type="checkbox" name="food" value="broccoli"> Brocoli
+        <input type="checkbox" name="food" value="cheese"> Cheese
+      </fieldset>
+      <fieldset>
+        Was it a vegetarian meal, or a non-vegetarian meal?
+        <input type="radio" name="diet" value="vegetarian"> Vegetarian
+        <input type="radio" name="diet" value="non-vegetarian"> Non-vegetarian
+      </fieldset>
+      <fieldset>
+        What is your favorite ice-cream flavor?
+        <select name="Flavor">
+          <option value="Chocolate" selected>Chcolate</option>
+          <option value="Vanilla">Vanilla</option>
+          <option value="Strawberry">Strawberry</option>
+          <option value="Mint Chocolate Chip">Mint Chocolate Chip</option>
+          <option value="Cookie Dough">Cookie Dough</option>
+          <option value="Rocky Road">Rocky Road</option>
+          <option value="Neopolitan">Neopolitan</option>
+        </select>
+      </fieldset>
+      <fieldset>
+        Please write a short essay about your favorite meal. We need citations.
+        <textarea name="essay">Write your essay here.</textarea>
+      </fieldset>
+      <fieldset>
+        Press this button if you are explicitly experiencing hunger at this
+        exact moment.
+        <button name="hungry">
+          I'm Hungry
+        </button>
+      </fieldset>
+      <fieldset>
+        Please upload an image of your best pair of chopsticks.
+        <input type="file" name="chopsticks">
+      </fieldset>
+      <fieldset>
+        Thank you for filling out our very important survey.
+        Please press the button below when you are finished!
+        <input type="submit" name="submit" value="Send">
+      </fieldset>
+    </form>
+  </body>
+</html>
