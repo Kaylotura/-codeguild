@@ -9,42 +9,39 @@
 
 var ALPHA_TO_NUMBER = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
-/** Takes in a letter and a key, and returns a caeser cypher version of
-string. It does this by assigning each letter an alphanumeric index, then
+/** Takes in a word and a key, and returns a caeser cypher version of
+the word.
+//
+//It does this by assigning each letter an alphanumeric index, then
 increasing that alphanumeric index by the value of the key, wrapping around
 the alpbanumeric index. */
-// var plainStringLetters = plainString.split('');
-
-
-// function caesarEncrypt(plainString, key) {
-//   var cipher = [];
-//   for (var i = 0; i < plainString.length; i += 1) {
-//     var workingString = _.toLower(plainString);
-//     var workingLetter = workingString.charAt(i);
-//     var oldAlphaIndex = ALPHA_TO_NUMBER.indexOf(workingLetter);
-//     if (key + oldAlphaIndex >= ALPHA_TO_NUMBER.length) {
-//       var newAlphaIndex = key + oldAlphaIndex - ALPHA_TO_NUMBER.length;
-//     } else {
-//       var newAlphaIndex = oldAlphaIndex + key;
-//     } cipher += ALPHA_TO_NUMBER[newAlphaIndex];
-//   } return cipher;
-// }
-
-function caesarEncrypt(plainString, key) {
+function encryptWord(plainString, key) {
   var lowersString = _.toLower(plainString);
   var workingLetters = lowersString.split('');
-  var cipher = _.reduce(workingLetters, function(letter) {
-    var oldAlphaIndex = ALPHA_TO_NUMBER.indexOf(letter);
-    if (key + oldAlphaIndex >= ALPHA_TO_NUMBER.length) {
-      var newAlphaIndex = key + oldAlphaIndex - ALPHA_TO_NUMBER.length;
-    } else {
-      var newAlphaIndex = oldAlphaIndex + key;
-    } return ALPHA_TO_NUMBER[newAlphaIndex];
-  });
-  return cipher;
+  var wordCipher = _.reduce(
+    workingLetters,
+    function(runningWord, letter) {
+      var oldAlphaIndex = ALPHA_TO_NUMBER.indexOf(letter);
+      if (key + oldAlphaIndex >= ALPHA_TO_NUMBER.length) {
+        var newAlphaIndex = key + oldAlphaIndex - ALPHA_TO_NUMBER.length;
+      } else {
+        var newAlphaIndex = oldAlphaIndex + key;
+      } return runningWord + ALPHA_TO_NUMBER[newAlphaIndex];
+    },
+  '');
+  return wordCipher;
 }
 
-
+/** Takes in a group of words and a key, and returns a caeser cypher version of
+string.*/
+function caesarEncrypt(plainString, key) {
+  var workingWords = plainString.split(' ');
+  var cypheredSentence = [];
+  for (var i = 0; i < workingWords.length; i += 1) {
+    var cypheredWord = encryptWord(workingWords[i], key);
+    cypheredSentence += cypheredWord + ' ';
+  } return cypheredSentence;
+}
 
 /** Takes in a string in a caesar-cypher, and it's key, and returns the
 decyphered string. */
@@ -54,5 +51,5 @@ function caesarDecrypt(plainString, key) {
   return caesarEncrypt(newString, backwardsKey);
 }
 
-console.log(caesarEncrypt('bat', 12));
-console.log(caesarDecrypt('nmf', 12));
+console.log(caesarEncrypt('To sit in solemn silence in a dull dark dock', 13));
+console.log(caesarDecrypt('ur guehfgf uvf svfgf ntnvafg gur cbfgf', 13));
