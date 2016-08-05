@@ -5,22 +5,20 @@ div {
 .row {
   margin: 20px;
   display: flex;
-  height: 100px;
-  box-sizing: border-box;
-  justify-content: space-between;
+  justify-content: space-between
 }
 
-div.inner {
+.row > div {
   flex: 1;
   margin: 10px;
+  height: 78px;
+  box-sizing: border-box;
 }
 
-div.inner.greater{
+div.greater{
   flex: 4;
 }
 
-div.inner.small{
+div.small{
   max-width: 90px;
-  justify: center;
-
 }
