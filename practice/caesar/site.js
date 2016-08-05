@@ -10,11 +10,12 @@
 var ALPHA_TO_NUMBER = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
 /** Takes in a word and a key, and returns a caeser cypher version of
-the word.
-//
-//It does this by assigning each letter an alphanumeric index, then
-increasing that alphanumeric index by the value of the key, wrapping around
-the alpbanumeric index. */
+ * the word, if the word has any punctuation in it, the punctuation remains as
+ * it was.
+ *
+ * It does this by assigning each letter an alphanumeric index, then
+ * increasing that alphanumeric index by the value of the key, wrapping around
+ * the alpbanumeric index. */
 function encryptWord(plainString, key) {
   var lowersString = _.toLower(plainString);
   var workingLetters = lowersString.split('');
@@ -36,7 +37,7 @@ function encryptWord(plainString, key) {
 }
 
 /** Takes in a group of words and a key, and returns a caeser cypher version of
-string.*/
+ * string.*/
 function caesarEncrypt(plainString, key) {
   var workingWords = plainString.split(' ');
   var cypheredSentence = [];
@@ -47,12 +48,14 @@ function caesarEncrypt(plainString, key) {
 }
 
 /** Takes in a string in a caesar-cypher, and it's key, and returns the
-decyphered string. */
+ * decyphered string. */
 function caesarDecrypt(plainString, key) {
   var backwardsKey = ALPHA_TO_NUMBER.length - key;
   var newString = plainString;
   return caesarEncrypt(newString, backwardsKey);
 }
 
+console.log('to sit in solemn silence in a dull, dark, dock (Cypher 7)');
 console.log(caesarEncrypt('To sit in solemn silence in a dull, dark, dock', 7));
+console.log('ur guehfgf uvf svfgf ntnvafg gur cbfgf! (Cypher 13)');
 console.log(caesarDecrypt('ur guehfgf uvf svfgf ntnvafg gur cbfgf!', 13));
