@@ -21,14 +21,17 @@ function encryptWord(plainString, key) {
   var wordCipher = _.reduce(
     workingLetters,
     function(runningWord, letter) {
-      var oldAlphaIndex = ALPHA_TO_NUMBER.indexOf(letter);
-      if (key + oldAlphaIndex >= ALPHA_TO_NUMBER.length) {
-        var newAlphaIndex = key + oldAlphaIndex - ALPHA_TO_NUMBER.length;
+      if (ALPHA_TO_NUMBER.indexOf(letter) >= 0) {
+        var oldAlphaIndex = ALPHA_TO_NUMBER.indexOf(letter);
+        if (key + oldAlphaIndex >= ALPHA_TO_NUMBER.length) {
+          var newAlphaIndex = key + oldAlphaIndex - ALPHA_TO_NUMBER.length;
+        } else {
+          var newAlphaIndex = oldAlphaIndex + key;
+        } return runningWord + ALPHA_TO_NUMBER[newAlphaIndex];
       } else {
-        var newAlphaIndex = oldAlphaIndex + key;
-      } return runningWord + ALPHA_TO_NUMBER[newAlphaIndex];
-    },
-  '');
+        return runningWord + letter;
+      }},
+    '');
   return wordCipher;
 }
 
@@ -51,5 +54,5 @@ function caesarDecrypt(plainString, key) {
   return caesarEncrypt(newString, backwardsKey);
 }
 
-console.log(caesarEncrypt('To sit in solemn silence in a dull dark dock', 13));
-console.log(caesarDecrypt('ur guehfgf uvf svfgf ntnvafg gur cbfgf', 13));
+console.log(caesarEncrypt('To sit in solemn silence in a dull, dark, dock', 7));
+console.log(caesarDecrypt('ur guehfgf uvf svfgf ntnvafg gur cbfgf!', 13));
