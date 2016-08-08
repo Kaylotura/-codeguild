@@ -1,0 +1,24 @@
+div {
+  border: 1px solid black;
+}
+
+.row {
+  margin: 20px;
+  display: flex;
+  justify-content: space-between
+}
+
+.row > div {
+  flex: 1;
+  margin: 10px;
+  height: 78px;
+  box-sizing: border-box;
+}
+
+div.greater{
+  flex: 4;
+}
+
+.small{
+  max-width: 90px;
+}
