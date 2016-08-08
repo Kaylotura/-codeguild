@@ -17,25 +17,22 @@ var ALPHA_TO_NUMBER = 'abcdefghijklmnopqrstuvwxyz'.split('');
  * increasing that alphanumeric index by the value of the key, wrapping around
  * the alpbanumeric index. */
 function encryptWord(plainString, key) {
-  var lowersString = _.toLower(plainString);
-  var workingLetters = lowersString.split('');
-  var wordCipher = _.reduce(
-    workingLetters,
-    function(runningWord, letter) {
-      if (ALPHA_TO_NUMBER.indexOf(letter) >= 0) {
-        var oldAlphaIndex = ALPHA_TO_NUMBER.indexOf(letter);
-        if (key + oldAlphaIndex >= ALPHA_TO_NUMBER.length) {
-          var newAlphaIndex = key + oldAlphaIndex - ALPHA_TO_NUMBER.length;
-        } else {
-          var newAlphaIndex = oldAlphaIndex + key;
-        } return runningWord + ALPHA_TO_NUMBER[newAlphaIndex];
+  var cipher = '';
+  var workingWord = _.toLower(plainString);
+  for (var i = 0; i < workingWord.length; i += 1) {
+    var workingLetter = workingWord.charAt(i);
+    if (ALPHA_TO_NUMBER.indexOf(workingLetter) >= 0) {
+      var oldAlphaIndex = ALPHA_TO_NUMBER.indexOf(workingLetter);
+      if (key + oldAlphaIndex >= ALPHA_TO_NUMBER.length) {
+        var newAlphaIndex = key + oldAlphaIndex - ALPHA_TO_NUMBER.length;
       } else {
-        return runningWord + letter;
-      }},
-    '');
-  return wordCipher;
+        var newAlphaIndex = oldAlphaIndex + key;
+      } cipher += ALPHA_TO_NUMBER[newAlphaIndex];
+    } else {
+      cipher += workingLetter;
+    }
+  } return cipher;
 }
-
 
 /** Takes in a group of words and a key, and returns a caeser cypher version of
  * string.*/
