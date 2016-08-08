@@ -19,6 +19,6 @@ div.greater{
   flex: 4;
 }
 
-div.small{
+.small{
   max-width: 90px;
 }
