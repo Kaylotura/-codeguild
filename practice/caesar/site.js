@@ -7,8 +7,8 @@
  * Decipher example:  fqiu', 2 -> 'dogs'
  */
 
-var ALPHA_TO_NUMBER = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
+var ALPHA_TO_NUMBER = 'abcdefghijklmnopqrstuvwxyz'.split('');
 /** Takes in a word and a key, and returns a caeser cypher version of
  * the word, if the word has any punctuation in it, the punctuation remains as
  * it was.
@@ -36,6 +36,7 @@ function encryptWord(plainString, key) {
   return wordCipher;
 }
 
+
 /** Takes in a group of words and a key, and returns a caeser cypher version of
  * string.*/
 function caesarEncrypt(plainString, key) {
@@ -54,6 +55,7 @@ function caesarDecrypt(plainString, key) {
   var newString = plainString;
   return caesarEncrypt(newString, backwardsKey);
 }
+
 
 console.log('to sit in solemn silence in a dull, dark, dock (Cypher 7)');
 console.log(caesarEncrypt('To sit in solemn silence in a dull, dark, dock', 7));
