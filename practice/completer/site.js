@@ -29,9 +29,11 @@ var completerProto = {
 Completer.prototype = completerProto;
 
 var katiesWords = new Completer();
+katiesWords.addCompletion('bakre');
 katiesWords.addCompletion('baker');
 katiesWords.addCompletion('butcher');
 katiesWords.addCompletion('candlestick-maker');
+katiesWords.removeCompletion('bakre');
 
 console.log('Search for b');
 console.dir(katiesWords.complete('b'));
