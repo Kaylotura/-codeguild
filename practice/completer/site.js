@@ -9,31 +9,28 @@
  * an array ordered in more weighted words first.
  */
 function Completer() {
-  this.validCompletion = {};
+  this.validCompletionToWeight = {};
 }
 
 var completerProto = {
   addCompletion: function(str) {
-    this.validCompletion[str] = 0;
+    this.validCompletionToWeight[str] = 0;
   },
   removeCompletion: function(str) {
-    delete this.validCompletion[str];
+    delete this.validCompletionToWeight[str];
   },
   complete: function(prefix) {
-    var potentialWords = {};
-    for (var key in this.validCompletion) {
-      if ({}.hasOwnProperty.call(this.validCompletion, key)) {
-        if (new RegExp('^' + prefix).test(key)) {
-          potentialWords[key] = this.validCompletion[key];
-        }
-      }
-      var weightedList =  _.sortBy(_.keys(potentialWords), function(o) {
-        return potentialWords[o];
+    var potentialWords = _.filter(
+      _.keys(this.validCompletionToWeight), function(o) {
+        return new RegExp('^' + prefix).test(o);
       });
-    } return weightedList.reverse();
+    var weightedList =  _.sortBy(potentialWords, function(o) {
+      return o;
+    });
+    return weightedList.reverse();
   },
   selectCompletion: function(str) {
-    this.validCompletion[str] += 1;
+    this.validCompletionToWeight[str] += 1;
   }
 };
 
