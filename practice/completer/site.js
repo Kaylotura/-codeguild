@@ -20,19 +20,17 @@ var completerProto = {
     delete this.validCompletion[str];
   },
   complete: function(prefix) {
-    var potentialList = [];
+    var potentialWords = {};
     for (var key in this.validCompletion) {
       if ({}.hasOwnProperty.call(this.validCompletion, key)) {
         if (new RegExp('^' + prefix).test(key)) {
-          potentialList.push(key + ' ');
+          potentialWords[key] = this.validCompletion[key];
         }
-
-        var weightedList =  _.sortBy(_.values(this.validCompletion), function(o) {
-          return mapped[o];
-        });
-        return weightedList;
       }
-    }
+      var weightedList =  _.sortBy(_.keys(potentialWords), function(o) {
+        return potentialWords[o];
+      });
+    } return weightedList;
   },
   selectCompletion: function(str) {
     this.validCompletion[str] += 1;
@@ -42,9 +40,13 @@ var completerProto = {
 Completer.prototype = completerProto;
 
 var katiesWords = new Completer();
+katiesWords.addCompletion('beekeeper');
 katiesWords.addCompletion('baker');
 katiesWords.addCompletion('butcher');
 katiesWords.addCompletion('candlestick-maker');
+katiesWords.selectCompletion('butcher');
+katiesWords.selectCompletion('butcher');
+katiesWords.selectCompletion('baker');
 
 console.log('Search for b');
 console.dir(katiesWords.complete('b'));
