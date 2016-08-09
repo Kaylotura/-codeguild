@@ -22,7 +22,7 @@ var completerProto = {
       if (new RegExp('^' + prefix).test(word)) {
         potentialList.push(word + ' ');
       }
-    } return potentialList.join(' ');
+    } return potentialList;
   }
 };
 
