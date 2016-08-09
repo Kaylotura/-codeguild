@@ -40,13 +40,9 @@ var completerProto = {
 Completer.prototype = completerProto;
 
 var katiesWords = new Completer();
-<<<<<<< HEAD
+
 katiesWords.addCompletion('bakre');
-katiesWords.addCompletion('baker');
-katiesWords.addCompletion('butcher');
-katiesWords.addCompletion('candlestick-maker');
 katiesWords.removeCompletion('bakre');
-=======
 katiesWords.addCompletion('beekeeper');
 katiesWords.addCompletion('baker');
 katiesWords.addCompletion('butcher');
@@ -54,7 +50,6 @@ katiesWords.addCompletion('candlestick-maker');
 katiesWords.selectCompletion('butcher');
 katiesWords.selectCompletion('butcher');
 katiesWords.selectCompletion('baker');
->>>>>>> completer_advanced
 
 console.log('Search for b');
 console.dir(katiesWords.complete('b'));
