@@ -19,10 +19,10 @@ var completerProto = {
     var potentialList = [];
     for (var i = 0; i < this.validCompletion.length; i += 1) {
       var word = this.validCompletion[i];
-      if (prefix.test(word)) {
-        potentialList += word + ' ';
+      if (new RegExp('^' + prefix).test(word)) {
+        potentialList.push(word + ' ');
       }
-    }
+    } return potentialList.join(' ');
   }
 };
 
@@ -32,3 +32,10 @@ var katiesWords = new Completer();
 katiesWords.addCompletion('baker');
 katiesWords.addCompletion('butcher');
 katiesWords.addCompletion('candlestick-maker');
+
+console.log('Search for b');
+console.dir(katiesWords.complete('b'));
+console.log('Search for c');
+console.dir(katiesWords.complete('c'));
+console.log('Search for  bu');
+console.dir(katiesWords.complete('bu'));
