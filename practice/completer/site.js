@@ -30,7 +30,7 @@ var completerProto = {
       var weightedList =  _.sortBy(_.keys(potentialWords), function(o) {
         return potentialWords[o];
       });
-    } return weightedList;
+    } return weightedList.reverse();
   },
   selectCompletion: function(str) {
     this.validCompletion[str] += 1;
