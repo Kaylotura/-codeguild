@@ -36,11 +36,11 @@ function runName() {
   * on.
   */
   function validateName(nameEntry) {
-    return /((\w+)\s(\w+))/.test(nameEntry);
+    return /(\w+)\s(\w+)/.test(nameEntry);
   }
   if (validateName(nameEntry)) {
     removeYellowFromField('fullname');
-  } else if (nameEntry = '') {
+  } else if (!nameEntry) {
     removeYellowFromField('fullname');
   } else {
     makeFieldYellow('fullname');
@@ -63,7 +63,7 @@ function runPhoneNumber() {
   }
   if (validatePhoneNumber(phoneNumberEntry)) {
     removeYellowFromField('phone-number');
-  } else if (phoneNumberEntry = '') {
+  } else if (!phoneNumberEntry) {
     removeYellowFromField('phone-number');
   } else {
     makeFieldYellow('phone-number');
@@ -76,6 +76,7 @@ function runPhoneNumber() {
  */
 function runBirthday() {
   var birthdayEntry = $('input.birthday').prop('value');
+  console.dir(birthdayEntry);
  /**
   * If the entry in the phone number class text box is valid or empty, the
   * invalid class is turned off for that textbox, but otherwise it is turned
@@ -86,7 +87,7 @@ function runBirthday() {
   }
   if (validateBirthday(birthdayEntry)) {
     removeYellowFromField('birthday');
-  } else if (birthdayEntry = '') {
+  } else if (!birthdayEntry) {
     removeYellowFromField('birthday');
   } else {
     makeFieldYellow('birthday');
@@ -95,23 +96,13 @@ function runBirthday() {
 
 
 /**
- * This really just activates a check for each field when typing occiurs in any
- * individual field.
- */
-function checknameValidityWhileTyping() {
-  runName();
-  runPhoneNumber();
-  runBirthday();
-}
-
-/**
- * The even handler runs all three validations at the same time, by running
- * check name validity while typing function. I think I can pull this appart.
+ * The even handler run the validation that the user is typing indirectly after
+ * each keystroke.
  */
 function registerEventHandlers() {
-  $('form').on('keyup', function() {
-    checknameValidityWhileTyping();
-  });
+  $('input.fullname').on('keyup', runName);
+  $('input.birthday').on('keyup', runBirthday);
+  $('input.phone-number').on('keyup', runPhoneNumber);
 }
 
 $(document).ready(registerEventHandlers);
