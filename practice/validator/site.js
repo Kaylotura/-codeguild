@@ -7,34 +7,63 @@
  * valid the background returns to white.
  */
 
-var NAME_STUCTURE = /(\w+)\s(\w+)/;
+var NAME_STUCTURE = /((\w+)\s(\w+))/;
 var BIRTHDAY_STRUCTURE = /(\d\d)\-(\d\d)\-(\d\d\d\d)/;
 var PHONE_NUMBER_STRUCTURE = /(\d\d\d)\-(\d\d\d)\-(\d\d\d\d)/;
+var nameEntry = document.getElementsByClassName('name').value;
+var phoneNumberEntry = document.getElementsByClassName('phone-number').value;
+var birthdayEntry = document.getElementsByClassName('birthday').value;
 
 /**
  *
  */
-function validateName(entry) {
-  return NAME_STUCTURE.test(entry);
+function validateName() {
+  return NAME_STUCTURE.test(nameEntry);
 }
 
 /**
  *
  */
-function validatePhoneNumber(entry) {
-  return PHONE_NUMBER_STRUCTURE.test(entry);
+function validatePhoneNumber() {
+  return PHONE_NUMBER_STRUCTURE.test(phoneNumberEntry);
 }
 
 /**
  *
  */
-function validateBirthday(entry) {
-  return BIRTHDAY_STRUCTURE.test(entry);
+function validateBirthday() {
+  return BIRTHDAY_STRUCTURE.test(birthdayEntry);
 }
 
 /**
  *
  */
-function toggleFieldYellow(field) {
-  $('input.' + field).toggleClass('invalid');
+function makeFiekdYellow(field) {
+  $('input.' + field).addClass('invalid');
 }
+
+/**
+ *
+ */
+function removeYellowFromField(field) {
+  $('input.' + field).removeClass('invalid');
+}
+
+
+
+/**
+ *
+ */
+function checknameValidityWhileTyping() {
+  $('name').on('change', function() {
+    var nameEntry = document.getElementsByClassName('name').value;
+    if (validateName()) {
+      removeYellowFromField('name');
+    } else {
+      makeFiekdYellow('name');
+    }
+  });
+}
+
+
+$(document).ready(registerEventHandlers);
