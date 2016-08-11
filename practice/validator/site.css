@@ -1,0 +1,7 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
+fieldset {
+width: 300px;
+}
