@@ -45,7 +45,7 @@ function checkIfValid(field, entry) {
  */
 function validateEntry(inputclass) {
   var entry = $('input.' + inputclass).prop('value');
-  if (inputclass(entry)) {
+  if (checkIfValid(inputclass, entry)) {
     removeYellowFromField(inputclass);
   } else if (!entry) {
     removeYellowFromField(inputclass);
