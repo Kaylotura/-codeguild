@@ -36,10 +36,9 @@ var completerProto = {
    * weight.
    */
   complete: function(prefix) {
+    var prefixPattern = new RegExp('^' + prefix);
     var potentialWords = _.filter(
-      _.keys(this.validCompletionToWeight), function(o) {
-        return new RegExp('^' + prefix).test(o);
-      });
+      _.keys(this.validCompletionToWeight),  prefixPattern.test);
     var weightedList =  _.sortBy(potentialWords).reverse();
     return weightedList;
   },
