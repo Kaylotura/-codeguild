@@ -81,14 +81,13 @@ function runPhoneNumber() {
 }
 
 /**
- * The event handler activates the event handler by piping the function
- * initiation through the apporiopriate run function. The initiation takes
- * place *after* each keystroke in the appropriate field.
+ * The event handler activates the corresponding run function based on the input
+ * field that has just had a character entered after each keystroke.
  */
 function registerEventHandlers() {
-  $('input.fullname').on('keyup', runName);
-  $('input.birthday').on('keyup', runBirthday);
-  $('input.phone-number').on('keyup', runPhoneNumber);
+  $('.fullname').on('keyup', runName);
+  $('.birthday').on('keyup', runBirthday);
+  $('.phone-number').on('keyup', runPhoneNumber);
 }
 
 $(document).ready(registerEventHandlers);
