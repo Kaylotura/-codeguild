@@ -1,47 +1,48 @@
 'use strict';
 
 /**
- * The Validator takes in the user's input as they type into the form and
- * uses kestroke events to visually que the user that their input is not
- * valid by filling the field with a yellow background. Once the the entry is
- * valid the background returns to white.
+ * The Validator takes in the user's input as they type into any given text box
+ * in the form and uses kestroke events to visually que the user that their
+ * input is either valid or not, by filling the field with a yellow background
+ * while invalid.
+ */
+
+/**
+ * Adds the invalid class to the given field (distinguished by a class).
  *
- * Currently there are many patterns that need to be taken care of.
+ * The invalid class has a yellow background in the site.css file.
  */
-
-/**
- * Adds the invalid class to the given input field which has a yellow
- * background in its properties.
- */
-function makeFieldYellow(field) {
-  $('input.' + field).addClass('invalid');
+function makeFieldYellow(inputclass) {
+  $('input.' + inputclass).addClass('invalid');
 }
 
 /**
- * Removes the yellow-background invalid class from an input field.
+ * Removes the invalid class from a given field (distinguished by a class).
  */
-function removeYellowFromField(field) {
-  $('input.' + field).removeClass('invalid');
+function removeYellowFromField(inputclass) {
+  $('input.' + inputclass).removeClass('invalid');
 }
 
 /**
- * Takes in an entry, and the field it came from and returns whether it is a
- * valid entry or not.
+ * Takes in a field (distinguished by a class) and the entry that has been
+ * typed into the textbox of the given field, and returns a boolen representing
+ * whether or not the entry is valid for the given field.
  */
-function checkIfValid(field, entry) {
-  if (field === 'fullname') {
+function checkIfValid(inputclass, entry) {
+  if (inputclass === 'fullname') {
     return /(\w+)\s(\w+)/.test(entry);
-  } else if (field === 'birthday') {
+  } else if (inputclass === 'birthday') {
     return /(\d\d\d\d)\-(\d\d)\-(\d\d)/.test(entry);
-  } else if (field === 'phone-number') {
+  } else if (inputclass === 'phone-number') {
     return /(\d\d\d)\-(\d\d\d)\-(\d\d\d\d)/.test(entry);
   }
 }
 
 
 /**
- * Begins by checking the entry in fullname class text box on the form,
- * then proceeds to run that value through a validation process.
+ * Takes in an inputclass, determines it's current entry, checks to see if that
+ * entry is valid, empty, or invalid. If it is valid or empty, it turns off the
+ * yellow background, but if it is invalid, the background becomes yellow.
  */
 function validateEntry(inputclass) {
   var entry = $('input.' + inputclass).prop('value');
@@ -55,21 +56,34 @@ function validateEntry(inputclass) {
 }
 
 
+/**
+ * Initiated by the event handler, this function initiates the validateEntry
+ * function with the appropriate field, 'fullname.'
+ */
 function runName() {
   validateEntry('fullname');
 }
 
+/**
+ * Initiated by the event handler, this function initiates the validateEntry
+ * function with the appropriate field, 'birthday.'
+ */
 function runBirthday() {
   validateEntry('birthday');
 }
 
+/**
+ * Initiated by the event handler, this function initiates the validateEntry
+ * function with the appropriate field, 'phone-number.'
+ */
 function runPhoneNumber() {
   validateEntry('phone-number');
 }
 
 /**
- * The even handler run the validation that the user is typing indirectly after
- * each keystroke.
+ * The event handler activates the event handler by piping the function
+ * initiation through the apporiopriate run function. The initiation takes
+ * place *after* each keystroke in the appropriate field.
  */
 function registerEventHandlers() {
   $('input.fullname').on('keyup', runName);
