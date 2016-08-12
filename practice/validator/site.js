@@ -30,11 +30,11 @@ function removeYellowFromField(inputclass) {
  */
 function checkIfValid(inputclass, entry) {
   if (inputclass === 'fullname') {
-    return /(\w+)\s(\w+)/.test(entry);
+    return /[a-z]+\s[a-z]+/i.test(entry);
   } else if (inputclass === 'birthday') {
-    return /(\d\d\d\d)\-(\d\d)\-(\d\d)/.test(entry);
+    return /\d{4}\-(\d{2})\-(\d{2})/.test(entry);
   } else if (inputclass === 'phone-number') {
-    return /(\d\d\d)\-(\d\d\d)\-(\d\d\d\d)/.test(entry);
+    return /(\d{3})\-(\d{3})\-(\d{4})/.test(entry);
   }
 }
 
