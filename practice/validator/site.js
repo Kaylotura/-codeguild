@@ -24,60 +24,92 @@ function removeYellowFromField(inputclass) {
 }
 
 /**
- * Takes in a field (distinguished by a class) and the entry that has been
- * typed into the textbox of the given field, and returns a boolen representing
- * whether or not the entry is valid for the given field.
+ * Takes in the name entry and returns a boolen representing whether or not the
+ * entry is valid.
  */
-function checkIfValid(inputclass, entry) {
-  if (inputclass === 'fullname') {
-    return /[a-z]+\s[a-z]+/i.test(entry);
-  } else if (inputclass === 'birthday') {
-    return /\d{4}\-(\d{2})\-(\d{2})/.test(entry);
-  } else if (inputclass === 'phone-number') {
-    return /(\d{3})\-(\d{3})\-(\d{4})/.test(entry);
-  }
+function checkNameIfValid(nameEntry) {
+  return /[a-z]+\s[a-z]+/i.test(nameEntry);
+}
+
+/**
+* Takes in the birthday entry and returns a boolen representing whether or not
+* the entry is valid.
+ */
+function checkBirthdayIfValid(birthdayEntry) {
+  return /\d{4}\-(\d{2})\-(\d{2})/.test(birthdayEntry);
+}
+
+ /**
+ * Takes in the phone number entry returns a boolen representing whether or not
+ * the entry is valid.
+  */
+function checkPhoneNumberIfValid(phoneNumberEntry) {
+  return /(\d{3})\-(\d{3})\-(\d{4})/.test(phoneNumberEntry);
 }
 
 
 /**
- * Takes in an inputclass, determines it's current entry, checks to see if that
- * entry is valid, empty, or invalid. If it is valid or empty, it turns off the
- * yellow background, but if it is invalid, the background becomes yellow.
+ *Retireves the entry from a given field, and returns it as a string.
  */
-function validateEntry(inputclass) {
+function getEntry(inputclass) {
   var entry = $('input.' + inputclass).prop('value');
-  if (checkIfValid(inputclass, entry)) {
-    removeYellowFromField(inputclass);
-  } else if (!entry) {
+  return entry;
+}
+
+
+/**
+ * Takes in an inputclass, a boolean based on weather or not the entry
+ * in that class is valid, and the entry itself, and toggles the invalid class
+ * on the given inputclass field based on weather or not the entry is invalid,
+ * or if it is empty.
+ */
+function toggleValidityClass(inputclass, bool, entry) {
+  console.log(bool);
+  if (bool) {
     removeYellowFromField(inputclass);
   } else {
     makeFieldYellow(inputclass);
   }
+  if (!entry) {
+    removeYellowFromField(inputclass);
+  }
 }
 
 
 /**
- * Initiated by the event handler, this function initiates the validateEntry
- * function with the appropriate field, 'fullname.'
+ * Initiated by the event handler, this function grabs the entry for
+ * fullname checks to see if it is valid, then runs the toggle validity
+ * class function on the fullname field.'
  */
 function runName() {
-  validateEntry('fullname');
+  var inputclass = 'fullname';
+  var entry = getEntry(inputclass);
+  var validityBoolean = checkNameIfValid(entry);
+  toggleValidityClass(inputclass, validityBoolean, entry);
 }
 
 /**
- * Initiated by the event handler, this function initiates the validateEntry
- * function with the appropriate field, 'birthday.'
+ * Initiated by the event handler, this function grabs the entry for
+ * birthday checks to see if it is valid, then runs the toggle validity
+ * class function on the birthday field.'
  */
 function runBirthday() {
-  validateEntry('birthday');
+  var inputclass = 'birthday';
+  var entry = getEntry(inputclass);
+  var validityBoolean = checkBirthdayIfValid(entry);
+  toggleValidityClass(inputclass, validityBoolean, entry);
 }
 
 /**
- * Initiated by the event handler, this function initiates the validateEntry
- * function with the appropriate field, 'phone-number.'
+ * Initiated by the event handler, this function grabs the entry for
+ * phone-number checks to see if it is valid, then runs the toggle validity
+ * class function on the phone number field.'
  */
 function runPhoneNumber() {
-  validateEntry('phone-number');
+  var inputclass = 'phone-number';
+  var entry = getEntry(inputclass);
+  var validityBoolean = checkPhoneNumberIfValid(entry);
+  toggleValidityClass(inputclass, validityBoolean, entry);
 }
 
 /**
