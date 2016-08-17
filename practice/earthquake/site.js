@@ -63,29 +63,31 @@ function formatEarthquakes(earthquakes) {
  * in a list of simple earthquakes, and assigning layer values based on the
  * magnitude, age, and location of the earthquake.
  *
- * I have yet to get opacity to work. And messing with new ol.Point
+ * I have yet to get opacity to work.
  *
+ * Earth renders fine, but dots don't show up at all...
  */
 function getDots(earthquakes) {
-  var dots = [];
+  var dots = [earth];
   for (var i = 0; i < earthquakes.length; i += 1) {
     var layer = new ol.layer.Vector({
       source: new ol.source.Vector({
         features: new ol.Feature({
-          'geometry': new ol.Point(
+          'geometry': new ol.geom.Point(
             earthquakes[i].XYCoords
           )
         })
       }),
       style: new ol.style.Style({
         image: new ol.style.Circle({
-          radius: earthquakes[i].magnitude,
+          radius: 2 + earthquakes[i].magnitude,
           fill: new ol.style.Fill({color: 'FF5050'})
         })
       })
     });
-    dots += layer;
+    dots.push(layer);
   }
+  console.log(dots);
   return dots;
 }
 
@@ -98,8 +100,9 @@ function getDots(earthquakes) {
 function renderEarthquakes(earthquakes) {
   var simpleEarthquakes = formatEarthquakes(earthquakes);
   var dots = getDots(simpleEarthquakes);
+  $('.map').empty()
   var map = new ol.Map({
-    layers: [dots.unshift(earth)],
+    layers: dots,
     target: 'map',
     view: new ol.View({
       center: [0, 0],
