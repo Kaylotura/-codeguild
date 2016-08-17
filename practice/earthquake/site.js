@@ -44,7 +44,9 @@ function formatSingleEarthquake(earthquake) {
 }
 
 /**
- *
+ * Takes in the earthquakes given from the USGS and passes each item into the
+ * format single earthquake function (above) as part of a mapping, returning an
+ * arry of simple earthquakes.
  */
 function formatEarthquakes(earthquakes) {
   var earthquakeFeatures = earthquakes.features;
@@ -61,7 +63,7 @@ function formatEarthquakes(earthquakes) {
  * in a list of simple earthquakes, and assigning layer values based on the
  * magnitude, age, and location of the earthquake.
  *
- * I have yet to get opacity to work.
+ * I have yet to get opacity to work. And messing with new ol.Point
  *
  */
 function getDots(earthquakes) {
@@ -107,13 +109,10 @@ function renderEarthquakes(earthquakes) {
 /**
  * Initiated by the event handler, this function fetches the earthquake data
  * and asynchronistically sends it through the renderEarthquakes function.
- *
- * I have yet to get this function to work...
- *
  */
 function main() {
   getEarthquakes().
-  then(renderEarthquakes(object));
+  then(renderEarthquakes);
 }
 
 $(document).ready(main);
