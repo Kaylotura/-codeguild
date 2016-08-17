@@ -1,4 +1,16 @@
 'use strict';
+/**
+ * Makes linter ignore ol variable
+ */
+if (!window) {
+  var ol = '';
+}
+
+var earth = new ol.layer.Tile({
+  source: new ol.source.OSM()
+});
+
+
 
 /**
  * Requests the earthquake information for the last seven days from the
@@ -13,7 +25,9 @@ function getEarthquakes() {
 }
 
 /**
- *
+ * Takes a single earthquake object in as an argument, and returns a simpler
+ * earthquake containing only magnitude, age in hours, and an array of XY
+ * coordinates.
  */
 function formatSingleEarthquake(earthquake) {
   var earthquakeProperies = earthquake.properties;
@@ -30,11 +44,7 @@ function formatSingleEarthquake(earthquake) {
 }
 
 /**
- * Initiated by the event handler, this function fetches the earthquake data
- * and asynchronistically manipulates it by extracting information from nested
- * objects & arrays. It then manipulates the date information into an hourly
- * age. It then returns an array of Earthquake Objects, each with a magnitude,
- * location by XY coordinates, and an age.
+ *
  */
 function formatEarthquakes(earthquakes) {
   var earthquakeFeatures = earthquakes.features;
@@ -44,60 +54,66 @@ function formatEarthquakes(earthquakes) {
   return earthquakesAsMagnitutdeAgeCoords;
 }
 
+
+
 /**
+ * Creates an array of vector layers to be added to the map variable, by passing
+ * in a list of simple earthquakes, and assigning layer values based on the
+ * magnitude, age, and location of the earthquake.
+ *
+ * I have yet to get opacity to work.
  *
  */
-function RenderEarthquakes(earthquakes) {
+function getDots(earthquakes) {
+  var dots = [];
+  for (var i = 0; i < earthquakes.length; i += 1) {
+    var layer = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: new ol.Feature({
+          'geometry': new ol.Point(
+            earthquakes[i].XYCoords
+          )
+        })
+      }),
+      style: new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: earthquakes[i].magnitude,
+          fill: new ol.style.Fill({color: 'FF5050'})
+        })
+      })
+    });
+    dots += layer;
+  }
+  return dots;
+}
+
+
+/**
+ * This function formats the eathquake information into simple earthquakes, then
+ * creates a series of vector layers with getDots, and passes them all into a
+ * map with an additional earth layer.
+ */
+function renderEarthquakes(earthquakes) {
   var simpleEarthquakes = formatEarthquakes(earthquakes);
-  var earth = new ol.layer.Tile({
-    source: new ol.source.OSM()
-  });
+  var dots = getDots(simpleEarthquakes);
   var map = new ol.Map({
-    layers: [earth],
+    layers: [dots.unshift(earth)],
     target: 'map',
     view: new ol.View({
       center: [0, 0],
       zoom: 2})
   });
-
 }
-
+/**
+ * Initiated by the event handler, this function fetches the earthquake data
+ * and asynchronistically sends it through the renderEarthquakes function.
+ *
+ * I have yet to get this function to work...
+ *
+ */
 function main() {
-var earthquakes = getEarthquakes().
-then(RenderEarthquakes(earthquakes).
-
+  getEarthquakes().
+  then(renderEarthquakes(object));
 }
-
-
-  //       layers = []
-  //       for (var i = 0; i < x.length; i += 1) {
-  //         var layer = new ol.layer.Vector({
-  //           source: new ol.source.Vector({
-  //             features: new ol.Feature({
-  //               'geometry': new ol.Point(
-  //                 earthquakesAsMagnitutdeAgeCoords[i].XYCoords
-  //               )
-  //             })
-  //           }),
-  //           style: new ol.style.Style({
-  //             image: new ol.style.Circle({
-  //               radius: earthquakesAsMagnitutdeAgeCoords[i].magnitude,
-  //               fill: new ol.style.Fill({color: 'FF5050'})
-  //             })
-  //           })
-  //         })
-  //       });
-  //     layers += layer
-
-
-
-// }
 
 $(document).ready(main);
-
-/**
- * Makes the linter ignore map variable
- */
-if (!window) {
-  print(map);
-}
