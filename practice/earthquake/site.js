@@ -109,43 +109,28 @@ function renderEarthquakes(earthquakes) {
   //   view: new ol.View({
   //     center: [0, 0],
   //     zoom: 2})
-  var count = 1675;
+  var count = simpleEarthquakes.length;
   var features = new Array(count);
-  var e = 18000000;
   for (var i = 0; i < count; ++i) {
     features[i] = new ol.Feature({
       'geometry': new ol.geom.Point(
-          [2 * e * Math.random() - e, 2 * e * Math.random() - e]),
-      'i': i,
-      'size': i % 2 ? 10 : 20
+          simpleEarthquakes[i].XYCoords),
     });
   }
 
-  var styles = {
-    '10': new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 5,
-        fill: new ol.style.Fill({color: '#666666'}),
-        stroke: new ol.style.Stroke({color: '#bada55', width: 1})
-      })
-    }),
-    '20': new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 10,
-        fill: new ol.style.Fill({color: '#666666'}),
-        stroke: new ol.style.Stroke({color: '#bada55', width: 1})
-      })
+  var style = new ol.style.Style({
+    image: new ol.style.Circle({
+      radius: 10,
+      fill: new ol.style.Fill({color: '#FF0606'}),
     })
-  };
+  });
 
   var vectorSource = new ol.source.Vector({
     features: features,
   });
   var vector = new ol.layer.Vector({
     source: vectorSource,
-    style: function(feature) {
-      return styles[feature.get('size')];
-    }
+    style: style
   });
 
   var map = new ol.Map({
@@ -153,7 +138,7 @@ function renderEarthquakes(earthquakes) {
     target: document.getElementById('map'),
     view: new ol.View({
       center: [0, 0],
-      zoom: 2
+      zoom: 1
     })
   });
 
