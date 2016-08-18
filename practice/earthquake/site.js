@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Makes linter ignore ol variable
  */
@@ -9,8 +10,6 @@ if (!window) {
 var earth = new ol.layer.Tile({
   source: new ol.source.OSM()
 });
-
-
 
 /**
  * Requests the earthquake information for the last seven days from the
@@ -60,53 +59,15 @@ function formatEarthquakes(earthquakes) {
   return earthquakesAsMagnitutdeAgeCoords;
 }
 
-
-
 /**
- * Creates an array of vector layers to be added to the map variable, by passing
- * in a list of simple earthquakes, and assigning layer values based on the
- * magnitude, age, and location of the earthquake.
- *
- * Earth renders fine, but dots don't show up at all... I'm kind of at a loss on
- * what's going wrong.
- *
- */
-// function getDots(earthquakes) {
-//   var dots = [earth];
-//   for (var i = 0; i < earthquakes.length; i += 1) {
-//     var layer = new ol.layer.Vector({
-//       source: new ol.source.Vector({
-//         features: new ol.Feature({
-//           'geometry': new ol.geom.Point(
-//             earthquakes[i].XYCoords
-//           )
-//         })
-//       }),
-//       //   })
-//       // })
-//     });
-//     dots.push(layer);
-//   }
-//   return dots;
-// }
-
-
-/**
- * This function formats the eathquake information into simple earthquakes, then
- * creates a series of vector layers with getDots, and passes them all into a
- * map with an additional earth layer.
+ * This function passes the eathquake information into Format Earthquakes to
+ * get simple earthquakes, then creates an array of features for the vectors
+ * when rendering the map. Each feature contains the information necisary to
+ * render the coordinate of an earthquake, and it's size.
  */
 function renderEarthquakes(earthquakes) {
   var simpleEarthquakes = formatEarthquakes(earthquakes);
-  // var dots = getDots(simpleEarthquakes);
-  // console.dir(dots);
   $('.map').empty();
-  // var map = new ol.Map({
-  //   layers: dots,
-  //   target: 'map',
-  //   view: new ol.View({
-  //     center: [0, 0],
-  //     zoom: 2})
   var count = simpleEarthquakes.length;
   var features = new Array(count);
   for (var i = 0; i < count; ++i) {
@@ -117,17 +78,17 @@ function renderEarthquakes(earthquakes) {
           simpleEarthquakes[i].XYCoords[1]])
         ),
       'size': simpleEarthquakes[i].magnitude,
-      'opacity': 1 - (simpleEarthquakes[i].ageInHours / 168),
     });
   }
 
+
   /**
-   *Calculates the style for a given feature.
+   *Calculates the style of a rendered vector layer for a given feature. This
+   * allows each earthquake to have consistent properties.
    */
   function getStyle(feature) {
     var style = new ol.style.Style({
       image: new ol.style.Circle({
-        opacity: feature.get('opacity'),
         radius: feature.get('size'),
         fill: new ol.style.Fill({color: '#990000'}),
       })
@@ -140,9 +101,9 @@ function renderEarthquakes(earthquakes) {
   });
   var vector = new ol.layer.Vector({
     source: vectorSource,
-    style: (function(feature) {
+    style: function(feature) {
       return getStyle(feature);
-    })
+    }
   });
 
   var map = new ol.Map({
@@ -155,16 +116,14 @@ function renderEarthquakes(earthquakes) {
   });
   // });
 }
+
 /**
  * Initiated by the event handler, this function fetches the earthquake data
  * and asynchronistically sends it through the renderEarthquakes function.
  */
-function main() {
+function mapEarthquakes() {
   getEarthquakes().
   then(renderEarthquakes);
 }
 
-
-
-
-$(document).ready(main);
+$(document).ready(mapEarthquakes);
