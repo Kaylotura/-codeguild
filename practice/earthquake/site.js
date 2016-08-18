@@ -112,16 +112,27 @@ function renderEarthquakes(earthquakes) {
   for (var i = 0; i < count; ++i) {
     features[i] = new ol.Feature({
       'geometry': new ol.geom.Point(
-          [simpleEarthquakes[i].XYCoords[0] * 110000,
-          simpleEarthquakes[i].XYCoords[1] * 110000]),
+        ol.proj.fromLonLat(
+          [simpleEarthquakes[i].XYCoords[0],
+          simpleEarthquakes[i].XYCoords[1]])
+        ),
+      'size': simpleEarthquakes[i].magnitude,
+      'opacity': 1 - (simpleEarthquakes[i].ageInHours / 168),
     });
-    var styles = new ol.style.Style({
+  }
+
+  /**
+   *Calculates the style for a given feature.
+   */
+  function getStyle(feature) {
+    var style = new ol.style.Style({
       image: new ol.style.Circle({
-        radius: simpleEarthquakes[i].magnitude,
-        fill: new ol.style.Fill({color: 'red'}),
-        // opacity: 1 - simpleEarthquakes[i].age / 168
+        opacity: feature.get('opacity'),
+        radius: feature.get('size'),
+        fill: new ol.style.Fill({color: '#990000'}),
       })
     });
+    return style;
   }
 
   var vectorSource = new ol.source.Vector({
@@ -129,7 +140,9 @@ function renderEarthquakes(earthquakes) {
   });
   var vector = new ol.layer.Vector({
     source: vectorSource,
-    style: styles,
+    style: (function(feature) {
+      return getStyle(feature);
+    })
   });
 
   var map = new ol.Map({
