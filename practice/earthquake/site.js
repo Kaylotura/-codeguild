@@ -114,7 +114,7 @@ function renderEarthquakes(earthquakes) {
   for (var i = 0; i < count; ++i) {
     features[i] = new ol.Feature({
       'geometry': new ol.geom.Point(
-          simpleEarthquakes[i].XYCoords),
+          [simpleEarthquakes[i].XYCoords[0] * 110000, simpleEarthquakes[i].XYCoords[1] * 110000]),
     });
   }
 
@@ -138,7 +138,7 @@ function renderEarthquakes(earthquakes) {
     target: document.getElementById('map'),
     view: new ol.View({
       center: [0, 0],
-      zoom: 1
+      zoom: 2
     })
   });
 
