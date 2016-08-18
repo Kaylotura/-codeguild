@@ -37,7 +37,11 @@ function formatSingleEarthquake(earthquake) {
     (new Date().getTime() - earthquakeTime) / (1000 * 60 * 60);
   var earthquakeAgeHoursClean = earthquakeAgeHours.toFixed(2);
   var earthquake = {};
-  earthquake.magnitude = earthquakeProperies.mag;
+  if (earthquakeProperies.mag > 0) {
+    earthquake.magnitude = earthquakeProperies.mag;
+  } else {
+    earthquake.magnitude = .001;
+  }
   earthquake.ageInHours = earthquakeAgeHoursClean;
   earthquake.XYCoords = earthquakeGeometry.coordinates.slice(0, 2);
   return earthquake;
@@ -67,30 +71,24 @@ function formatEarthquakes(earthquakes) {
  * what's going wrong.
  *
  */
-function getDots(earthquakes) {
-  var dots = [earth];
-  for (var i = 0; i < earthquakes.length; i += 1) {
-    var layer = new ol.layer.Vector({
-      source: new ol.source.Vector({
-        features: new ol.Feature({
-          'geometry': new ol.geom.Point(
-            earthquakes[i].XYCoords
-          )
-        })
-      }),
-      style: new ol.style.Style({
-        image: new ol.style.Circle({
-          radius: 2 + earthquakes[i].magnitude,
-          fill: new ol.style.Fill({color: 'FF5050'}),
-          stroke: new ol.style.Stroke({color: '#FFFFFF', width: 1}),
-          opacity: 1 - (earthquakes[i].age / 168)
-        })
-      })
-    });
-    dots.push(layer);
-  }
-  return dots;
-}
+// function getDots(earthquakes) {
+//   var dots = [earth];
+//   for (var i = 0; i < earthquakes.length; i += 1) {
+//     var layer = new ol.layer.Vector({
+//       source: new ol.source.Vector({
+//         features: new ol.Feature({
+//           'geometry': new ol.geom.Point(
+//             earthquakes[i].XYCoords
+//           )
+//         })
+//       }),
+//       //   })
+//       // })
+//     });
+//     dots.push(layer);
+//   }
+//   return dots;
+// }
 
 
 /**
@@ -100,8 +98,8 @@ function getDots(earthquakes) {
  */
 function renderEarthquakes(earthquakes) {
   var simpleEarthquakes = formatEarthquakes(earthquakes);
-  var dots = getDots(simpleEarthquakes);
-  console.dir(dots);
+  // var dots = getDots(simpleEarthquakes);
+  // console.dir(dots);
   $('.map').empty();
   // var map = new ol.Map({
   //   layers: dots,
@@ -114,23 +112,24 @@ function renderEarthquakes(earthquakes) {
   for (var i = 0; i < count; ++i) {
     features[i] = new ol.Feature({
       'geometry': new ol.geom.Point(
-          [simpleEarthquakes[i].XYCoords[0] * 110000, simpleEarthquakes[i].XYCoords[1] * 110000]),
+          [simpleEarthquakes[i].XYCoords[0] * 110000,
+          simpleEarthquakes[i].XYCoords[1] * 110000]),
+    });
+    var styles = new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: simpleEarthquakes[i].magnitude,
+        fill: new ol.style.Fill({color: 'red'}),
+        // opacity: 1 - simpleEarthquakes[i].age / 168
+      })
     });
   }
-
-  var style = new ol.style.Style({
-    image: new ol.style.Circle({
-      radius: 10,
-      fill: new ol.style.Fill({color: '#FF0606'}),
-    })
-  });
 
   var vectorSource = new ol.source.Vector({
     features: features,
   });
   var vector = new ol.layer.Vector({
     source: vectorSource,
-    style: style
+    style: styles,
   });
 
   var map = new ol.Map({
@@ -141,17 +140,6 @@ function renderEarthquakes(earthquakes) {
       zoom: 2
     })
   });
-
-  var style = new ol.style.Style({
-    image: new ol.style.Circle({
-      radius: 10,
-    })
-  });
-
-
-
-
-
   // });
 }
 /**
