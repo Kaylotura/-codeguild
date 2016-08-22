@@ -28,23 +28,21 @@ function getEarthquakes() {
  * earthquake containing only magnitude, age in hours, and an array of XY
  * coordinates.
  */
-function formatSingleEarthquake(earthquake) {
-  var earthquakeProperies = earthquake.properties;
-  var earthquakeGeometry = earthquake.geometry;
-  var earthquakeTime = earthquakeProperies.time;
-  var earthquakeAgeHours =
-    (new Date().getTime() - earthquakeTime) / (1000 * 60 * 60);
-  var earthquakeAgeHoursClean = earthquakeAgeHours.toFixed(2);
-  var earthquake = {};
-  if (earthquakeProperies.mag > 0) {
-    earthquake.magnitude = earthquakeProperies.mag;
+function formatSingleEarthquake(Inearthquake) {
+  if (Inearthquake.properties.mag > 0) {
+    var effectiveMagnitude = Inearthquake.properties.mag;
   } else {
-    earthquake.magnitude = .001;
+    effectiveMagnitude = .001;
   }
-  earthquake.ageInHours = earthquakeAgeHoursClean;
-  earthquake.XYCoords = earthquakeGeometry.coordinates.slice(0, 2);
-  return earthquake;
+  return {
+    magnitude: effectiveMagnitude,
+    ageInHours: (
+      (new Date().getTime() - Inearthquake.properties.time) /
+       (1000 * 60 * 60)).toFixed(2),
+    xyCoords: Inearthquake.geometry.coordinates.slice(0,2)
+  };
 }
+
 
 /**
  * Takes in the earthquakes given from the USGS and passes each item into the
@@ -56,6 +54,7 @@ function formatEarthquakes(earthquakes) {
   var earthquakesAsMagnitutdeAgeCoords = _.map(
     earthquakeFeatures, formatSingleEarthquake
   );
+  console.dir(earthquakesAsMagnitutdeAgeCoords)
   return earthquakesAsMagnitutdeAgeCoords;
 }
 
@@ -68,18 +67,16 @@ function formatEarthquakes(earthquakes) {
 function renderEarthquakes(earthquakes) {
   var simpleEarthquakes = formatEarthquakes(earthquakes);
   $('.map').empty();
-  var count = simpleEarthquakes.length;
-  var features = new Array(count);
-  for (var i = 0; i < count; ++i) {
-    features[i] = new ol.Feature({
+  var features = _.map(simpleEarthquakes, function(earthquake) {
+    return new ol.Feature({
       'geometry': new ol.geom.Point(
-        ol.proj.fromLonLat(
-          [simpleEarthquakes[i].XYCoords[0],
-          simpleEarthquakes[i].XYCoords[1]])
-        ),
-      'size': simpleEarthquakes[i].magnitude,
+        ol.proj.fromLonLat([earthquake.xyCoords[0],
+        earthquake.xyCoords[1]])
+      ),
+      'size': earthquake.magnitude,
     });
-  }
+  });
+
 
 
   /**
@@ -99,6 +96,7 @@ function renderEarthquakes(earthquakes) {
   var vectorSource = new ol.source.Vector({
     features: features,
   });
+
   var vector = new ol.layer.Vector({
     source: vectorSource,
     style: function(feature) {
