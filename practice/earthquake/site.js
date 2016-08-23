@@ -99,9 +99,7 @@ function renderEarthquakes(earthquakes) {
 
   var vector = new ol.layer.Vector({
     source: vectorSource,
-    style: function(feature) {
-      return getStyle(feature);
-    }
+    style: getStyle(feature)
   });
 
   var map = new ol.Map({
