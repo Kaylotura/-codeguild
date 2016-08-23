@@ -28,18 +28,15 @@ function getEarthquakes() {
  * earthquake containing only magnitude, age in hours, and an array of XY
  * coordinates.
  */
-function formatSingleEarthquake(Inearthquake) {
-  if (Inearthquake.properties.mag > 0) {
-    var effectiveMagnitude = Inearthquake.properties.mag;
-  } else {
-    effectiveMagnitude = .001;
-  }
+function formatSingleEarthquake(inEarthquake) {
+  var effectiveMagnitude = inEarthquake.properties.mag > 0 ?
+  inEarthquake.properties.mag : .001;
   return {
     magnitude: effectiveMagnitude,
     ageInHours: (
-      (new Date().getTime() - Inearthquake.properties.time) /
+      (new Date().getTime() - inEarthquake.properties.time) /
        (1000 * 60 * 60)).toFixed(2),
-    xyCoords: Inearthquake.geometry.coordinates.slice(0,2)
+    xyCoords: inEarthquake.geometry.coordinates.slice(0,2)
   };
 }
 
@@ -54,7 +51,6 @@ function formatEarthquakes(earthquakes) {
   var earthquakesAsMagnitutdeAgeCoords = _.map(
     earthquakeFeatures, formatSingleEarthquake
   );
-  console.dir(earthquakesAsMagnitutdeAgeCoords)
   return earthquakesAsMagnitutdeAgeCoords;
 }
 
@@ -77,6 +73,21 @@ function renderEarthquakes(earthquakes) {
     });
   });
 
+// function renderEarthquakes(earthquakes) {
+//   var simpleEarthquakes = formatEarthquakes(earthquakes);
+//   $('.map').empty();
+//   var count = simpleEarthquakes.length;
+//   var features = new Array(count);
+//   for (var i = 0; i < count; ++i) {
+//     features[i] = new ol.Feature({
+//       'geometry': new ol.geom.Point(
+//         ol.proj.fromLonLat(
+//           [simpleEarthquakes[i].xyCoords[0],
+//           simpleEarthquakes[i].xyCoords[1]])
+//         ),
+//       'size': simpleEarthquakes[i].magnitude,
+//     });
+//   }
 
 
   /**
@@ -99,7 +110,9 @@ function renderEarthquakes(earthquakes) {
 
   var vector = new ol.layer.Vector({
     source: vectorSource,
-    style: getStyle(feature)
+    style: function(feature) {
+      return getStyle(feature);
+    }
   });
 
   var map = new ol.Map({
