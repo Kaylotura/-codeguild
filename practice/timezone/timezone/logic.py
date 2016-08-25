@@ -29,14 +29,21 @@ def get_time_now(timezone):
     return time.isoformat()
 
 
-def get_time_zone(lat, lng):
+def get_timezone(lat, lng):
     """Takes in the arguments of lattitude and longitude, and returns the
     timezone as a simple string.
 
     >>>>  get_time_zone(12, 12)
     'Africa/Lagos'
+
+    >>>>  get_time_zone(0, 0)
+    ValueError('Timezone not found')
     """
-    return tz.tzNameAt(lat, lng)
+    timezone = tz.tzNameAt(lat, lng)
+    if timezone == None:
+        raise ValueError('Timezone not found')
+    else:
+        return timezone
 
 
 def get_timezone_conversion(timestamp, to_timezone):
