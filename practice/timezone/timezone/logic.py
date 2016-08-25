@@ -33,10 +33,10 @@ def get_timezone(lat, lng):
     """Takes in the arguments of lattitude and longitude, and returns the
     timezone as a simple string.
 
-    >>>>  get_time_zone(12, 12)
+    >>>>  get_timezone(12, 12)
     'Africa/Lagos'
 
-    >>>>  get_time_zone(0, 0)
+    >>>>  get_timezone(0, 0)
     ValueError('Timezone not found')
     """
     timezone = tz.tzNameAt(lat, lng)

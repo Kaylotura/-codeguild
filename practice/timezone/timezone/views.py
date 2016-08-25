@@ -25,7 +25,7 @@ def show_time_for_timezone(response, lat, lng):
     given timezone.
     """
     try:
-        timezone = logic.get_time_zone(float(lat), float(lng))
+        timezone = logic.get_timezone(float(lat), float(lng))
     except ValueError:
         return HttpResponse('Bad request, timezone not found', status=400)
     now = logic.get_time_now(timezone)
@@ -39,7 +39,7 @@ def show_timezone_conversion(response, time, lat, lng):
     timestamp'
     """
     try:
-        timezone = logic.get_time_zone(float(lat), float(lng))
+        timezone = logic.get_timezone(float(lat), float(lng))
     except ValueError:
         return HttpResponse('Bad request, timezone not found', status=400)
     converted_time = logic.get_timezone_conversion(time, timezone)
