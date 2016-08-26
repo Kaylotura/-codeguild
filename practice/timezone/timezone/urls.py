@@ -18,12 +18,11 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^GET/time', views.show_time_now, name='show_time_now'),
-    url(r'^GET/(?P<lat>.+),(?P<lng>.+)/tz$', views.show_timezone,
+    url(r'^time', views.show_time_now, name='show_time_now'),
+    url(r'^(?P<lat>.+),(?P<lng>.+)/tz$', views.show_timezone,
         name='show_timezone'),
-    url(r'^GET/(?P<lat>.+),(?P<lng>.+)/time$', views.show_time_for_timezone,
+    url(r'^(?P<lat>.+),(?P<lng>.+)/time$', views.show_time_for_timezone,
         name='show_time_for_timezone'),
-    url(r'^GET/(?P<time>.+)/at/(?P<lat>.+),(?P<lng>.+)$',
+    url(r'^(?P<time>.+)/at/(?P<lat>.+),(?P<lng>.+)$',
         views.show_timezone_conversion, name='show_timezone_conversion')
 ]
