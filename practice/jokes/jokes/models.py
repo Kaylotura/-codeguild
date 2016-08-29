@@ -22,5 +22,13 @@ rock_eater_joke_1 = Joke('What is big and red and eats rocks?', 'A big red rock 
 rock_eater_joke_2 = Joke('What is big and blue and eats rocks?', 'A big blue rock eater.')
 rock_eater_joke_3 = Joke('What is big and green and eats rocks?', 'There is no such thing as a big green rock eater, silly.')
 
-
 jokes = [duck_joke, rock_eater_joke_1, rock_eater_joke_2, rock_eater_joke_3]
+
+
+def add_joke(setup, punchline):
+    """
+    Takes in an argument of a setup and a punchline, and creates a new Joke class object, which is then added to the
+    global array of jokes.
+    """
+    new_joke = Joke(setup, punchline)
+    jokes.append(new_joke)

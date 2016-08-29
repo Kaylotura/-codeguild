@@ -18,7 +18,7 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    url(r'^/', views.jokes, name='jokes'),
-    url(r'^jokeform/$', views.jokeform, name='jokeform')
-    url(r'^jokeform/acknowledge', views.jokeform_acknowledge, name='jokeform_acknowledge')
+    url(r'^/', views.render_jokes, name='jokes'),
+    url(r'^jokeform/$', views.render_jokeform, name='jokeform')
+    url(r'^jokeform/acknowledge', views.acknowledge_jokeform_submit, name='acknowledge_jokeform_submit')
 ]
