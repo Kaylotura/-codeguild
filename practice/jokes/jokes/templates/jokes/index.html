@@ -8,12 +8,12 @@
     </head>
     <body>
       {% for joke in jokes %}
-      <div>
+      <div id="{{ joke.id }}">
         <p class="setup">
-          {{ joke.setup }}
+        {{ joke.setup }}
         </p>
         <p class="punchline">
-          {{ joke.punchline }}
+        {{ joke.punchline }}
         </p>
       </div>
       {% endfor %}

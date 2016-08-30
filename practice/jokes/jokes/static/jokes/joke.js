@@ -1,11 +1,13 @@
 'use strict';
 
+
 /**
  * Reveals all the punchlines.
  *... I must figure out a way to only reveal any given punchline...
  */
 function revealPunchline() {
-  $('.punchline').show();
+  var joke_id = $(this).closest('div').attr('id')
+  $('#' + joke_id + ' .punchline').show();
 }
 
 /**
@@ -13,7 +15,8 @@ function revealPunchline() {
  * I must figure out a way to only hide any given punchline...
  */
 function hidePunchline() {
-  $('.punchline').hide();
+  var joke_id = $(this).closest('div').attr('id')
+  $('#' + joke_id + ' .punchline').hide();
 }
 
 
@@ -27,9 +30,9 @@ function hidePunchline() {
 function registerEventHandlers() {
   $('.setup').on('click', revealPunchline);
   $('.punchline').on('click', hidePunchline);
-   }
+  }
 
 $(document).ready(function() {
   registerEventHandlers();
-  hidePunchline();
+  $('.punchline').hide();
 });
