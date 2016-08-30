@@ -22,7 +22,7 @@ def acknowledge_joke_form_submit(request):
     """
     try:
         setup = request.POST['setup']
-        punchline = request.POST['author']
+        punchline = request.POST['punchline']
     except KeyError:
         return HttpResponse('All setup and no punchline? A travesty does not a joke make.', status=400)
     template_arguments = {
