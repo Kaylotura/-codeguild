@@ -36,4 +36,4 @@ def acknowledge_joke_form_submit(request):
             'message': 'Oops. I guess we missed that one.',
             'retry': 'Wanna run that by me again?'
         }
-    return render (request, 'jokes/joke_form_submit.html', template_arguments)
+    return render(request, 'jokes/joke_form_submit.html', template_arguments)
