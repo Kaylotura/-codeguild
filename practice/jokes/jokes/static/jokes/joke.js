@@ -2,16 +2,16 @@
 
 
 /**
- * Reveals all the punchlines.
- *... I must figure out a way to only reveal any given punchline...
+ * Reveals any hidden sibling elements as the item clicked. This should only reveal the punchline within any given
+ * joke div, as that punchlines are the only hidden element, and setups are the only other element, and they're what is
+ * to be clicked on.
  */
 function revealPunchline() {
   $(this).siblings().show();
 }
 
 /**
- * Hides all the punchlines.
- * I must figure out a way to only hide any given punchline...
+ * Hides the element that has been clicked. This should only be used on any given punchline.
  */
 function hidePunchline() {
   $(this).hide();
@@ -19,11 +19,8 @@ function hidePunchline() {
 
 
 /**
- * Registers the event handlers so punchlines are revealed on the click of any
- * setup. And punchlines are all hidden if clicked on.
- *
- * I must figure out a way to only reveal any given punchline for any given
- * setup...
+ * Registers the event handlers, allowing any setup element to be clicked on to reveal the punchline, and any punchline
+ * element may be clicked on in order to hide said punchline.
  */
 function registerEventHandlers() {
   $('.setup').on('click', revealPunchline);
@@ -31,6 +28,6 @@ function registerEventHandlers() {
   }
 
 $(document).ready(function() {
-  registerEventHandlers();
   $('.punchline').hide();
+  registerEventHandlers();
 });
