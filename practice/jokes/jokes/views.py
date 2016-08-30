@@ -14,7 +14,8 @@ def render_jokes(request):
 
 def render_joke_form(request):
     """Renders the joke form page."""
-    return render (request, 'jokes/joke_form.html')
+    return render(request, 'jokes/joke_form.html')
+
 
 def acknowledge_joke_form_submit(request):
     """ Attempts to take in post data from the joke form to create a new joke. It informs the user if this process is
@@ -30,7 +31,7 @@ def acknowledge_joke_form_submit(request):
         'retry': 'Got any more?'
     }
     try:
-        comment = models.add_joke(setup, punchline)
+        models.add_joke(setup, punchline)
     except ValueError:
         template_arguments = {
             'message': 'Oops. I guess we missed that one.',
