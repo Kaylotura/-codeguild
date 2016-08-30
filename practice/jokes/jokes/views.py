@@ -23,18 +23,15 @@ def acknowledge_joke_form_submit(request):
     """
     try:
         setup = request.POST['setup']
-        print(setup)
         punchline = request.POST['punchline']
-        print(punchline)
     except KeyError:
         return HttpResponse('Lol, you forgot your own joke!', status=400)
     if setup == '' or punchline == '':
         return render(request, 'jokes/joke_form_fail.html')
-    elif setup == None or punchline == None:
-        return render(request, 'jokes/joke_form_fail.html')
     else:
-        joke = models.add_joke(setup, punchline)
+        models.add_joke(setup, punchline)
         template_arguments = {
-            'joke': joke,
+            'setup': setup,
+            'punchline': punchline
         }
         return render(request, 'jokes/joke_form_submit.html', template_arguments)

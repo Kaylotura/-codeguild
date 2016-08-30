@@ -7,20 +7,12 @@
          <link rel="stylesheet" href="{% static 'jokes/site.css' %}">
     </head>
     <body>
-      <h2>We got your joke!</h2>
-      <div>
-        <p>
-        {{ joke.setup }}
-        </p>
-        <p>
-        {{ joke.punchline }}
-        </p>
-      </div>
+      <h2>Lol, you forgot to include part of your joke!</h2>
       <nav>
-          <a href="{% url 'joke_form' %}">Got another one?</a>
+          <a href="{% url 'joke_form' %}">Wanna give it another shot?</a>
       </nav>
       <nav>
-        <a href="{% url 'jokes' %}">Show me the jokes!</a>
+        <a href="{% url 'jokes' %}">Forget it! Show me the jokes!</a>
       </nav>
     </body>
 </html>
