@@ -16,7 +16,7 @@ class Joke:
             )
 
     def __repr__(self):
-        return 'Joke({!r}, {!r}, {!r})'.format(self.setup, self.punchline)
+        return 'Joke({!r}, {!r})'.format(self.setup, self.punchline)
 
 duck_joke = Joke('What is the difference between a duck?', 'One leg is both the same')
 rock_eater_joke_1 = Joke('What is big and red and eats rocks?', 'A big red rock eater')

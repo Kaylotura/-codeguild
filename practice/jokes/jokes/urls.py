@@ -20,5 +20,5 @@ from . import views
 urlpatterns = [
     url(r'^$', views.render_jokes, name='jokes'),
     url(r'^joke/form$', views.render_joke_form, name='joke_form'),
-    url(r'^joke_form_acknowledge$', views.acknowledge_joke_form_submit, name='acknowledge_joke_form_submit')
+    url(r'^joke_form_acknowledge$', views.acknowledge_joke_form_submit, name='acknowledge_joke_form_submit'),
 ]
