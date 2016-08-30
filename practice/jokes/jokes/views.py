@@ -17,14 +17,23 @@ def render_joke_form(request):
     return render (request, 'jokes/joke_form.html')
 
 def acknowledge_joke_form_submit(request):
-    """Acknowledges that the joke form has been accepted or informs the user of an error after submit button is pressed.
+    """ Attempts to take in post data from the joke form to create a new joke. It informs the user if this process is
+    successful or not, and displays the joke form acknowledgement page.
     """
-    if x:
+    try:
+        setup = request.POST['setup']
+        punchline = request.POST['author']
+    except KeyError:
+        return HttpResponse('All setup and no punchline? A travesty does not a joke make.', status=400)
+    template_arguments = {
+        'message': 'Lmao, we gatta add that one to the collection',
+        'retry': 'Got any more?'
+    }
+    try:
+        comment = models.add_joke(setup, punchline)
+    except ValueError:
         template_arguments = {
-            'message': 'Lmao, we gatta add that one to the collection'
-        }
-    else:
-        template_arguments = {
-            'message': 'Oops. I guess we missed that one, try again?'
+            'message': 'Oops. I guess we missed that one.',
+            'retry': 'Wanna run that by me again?'
         }
     return render (request, 'jokes/joke_form_submit.html', template_arguments)

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -16,5 +17,6 @@
         </p>
       </div>
       {% endfor %}
+      <a href="{% url 'joke_form' %}"> Got a funny one for me? </a>
     </body>
 </html>
