@@ -10,6 +10,11 @@
       <p class="message">
       {{ message }}
       </p>
-      <a href="{% url 'joke_form' %}">{{ retry }}</a>
+      <nav>
+          <a href="{% url 'joke_form' %}">{{ retry }}</a>
+      </nav>
+      <nav>
+        <a href="{% url 'jokes' %}">Show me the jokes!</a>
+      </nav>
     </body>
 </html>

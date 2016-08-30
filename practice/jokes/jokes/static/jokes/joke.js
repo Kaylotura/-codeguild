@@ -6,8 +6,7 @@
  *... I must figure out a way to only reveal any given punchline...
  */
 function revealPunchline() {
-  var joke_id = $(this).closest('div').attr('id')
-  $('#' + joke_id + ' .punchline').show();
+  $(this).siblings().show();
 }
 
 /**
@@ -15,8 +14,7 @@ function revealPunchline() {
  * I must figure out a way to only hide any given punchline...
  */
 function hidePunchline() {
-  var joke_id = $(this).closest('div').attr('id')
-  $('#' + joke_id + ' .punchline').hide();
+  $(this).hide();
 }
 
 
