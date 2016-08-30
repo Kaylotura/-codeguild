@@ -9,5 +9,5 @@ def render_jokes(request):
     template_arguments = {
         'jokes': models.jokes,
     }
-    return render(request, 'jokes/jokes.html', template_arguments)
+    return render(request, 'jokes/Index.html', template_arguments)
 

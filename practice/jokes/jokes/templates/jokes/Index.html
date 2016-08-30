@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Wanna hear a joke?</title>
+    </head>
+    <body>
+      {% for joke in jokes %}
+      <div>
+        <p class="setup">
+          {{ joke.setup }}
+        </p>
+        <p class="punchline">
+          {{ joke.punchline }}
+        </p>
+      </div>
+      {% endfor %}
+    </body>
+</html>
