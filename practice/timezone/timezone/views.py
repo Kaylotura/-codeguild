@@ -3,11 +3,12 @@
 from . import logic
 from . import models
 from django.http import HttpResponse
+import arrow
 
 
 def show_time_now(response):
     """Renders the HTML for get time right now."""
-    now = logic.get_time_now('')
+    now = logic.get_time_now()
     return HttpResponse(now)
 
 
@@ -28,7 +29,7 @@ def show_time_for_timezone(response, lat, lng):
         timezone = logic.get_timezone(float(lat), float(lng))
     except ValueError:
         return HttpResponse('Bad request, timezone not found', status=400)
-    now = logic.get_time_now(timezone)
+    now = logic.get_time_now_for_timezone(timezone)
     return HttpResponse(now)
 
 
@@ -42,5 +43,6 @@ def show_timezone_conversion(response, time, lat, lng):
         timezone = logic.get_timezone(float(lat), float(lng))
     except ValueError:
         return HttpResponse('Bad request, timezone not found', status=400)
-    converted_time = logic.get_timezone_conversion(time, timezone)
+    time_as_arrow = arrow.get(time)
+    converted_time = logic.get_timezone_conversion(time_as_arrow, timezone)
     return HttpResponse(converted_time)
