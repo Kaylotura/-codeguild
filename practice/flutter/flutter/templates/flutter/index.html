@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+  </head>
+  <body>
+    <h2>Flutter, where birds of a feather gossip together.</h2>
+    <ul>
+    {% for flutt in flutts %}
+      <li>
+       <blockquote>
+         "{{ flutt.text }}"
+       </blockquote>
+      </li>
+    {% endfor %}
+    </ul>
+  </body>
+</html>
