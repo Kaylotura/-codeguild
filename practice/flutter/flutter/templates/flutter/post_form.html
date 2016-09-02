@@ -6,7 +6,6 @@
   </head>
   <body>
     <h2>Flutter, where birds of a feather gossip together.</h2>
-    <a href="{% url 'index' %}">Hear the songbirds.</a>
     <form method="post" action="{% url 'post_submit'%}">
       {% csrf_token %}
       <label>Sing a little song: <textarea name="text"></textarea></label>
