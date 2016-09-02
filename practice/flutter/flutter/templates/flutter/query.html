@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Query</title>
+  </head>
+  <body>
+    <h2>Flutter, where birds of a feather gossip together.</h2>
+    <p>
+      <a href="{% url 'post_form' %}">Let your fingers fly free.</a>
+    </p>
+    <p>
+        <a href="{% url 'index' %}">Hear the most recent songs.</a>
+    </p>
+    <ul>
+    {% for flutt in flutts %}
+      <li>
+       <blockquote>
+         "{{ flutt.text }}"
+       </blockquote>
+      </li>
+    {% endfor %}
+    </ul>
+  </body>
+</html>

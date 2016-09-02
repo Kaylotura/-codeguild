@@ -31,3 +31,16 @@ def render__post_submit(request):
         'new_post': new_post
     }
     return render(request, 'flutter/post_submit.html', template_arguements)
+
+def render_query(request, query_text):
+    """Searches the Flutt model for flutts with matching text, and returns up to 10 of the most recent fluts with that
+    text."""
+    query_flutts = models.Flutt.objects.filter(text__icontains=query_text)
+    #
+    #
+    #     query_flutts_by_time = models.Flutt.objects.order_by('timestamp').reverse()
+    # most_recent_flutts = flutts_by_time[:10]
+    template_arguments = {
+            'flutts': query_flutts
+        }
+    return render(request, 'flutter/query.html', template_arguments)
