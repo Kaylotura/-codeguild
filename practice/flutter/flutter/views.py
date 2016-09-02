@@ -40,9 +40,15 @@ def render_query(request):
     if len(query_flutts) > 10:
         query_flutts_by_time = query_flutts.order_by('timestamp').reverse()
         most_recent_flutts = query_flutts_by_time[:10]
+        message = 'Here are the ten most recent songs by that tune.'
+    elif len(query_flutts) == 0:
+        message = 'Sorry I haven\'nt heard any songs like that.'
+        most_recent_flutts = ''
     else:
         most_recent_flutts = query_flutts.order_by('timestamp').reverse()
+        message = 'These are all the songs I\'ve heard like that.'
     template_arguments = {
-            'flutts': most_recent_flutts
+            'flutts': most_recent_flutts,
+            'message': message
         }
     return render(request, 'flutter/query.html', template_arguments)
