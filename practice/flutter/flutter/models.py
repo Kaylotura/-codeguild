@@ -6,7 +6,7 @@ from django.db import models
 class Flutt(models.Model):
     """A flutt class model that stores text and a timestamp."""
     text = models.TextField()
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.text

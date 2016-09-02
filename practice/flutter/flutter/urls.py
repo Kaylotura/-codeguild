@@ -20,7 +20,7 @@ from . import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.render_index, name='index'),
+    url(r'^post', views.reder_post_form, name ='post_form'),
     # url(r'^search?query=QUERY_TEXT'),
-    # url(r'^post'), views.reder_post_form, name='post_form'
-    # url(r'^post/submit')
+    url(r'^post/submit', views.render__post_submit, name='post_submit')
 ]
