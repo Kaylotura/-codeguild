@@ -22,5 +22,11 @@
       </li>
     {% endfor %}
     </ul>
+    <form method="get" action="{% url 'search'%}">
+    {% csrf_token %}
+      <label>
+        Search More Flutts: <input type="text" name="query">
+      </label>
+    </form>
   </body>
 </html>
