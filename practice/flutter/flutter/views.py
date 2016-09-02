@@ -49,7 +49,7 @@ def render_query(request):
         message = 'Here are the ten most recent songs by that tune.'
     elif len(query_flutts) == 0:
         most_recent_flutts = ''
-        message = 'Sorry, I have\'nt heard any songs like that.'
+        message = 'Sorry, I haven\'t heard any songs like that.'
     else:
         most_recent_flutts = flutts_by_time(query_flutts)
         message = 'These are all the songs I\'ve heard like that.'
