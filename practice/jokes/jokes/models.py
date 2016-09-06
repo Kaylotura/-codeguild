@@ -4,8 +4,11 @@
 class Joke:
     """
     Value type that represents a submitted joke. It has a setup, and a punchline.
-    """
 
+    >>> a = Joke('words', 'wordswords')
+    >>> a
+    'Joke(words, wordswords)'
+    """
     def __init__(self, setup, punchline):
         self.setup = setup
         self.punchline = punchline
@@ -25,6 +28,9 @@ def add_joke(setup, punchline):
     """
     Takes in an argument of a setup and a punchline, and creates a new Joke class object, which is then added to the
     global array of jokes.
+
+    >>> add_joke('words', 'wordswords')
+    'Joke(words, wordswords)'
     """
     new_joke = Joke(setup, punchline)
     jokes.append(new_joke)
