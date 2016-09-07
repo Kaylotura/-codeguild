@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>You think you're funny?</title>
+        <link rel="stylesheet" href="{% static 'jokes/site.css' %}">
+    </head>
+    <body>
+      <h1>Lay one on me.</h1>
+      <form action="{% url 'acknowledge_joke_form_submit' %}" method="post">
+       {% csrf_token %}
+       <p><label>Setup: <textarea name="setup"></textarea></label></p>
+       <p><label>Punchline: <textarea name="punchline"></textarea></label></p>
+       <p><input type="submit"></p>
+     </form>
+    </body>
+</html>
