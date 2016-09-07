@@ -43,19 +43,40 @@ class Joke:
          """
         return 'Joke({!r}, {!r})'.format(self.setup, self.punchline)
 
-jokes = []
+_jokes = []
+
+
+def _create_joke(setup, punchline):
+    """
+    Takes in an argument of a setup and a punchline, and creates a new Joke class object with it.
+
+    >>> _create_joke('setup','punchline')
+    'Joke(setup,punchline)'
+
+    """
+    return Joke(setup, punchline)
+
+
+def _append_joke(existing_jokes, new_joke):
+    """
+    Takes in arguments of a list of jokes and a joke to add, it then adds that joke to the list.
+
+    >>> fake_list_of_jokes = []
+    >>> newer_joke = 'Jokeyjokerson(lol,cupcake)'
+    >>> _append_joke(fake_list_of_jokes, newer_joke)
+    ['Jokeyjokerson(lol,cupcake)']
+    """
+    return existing_jokes + [new_joke]
 
 
 def add_joke(setup, punchline):
     """
     Takes in an argument of a setup and a punchline, and creates a new Joke class object, which is then added to the
     global array of jokes.
-
-    >>> add_joke('words', 'wordswords')
-    'Joke(words, wordswords)'
     """
-    new_joke = Joke(setup, punchline)
-    jokes.append(new_joke)
+    new_joke = _create_joke(setup, punchline)
+    _jokes = _append_joke(_jokes, new_joke)
+    return new_joke
 
 
 add_joke(
