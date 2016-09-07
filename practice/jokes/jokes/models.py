@@ -54,8 +54,10 @@ def _create_joke(setup, punchline):
     'Joke(setup,punchline)'
 
     """
-    return Joke(setup, punchline)
-
+    if setup == '' or punchline == '':
+        raise KeyError
+    else:
+        return Joke(setup, punchline)
 
 def _append_joke(existing_jokes, new_joke):
     """
