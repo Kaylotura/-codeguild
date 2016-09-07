@@ -4,25 +4,47 @@
 class Joke:
     """
     Value type that represents a submitted joke. It has a setup, and a punchline.
-
-    >>> a = Joke('words', 'wordswords')
-    >>> a
-    'Joke(words, wordswords)'
     """
     def __init__(self, setup, punchline):
+        """ Initiates a Joke
+
+        >>> a = Joke('words', 'wordswords')
+        >>> a
+        'Joke(words, wordswords)'
+        """
+
         self.setup = setup
         self.punchline = punchline
 
     def __eq__(self, other):
+        """ Determines if one joke is the same as another
+
+        >>> a = Joke('words', 'wordswords')
+        >>> b = Joke('Old Man McGucket', 'wordswords')
+        >>> a == b
+        'False'
+
+        >>> a = Joke('words', 'wordswords')
+        >>> b = Joke('words', 'wordswords')
+        >>> a == b
+        'True'
+        """
         return (
             self.setup == other.setup and
             self.punchline == other.punchline
         )
 
     def __repr__(self):
+        """ Represents a Joke
+
+         >>> a = Joke('words', 'wordswords')
+         >>> a
+         'Joke(words, wordswords)'
+         """
         return 'Joke({!r}, {!r})'.format(self.setup, self.punchline)
 
 jokes = []
+
 
 def add_joke(setup, punchline):
     """
