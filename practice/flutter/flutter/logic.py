@@ -3,14 +3,19 @@
 from . import models
 
 
-def create_and_save_new_flutt(text):
-    """Creates and saves a new flutt.
+def create_and_save_new_flutt(text, timestamp=''):
+    """Takes in text as an argument and creates and saves a new flutt. Generally the timestamp entry will be left empty,
+    as that the Flutt model automatically genertes its own timestamp, but it has been included as an optional argument
+    for the purposes of testing.
 
-    >>> stark = create_and_save_new_flutt('winter is coming')
-    >>> stark.text
-    'winter is coming'
+    >>> stark = create_and_save_new_flutt('winter is coming', 3)
+    >>> stark
+    'Flutt(text=winter is coming, timestamp=3)'
     """
-    new_flutt = models.Flutt(text=text)
+    if timestamp == '':
+        new_flutt = models.Flutt(text=text)
+    else:
+        new_flutt = models.Flutt(text=text, timestamp=timestamp)
     new_flutt.save()
     return new_flutt
 

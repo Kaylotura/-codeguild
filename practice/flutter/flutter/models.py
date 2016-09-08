@@ -21,6 +21,6 @@ class Flutt(models.Model):
         """Returns a string that represnts a shorthand description of the flutt.
         >>> billy = Flutt(text='dancing with myself, oh-oh', timestamp=3)
         >>> billy
-        'Flutt(text=dancing with myself, timestamp=3)
+        'Flutt(text=dancing with myself, timestamp=3)'
         """
         return 'Flutt(text={!r}, timestamp={!r})'.format(self.text, self.timestamp)
