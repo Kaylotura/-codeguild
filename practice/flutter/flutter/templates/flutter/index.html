@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+  </head>
+  <body>
+    <h2>Flutter, where birds of a feather gossip together.</h2>
+    <a href="{% url 'post_form' %}">Let your fingers fly free.</a>
+    <ul>
+    {% for flutt in flutts %}
+      <li>
+       <blockquote>
+         "{{ flutt.text }}"
+       </blockquote>
+      </li>
+    {% endfor %}
+    </ul>
+    <form method="get" action="{% url 'search'%}">
+    {% csrf_token %}
+      <label>
+        Search Flutts: <input type="text" name="query">
+      </label>
+    </form>
+  </body>
+</html>

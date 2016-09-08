@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Fluttering Away</title>
+  </head>
+  <body>
+    <h2>Flutter, where birds of a feather gossip together.</h2>
+    <form method="post" action="{% url 'post_submit'%}">
+      {% csrf_token %}
+      <label>Sing a little song: <textarea name="text"></textarea></label>
+      <input type="submit">
+    </form>
+    <a href="{% url 'index' %}">No singing today, back to the songs of others fluttering by.</a>
+  </body>
+</html>
