@@ -11,4 +11,4 @@ class Flutt(models.Model):
     def __str__(self):
         return self.text
     def __repr__(self):
-        return 'Flutt(text={!r}, {!r})'.format(self.text, self.timestamp)
+        return 'Flutt(text={!r}, timestamp={!r})'.format(self.text, self.timestamp)

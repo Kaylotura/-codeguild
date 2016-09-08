@@ -5,14 +5,10 @@ from . import models
 from django.shortcuts import render
 
 
-def flutts_by_time(flutts):
-    """Takes in a series of flutt objects, and orders them by time with the most recent first."""
-    return flutts.order_by('timestamp').reverse()
-
-
 def render_index(request):
     """Collects the ten latest Flutts and render them with the the index page."""
-    most_recent_flutts = flutts_by_time(models.Flutt.objects)[:10]
+    flutts = models.Flutt.objects
+    most_recent_flutts = logic.get_most_recent_flutts(flutts)
     template_arguments = {
             'flutts': most_recent_flutts
         }
@@ -43,15 +39,13 @@ def render_query(request):
     This function then renders the query page, with a message based the number of flutts that matched the query text.
     """
     query_text = request.GET.get('query', '')
-    query_flutts = models.Flutt.objects.filter(text__icontains=query_text)
+    query_flutts = logic.search_flutts(query_text)
+    most_recent_flutts = logic.get_most_recent_flutts(query_flutts)
     if len(query_flutts) > 10:
-        most_recent_flutts = flutts_by_time(query_flutts)[:10]
         message = 'Here are the ten most recent songs by that tune.'
     elif len(query_flutts) == 0:
-        most_recent_flutts = ''
         message = 'Sorry, I haven\'t heard any songs like that.'
     else:
-        most_recent_flutts = flutts_by_time(query_flutts)
         message = 'These are all the songs I\'ve heard like that.'
     template_arguments = {
             'flutts': most_recent_flutts,
