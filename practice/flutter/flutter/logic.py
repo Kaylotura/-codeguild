@@ -82,7 +82,7 @@ def get_most_recent_flutts(flutts):
     if len(flutts_by_time) > 10:
         return get_first_ten(flutts_by_time)
     elif len(flutts_by_time) == 0:
-        return ['']
+        return []
     else:
         return flutts_by_time
 
