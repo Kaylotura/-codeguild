@@ -3,7 +3,7 @@
 from . import models
 
 
-def create_and_save_new_flutt(text, timestamp=''):
+def create_and_save_new_flutt(text, timestamp=None):
     """Takes in text as an argument and creates and saves a new flutt. Generally the timestamp entry will be left empty,
     as that the Flutt model automatically genertes its own timestamp, but it has been included as an optional argument
     for the purposes of testing.
@@ -12,10 +12,7 @@ def create_and_save_new_flutt(text, timestamp=''):
     >>> stark
     'Flutt(text=winter is coming, timestamp=3)'
     """
-    if timestamp == '':
-        new_flutt = models.Flutt(text=text)
-    else:
-        new_flutt = models.Flutt(text=text, timestamp=timestamp)
+    new_flutt = models.Flutt(text=text, timestamp=timestamp)
     new_flutt.save()
     return new_flutt
 
@@ -79,12 +76,9 @@ def get_most_recent_flutts(flutts):
 
     """
     flutts_by_time = get_flutts_by_time(flutts)
-    if len(flutts_by_time) > 10:
-        return get_first_ten(flutts_by_time)
-    elif len(flutts_by_time) == 0:
-        return []
-    else:
-        return flutts_by_time
+    most_recent_flutts = get_first_ten(flutts_by_time)
+    return most_recent_flutts
+
 
 
 def search_flutts(query_text):
