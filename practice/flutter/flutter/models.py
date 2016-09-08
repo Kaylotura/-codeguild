@@ -20,7 +20,7 @@ class Flutt(models.Model):
     def __repr__(self):
         """Returns a string that represnts a shorthand description of the flutt.
         >>> billy = Flutt(text='dancing with myself, oh-oh', timestamp=3)
-        >>> billy.__repr__()
+        >>> billy
         'Flutt(text=dancing with myself, timestamp=3)
         """
         return 'Flutt(text={!r}, timestamp={!r})'.format(self.text, self.timestamp)
