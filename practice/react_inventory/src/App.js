@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+
 import './App.css';
 
 const JSONInventory = [
@@ -11,12 +12,22 @@ const JSONInventory = [
 ];
 
 class App extends Component {
+    constructor() {
+        super();
+        this.state = {filterStocked: false}
+        this.toggleFilterStocked = this.toggleFilterStocked.bind(this)
+  }
+  toggleFilterStocked() {
+        this.setState({filterStocked: !this.state.filterStocked})
+  }
 
   render() {
     return (
         <div>
-            <SearchBar/>
-            <FilterStockCheckBox/>
+            <SearchBar
+                filterStocked={this.state.filterStocked}
+                handleFilterStockedToggle={this.toggleFilterStocked}
+            />
             <StockTable inventory={JSONInventory}/>
         </div>
     );
@@ -24,27 +35,27 @@ class App extends Component {
 }
 
 class SearchBar extends Component {
-    render() {
-        return (
-        <input type="text"></input>
-        )
+    static propTypes = {
+       filterStocked: PropTypes.bool,
+       handleFilterStockedToggle:PropTypes.func
     }
-}
-
-class FilterStockCheckBox extends Component {
     render() {
         return (
         <div>
-            <input type="checkbox"></input>
+            <input placeholder="Search..." type="text"/>
+            <input
+                type="checkbox"
+                checked={this.props.filterStocked}
+                onClick={this.props.handleFilterStockedToggle}
+            />
             "Only show products in stock"
         </div>
-    )
+        )
     }
 }
 
 class StockTable extends Component {
     render() {
-
         let categoryList = [];
         let tablebody = [];
         this.props.inventory.forEach((inventoryItem) => {
@@ -95,6 +106,10 @@ class StockTable extends Component {
          )
     }
 }
+
+
+// Separate out Product Headline
+// Separate out Product data line
 
 
 
