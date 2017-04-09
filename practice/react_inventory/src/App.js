@@ -14,11 +14,18 @@ const JSONInventory = [
 class App extends Component {
     constructor() {
         super();
-        this.state = {filterStocked: false}
-        this.toggleFilterStocked = this.toggleFilterStocked.bind(this)
+        this.state = {
+            filterStocked: false,
+            searchString: ''
+        };
+        this.toggleFilterStocked = this.toggleFilterStocked.bind(this);
+        this.updateSearchString = this.updateSearchString.bind(this)
   }
   toggleFilterStocked() {
         this.setState({filterStocked: !this.state.filterStocked})
+  }
+  updateSearchString(value) {
+        this.setState({searchString: value})
   }
 
   render() {
@@ -27,8 +34,14 @@ class App extends Component {
             <SearchBar
                 filterStocked={this.state.filterStocked}
                 handleFilterStockedToggle={this.toggleFilterStocked}
+                searchString={this.state.searchString}
+                handleSearchString={this.updateSearchString}
             />
-            <StockTable inventory={JSONInventory}/>
+            <StockTable
+                inventory={JSONInventory}
+                filterStocked={this.state.filterStocked}
+                searchString={this.state.searchString}
+            />
         </div>
     );
   }
@@ -36,13 +49,19 @@ class App extends Component {
 
 class SearchBar extends Component {
     static propTypes = {
-       filterStocked: PropTypes.bool,
-       handleFilterStockedToggle:PropTypes.func
-    }
+        filterStocked: PropTypes.bool,
+        handleFilterStockedToggle:PropTypes.func,
+        searchString: PropTypes.string,
+        handleSearchString: PropTypes.func
+    };
     render() {
         return (
         <div>
-            <input placeholder="Search..." type="text"/>
+            <input
+                type="text"
+                placeholder="Search..."
+                onChange={ (event) => this.props.handleSearchString(event.target.value)}
+            />
             <input
                 type="checkbox"
                 checked={this.props.filterStocked}
@@ -55,30 +74,48 @@ class SearchBar extends Component {
 }
 
 class StockTable extends Component {
+    static propTypes = {
+        filterStocked: PropTypes.bool,
+        searchString: PropTypes.string,
+        inventory: PropTypes.array
+    };
     render() {
         let categoryList = [];
-        let tablebody = [];
+        let tableBody = [];
+        let filteredInventory = [];
+
         this.props.inventory.forEach((inventoryItem) => {
+            if (inventoryItem.name.toLowerCase().includes(this.props.searchString.toLowerCase()) && !this.props.filterStocked) {
+
+                filteredInventory.push(inventoryItem)
+            } else if (inventoryItem.name.toLowerCase().includes(this.props.searchString.toLowerCase()) && this.props.filterStocked && inventoryItem.stocked) {
+                filteredInventory.push(inventoryItem)
+            }
+        });
+
+
+        filteredInventory.forEach((inventoryItem) => {
             if (categoryList.indexOf(inventoryItem.category) === -1) {
                 categoryList.push(inventoryItem.category);
             }
         });
 
+
         for (let i = 0; i < categoryList.length; i++) {
-            tablebody.push(
+            tableBody.push(
                 <tr><th colSpan="2">{categoryList[i]}</th></tr>
             );
             this.props.inventory.forEach((inventoryItem) => {
                 if (categoryList.indexOf(inventoryItem.category) === i) {
                     if (inventoryItem.stocked) {
-                        tablebody.push(
+                        tableBody.push(
                         <tr>
                             <td>{inventoryItem.name}</td>
                             <td>{inventoryItem.price}</td>
                         </tr>
                         )
-                    } else {
-                        tablebody.push(
+                    } else if (!this.props.filterStocked) {
+                        tableBody.push(
                         <tr>
                             <td style={{color: 'red'}}>{inventoryItem.name}</td>
                             <td>{inventoryItem.price}</td>
@@ -100,7 +137,7 @@ class StockTable extends Component {
                 </tr>
                 </thead>
                 <tbody>
-                {tablebody}
+                {tableBody}
                 </tbody>
             </table>
          )
