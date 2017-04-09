@@ -110,21 +110,18 @@ class StockTable extends Component {
             );
             filteredInventory.forEach((inventoryItem) => {
                 if (categoryList.indexOf(inventoryItem.category) === i) {
+                    let styleColor = 'black';
                     if (inventoryItem.stocked) {
-                        tableBody.push(
-                        <tr>
-                            <td>{inventoryItem.name}</td>
-                            <td>{inventoryItem.price}</td>
-                        </tr>
-                        )
+                        styleColor = 'black'
                     } else if (!this.props.filterStocked) {
-                        tableBody.push(
-                        <tr>
-                            <td style={{color: 'red'}}>{inventoryItem.name}</td>
-                            <td>{inventoryItem.price}</td>
-                        </tr>
-                        )
+                         styleColor = 'red'
                     }
+                    tableBody.push(
+                            <tr>
+                                <td style={{color: styleColor }}>{inventoryItem.name}</td>
+                                <td>{inventoryItem.price}</td>
+                            </tr>
+                    )
                 }
             });
         }
@@ -146,11 +143,5 @@ class StockTable extends Component {
          )
     }
 }
-
-
-// Separate out Product Headline
-// Separate out Product data line
-
-
 
 export default App;
