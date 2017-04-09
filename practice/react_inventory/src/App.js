@@ -105,7 +105,7 @@ class StockTable extends Component {
             tableBody.push(
                 <tr><th colSpan="2">{categoryList[i]}</th></tr>
             );
-            this.props.inventory.forEach((inventoryItem) => {
+            filteredInventory.forEach((inventoryItem) => {
                 if (categoryList.indexOf(inventoryItem.category) === i) {
                     if (inventoryItem.stocked) {
                         tableBody.push(
