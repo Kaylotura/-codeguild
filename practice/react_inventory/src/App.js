@@ -56,19 +56,23 @@ class SearchBar extends Component {
     };
     render() {
         return (
-        <div>
-            <input
-                type="text"
-                placeholder="Search..."
-                onChange={ (event) => this.props.handleSearchString(event.target.value)}
-            />
-            <input
-                type="checkbox"
-                checked={this.props.filterStocked}
-                onClick={this.props.handleFilterStockedToggle}
-            />
-            "Only show products in stock"
-        </div>
+        <form>
+            <div>
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    onChange={ (event) => this.props.handleSearchString(event.target.value)}
+                />
+            </div>
+            <div>
+                <input
+                    type="checkbox"
+                    checked={this.props.filterStocked}
+                    onClick={this.props.handleFilterStockedToggle}
+                />
+                "Only show products in stock"
+            </div>
+        </form>
         )
     }
 }
@@ -86,7 +90,6 @@ class StockTable extends Component {
 
         this.props.inventory.forEach((inventoryItem) => {
             if (inventoryItem.name.toLowerCase().includes(this.props.searchString.toLowerCase()) && !this.props.filterStocked) {
-
                 filteredInventory.push(inventoryItem)
             } else if (inventoryItem.name.toLowerCase().includes(this.props.searchString.toLowerCase()) && this.props.filterStocked && inventoryItem.stocked) {
                 filteredInventory.push(inventoryItem)
