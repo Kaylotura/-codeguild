@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-
-import './App.css';
+// import './App.css';
+// import {mount, shallow, render} from 'enzyme';
 
 const JSONInventory = [
     {category: "Sporting Goods", price: 49.99, stocked: true, name: "Football"},
@@ -54,8 +54,6 @@ class App extends Component {
         this.setState({workingCart})
   }
 
-
-
   render() {
     return (
         <div>
@@ -78,17 +76,12 @@ class App extends Component {
 }
 
 class SearchBar extends Component {
-    static propTypes = {
-        filterStocked: PropTypes.bool,
-        handleFilterStockedToggle:PropTypes.func,
-        searchString: PropTypes.string,
-        handleSearchString: PropTypes.func,
-    };
     render() {
         return (
         <form>
             <div>
                 <input
+                    id="searchStringBox"
                     type="text"
                     placeholder="Search..."
                     onChange={ (event) => this.props.handleSearchString(event.target.value)}
@@ -96,6 +89,7 @@ class SearchBar extends Component {
             </div>
             <div>
                 <input
+                    id="filterStockedCheckBox"
                     type="checkbox"
                     onClick={this.props.handleFilterStockedToggle}
                 />
@@ -109,13 +103,6 @@ class SearchBar extends Component {
         //Break you Stock Table into children//
 
 class StockTable extends Component {
-    static propTypes = {
-        filterStocked: PropTypes.bool,
-        searchString: PropTypes.string,
-        inventory: PropTypes.array,
-        priceTotal: PropTypes.number,
-        updateInCart: PropTypes.func,
-    };
     render() {
         return (
             <table>
@@ -140,13 +127,6 @@ class StockTable extends Component {
 }
 
 class TableBody extends Component {
-    static propTypes = {
-        filterStocked: PropTypes.bool,
-        searchString: PropTypes.string,
-        inventory: PropTypes.array,
-        priceTotal: PropTypes.number,
-        updateInCart: PropTypes.func
-    };
     constructor() {
         super();
         this.state = {
@@ -171,7 +151,7 @@ class TableBody extends Component {
         });
         for (let i = 0; i < categoryList.length; i++) {
             tableBody.push(
-                <tr><th colSpan="2">{categoryList[i]}</th></tr>
+                <tr key={categoryList[i]}><th colSpan="2">{categoryList[i]}</th></tr>
             );
             filteredInventory.forEach((inventoryItem) => {
                 if (categoryList.indexOf(inventoryItem.category) === i) {
@@ -182,7 +162,7 @@ class TableBody extends Component {
                          styleColor = 'red'
                     }
                     tableBody.push(
-                            <tr>
+                            <tr key={inventoryItem.name}>
                                 <td style={{color: styleColor }}>
                                     <input
                                         type="checkbox"
@@ -202,8 +182,8 @@ class TableBody extends Component {
             <tbody>
                 {tableBody}
                 <tr>
-                    <td></td>
-                    <td><strong>{this.props.priceTotal}</strong></td>
+                    <td><strong>Total</strong></td>
+                    <td><strong>${this.props.priceTotal}</strong></td>
                 </tr>
             </tbody>
         )
