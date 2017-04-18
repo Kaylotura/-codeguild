@@ -155,6 +155,7 @@ class TableBody extends Component {
             );
             filteredInventory.forEach((inventoryItem) => {
                 if (categoryList.indexOf(inventoryItem.category) === i) {
+                    let inventoryId = (inventoryItem.name).replace(/\s+/g, '-').toLowerCase()
                     let styleColor = 'black';
                     if (inventoryItem.stocked) {
                         styleColor = 'black'
@@ -165,6 +166,7 @@ class TableBody extends Component {
                             <tr key={inventoryItem.name}>
                                 <td style={{color: styleColor }}>
                                     <input
+                                        id={inventoryId}
                                         type="checkbox"
                                         onChange={
                                             (event) => this.props.updateInCart(inventoryItem.name, inventoryItem.price)
@@ -183,7 +185,7 @@ class TableBody extends Component {
                 {tableBody}
                 <tr>
                     <td><strong>Total</strong></td>
-                    <td><strong>${this.props.priceTotal}</strong></td>
+                    <td id="priceTotal"><strong>${this.props.priceTotal}</strong></td>
                 </tr>
             </tbody>
         )
