@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import SearchBar from './SearchBar'
+import StockTable from './StockTable'
 // import './App.css';
 // import {mount, shallow, render} from 'enzyme';
 
@@ -73,123 +75,6 @@ class App extends Component {
         </div>
     );
   }
-}
-
-class SearchBar extends Component {
-    render() {
-        return (
-        <form>
-            <div>
-                <input
-                    id="searchStringBox"
-                    type="text"
-                    placeholder="Search..."
-                    onChange={ (event) => this.props.handleSearchString(event.target.value)}
-                />
-            </div>
-            <div>
-                <input
-                    id="filterStockedCheckBox"
-                    type="checkbox"
-                    onClick={this.props.handleFilterStockedToggle}
-                />
-                "Only show products in stock"
-            </div>
-        </form>
-        )
-    }
-}
-
-        //Break you Stock Table into children//
-
-class StockTable extends Component {
-    render() {
-        return (
-            <table>
-                <thead>
-                    <tr>
-
-                            <td><strong>Name</strong></td>
-                            <td>Price</td>
-
-                    </tr>
-                </thead>
-                <TableBody
-                    inventory={this.props.inventory}
-                    filterStocked={this.props.filterStocked}
-                    searchString={this.props.searchString}
-                    priceTotal={this.props.priceTotal}
-                    updateInCart={this.props.updateInCart}
-                />
-            </table>
-         );
-    }
-}
-
-class TableBody extends Component {
-    constructor() {
-        super();
-        this.state = {
-            rowCheckBoxIs: {},
-        };
-    }
-
-    render() {
-        let categoryList = [];
-        let tableBody = [];
-        let filteredInventory = this.props.inventory.filter((inventoryItem) => {
-            if (inventoryItem.name.toLowerCase().includes(this.props.searchString.toLowerCase()) && !this.props.filterStocked) {
-                return inventoryItem
-            } else if (inventoryItem.name.toLowerCase().includes(this.props.searchString.toLowerCase()) && this.props.filterStocked && inventoryItem.stocked) {
-                return inventoryItem
-            }
-        });
-        filteredInventory.forEach((inventoryItem) => {
-            if (categoryList.indexOf(inventoryItem.category) === -1) {
-                categoryList.push(inventoryItem.category);
-            }
-        });
-        for (let i = 0; i < categoryList.length; i++) {
-            tableBody.push(
-                <tr key={categoryList[i]}><th colSpan="2">{categoryList[i]}</th></tr>
-            );
-            filteredInventory.forEach((inventoryItem) => {
-                if (categoryList.indexOf(inventoryItem.category) === i) {
-                    let inventoryId = (inventoryItem.name).replace(/\s+/g, '-').toLowerCase()
-                    let styleColor = 'black';
-                    if (inventoryItem.stocked) {
-                        styleColor = 'black'
-                    } else if (!this.props.filterStocked) {
-                         styleColor = 'red'
-                    }
-                    tableBody.push(
-                            <tr key={inventoryItem.name}>
-                                <td style={{color: styleColor }}>
-                                    <input
-                                        id={inventoryId}
-                                        type="checkbox"
-                                        onChange={
-                                            (event) => this.props.updateInCart(inventoryItem.name, inventoryItem.price)
-                                        }
-                                    />
-                                        {inventoryItem.name}
-                                </td>
-                                <td style={{color: styleColor }}>${inventoryItem.price}</td>
-                            </tr>
-                    )
-                }
-            });
-        }
-        return (
-            <tbody>
-                {tableBody}
-                <tr>
-                    <td><strong>Total</strong></td>
-                    <td id="priceTotal"><strong>${this.props.priceTotal}</strong></td>
-                </tr>
-            </tbody>
-        )
-    }
 }
 
 export default App;
