@@ -21,3 +21,5 @@ const JSONInventory = [
     {category: "Gifts", price: 19.99, stocked: false, name: "Orange Stuffed Bear"},
     {category: "Gifts", price: 3.99, stocked: false, name: "Flowers for Cuties"},
   ];
+
+export default JSONInventory;
