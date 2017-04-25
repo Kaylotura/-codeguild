@@ -10,10 +10,8 @@ export default class StockTable extends Component {
             <table>
                 <thead>
                     <tr>
-
-                            <td><strong>Name</strong></td>
-                            <td>Price</td>
-
+                        <td><strong>Name</strong></td>
+                        <td>Price</td>
                     </tr>
                 </thead>
                 <TableBody
