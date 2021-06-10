@@ -1,5 +1,5 @@
 Brlapi==0.6.1
-Django==1.10
+Django==2.2.24
 PAM==0.4.2
 PyICU==1.5
 apt-clone==0.2.1
