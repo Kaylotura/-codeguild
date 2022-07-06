@@ -8,7 +8,7 @@ colorama==0.2.5
 command-not-found==0.3
 defer==1.0.6
 dirspec==13.10
-html5lib==0.999
+html5lib==0.999999999
 httplib2==0.8
 jsonpickle==0.9.3
 language-selector==0.1
